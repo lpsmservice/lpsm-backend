@@ -1,0 +1,424 @@
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const db = require('./database');
+
+const app = express();
+const PORT = 3000;
+
+app.use(cors());
+app.use(express.json());
+app.use('/downloads', express.static(path.join(__dirname, 'public')));
+app.use('/painel', express.static(path.join(__dirname, '..', 'painel')));
+
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+function generateCode(size = 6) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let out = '';
+  for (let i = 0; i < size; i++) {
+    out += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return out;
+}
+
+function addYears(date, years) {
+  const d = new Date(date);
+  d.setFullYear(d.getFullYear() + years);
+  return d.toISOString();
+}
+
+function normalizeApp(appItem) {
+  return {
+    id: appItem.id || uid(),
+    name: appItem.name || 'APP SEM NOME',
+    package: appItem.package || '',
+    apk: appItem.apk || appItem.url || '',
+    icon: appItem.icon || '',
+    autoInstall: !!appItem.autoInstall,
+    createdAt: appItem.createdAt || new Date().toISOString()
+  };
+}
+
+function normalizeLayout(layout) {
+  return {
+    id: layout.id || uid(),
+    name: layout.name || 'Novo layout',
+    background: layout.background || '',
+    apps: Array.isArray(layout.apps) ? layout.apps : [],
+    links: Array.isArray(layout.links) ? layout.links : [],
+    banners: Array.isArray(layout.banners) ? layout.banners : [],
+    createdAt: layout.createdAt || new Date().toISOString()
+  };
+}
+
+function normalizeReseller(reseller) {
+  return {
+    id: reseller.id || uid(),
+    name: reseller.name || '',
+    login: reseller.login || '',
+    password: reseller.password || '123456',
+    annualCredits: Number(reseller.annualCredits || 0),
+    twoYearsCredits: Number(reseller.twoYearsCredits || 0),
+    createdAt: reseller.createdAt || new Date().toISOString()
+  };
+}
+
+function getDashboardStats() {
+  const devices = db.getDevices();
+  const layouts = db.getLayouts();
+  const apps = db.getApps();
+  const resellers = db.getResellers();
+
+  return {
+    totalDevices: devices.length,
+    activeDevices: devices.filter(d => d.active).length,
+    pendingDevices: devices.filter(d => !d.active).length,
+    totalLayouts: layouts.length,
+    totalApps: apps.length,
+    totalResellers: resellers.length,
+    annualCreditsInUse: devices.reduce((acc, d) => acc + Number(d.creditsAnnual || 0), 0),
+    twoYearsCreditsInUse: devices.reduce((acc, d) => acc + Number(d.creditsTwoYears || 0), 0)
+  };
+}
+
+app.get('/', (req, res) => {
+  res.send('Servidor da launcher online');
+});
+
+app.get('/dashboard', (req, res) => {
+  res.json({
+    ok: true,
+    stats: getDashboardStats(),
+    settings: db.getSettings()
+  });
+});
+
+app.get('/settings', (req, res) => {
+  res.json(db.getSettings());
+});
+
+app.put('/settings', (req, res) => {
+  const current = db.getSettings();
+  const next = { ...current, ...req.body };
+  db.saveSettings(next);
+  res.json({ ok: true, settings: next });
+});
+
+app.get('/apps', (req, res) => {
+  res.json(db.getApps());
+});
+
+app.post('/apps', (req, res) => {
+  const apps = db.getApps();
+  const appItem = normalizeApp(req.body);
+  apps.push(appItem);
+  db.saveApps(apps);
+  res.json({ ok: true, app: appItem });
+});
+
+app.put('/apps/:id', (req, res) => {
+  const apps = db.getApps();
+  const index = apps.findIndex(a => a.id === req.params.id);
+
+  if (index === -1) {
+    return res.status(404).json({ ok: false, message: 'App não encontrado' });
+  }
+
+  apps[index] = normalizeApp({
+    ...apps[index],
+    ...req.body,
+    id: apps[index].id,
+    createdAt: apps[index].createdAt
+  });
+
+  db.saveApps(apps);
+  res.json({ ok: true, app: apps[index] });
+});
+
+app.delete('/apps/:id', (req, res) => {
+  const apps = db.getApps().filter(a => a.id !== req.params.id);
+  const layouts = db.getLayouts().map(layout => ({
+    ...layout,
+    apps: layout.apps.filter(appId => appId !== req.params.id)
+  }));
+
+  db.saveApps(apps);
+  db.saveLayouts(layouts);
+
+  res.json({ ok: true });
+});
+
+app.get('/layouts', (req, res) => {
+  const apps = db.getApps();
+  const layouts = db.getLayouts().map(layout => ({
+    ...layout,
+    appObjects: layout.apps
+      .map(id => apps.find(appItem => appItem.id === id))
+      .filter(Boolean)
+  }));
+
+  res.json(layouts);
+});
+
+app.post('/layouts', (req, res) => {
+  const layouts = db.getLayouts();
+  const layout = normalizeLayout(req.body);
+  layouts.push(layout);
+  db.saveLayouts(layouts);
+  res.json({ ok: true, layout });
+});
+
+app.put('/layouts/:id', (req, res) => {
+  const layouts = db.getLayouts();
+  const index = layouts.findIndex(l => l.id === req.params.id);
+
+  if (index === -1) {
+    return res.status(404).json({ ok: false, message: 'Layout não encontrado' });
+  }
+
+  layouts[index] = normalizeLayout({
+    ...layouts[index],
+    ...req.body,
+    id: layouts[index].id,
+    createdAt: layouts[index].createdAt
+  });
+
+  db.saveLayouts(layouts);
+  res.json({ ok: true, layout: layouts[index] });
+});
+
+app.delete('/layouts/:id', (req, res) => {
+  const layouts = db.getLayouts().filter(l => l.id !== req.params.id);
+  const devices = db.getDevices().map(device => {
+    if (device.layout === req.params.id) {
+      return { ...device, layout: null };
+    }
+    return device;
+  });
+
+  db.saveLayouts(layouts);
+  db.saveDevices(devices);
+
+  res.json({ ok: true });
+});
+
+app.get('/devices', (req, res) => {
+  const layouts = db.getLayouts();
+  const devices = db.getDevices().map(device => ({
+    ...device,
+    layoutObject: layouts.find(l => l.id === device.layout) || null
+  }));
+
+  res.json(devices);
+});
+
+app.post('/devices', (req, res) => {
+  const devices = db.getDevices();
+
+  const device = {
+    id: uid(),
+    code: generateCode(),
+    active: false,
+    layout: null,
+    name: req.body.name || '',
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    creditsAnnual: 0,
+    creditsTwoYears: 0,
+    expiresAt: null,
+    resellerId: req.body.resellerId || null,
+    resellerName: req.body.resellerName || '',
+    lastSeen: null
+  };
+
+  devices.push(device);
+  db.saveDevices(devices);
+
+  res.json({ ok: true, device });
+});
+
+app.delete('/devices/:id', (req, res) => {
+  const devices = db.getDevices().filter(d => d.id !== req.params.id);
+  db.saveDevices(devices);
+  res.json({ ok: true });
+});
+
+app.put('/devices/:id', (req, res) => {
+  const devices = db.getDevices();
+  const index = devices.findIndex(d => d.id === req.params.id);
+
+  if (index === -1) {
+    return res.status(404).json({ ok: false, message: 'Dispositivo não encontrado' });
+  }
+
+  devices[index] = {
+    ...devices[index],
+    ...req.body
+  };
+
+  db.saveDevices(devices);
+  res.json({ ok: true, device: devices[index] });
+});
+
+app.post('/devices/:id/activate', (req, res) => {
+  const devices = db.getDevices();
+  const index = devices.findIndex(d => d.id === req.params.id);
+
+  if (index === -1) {
+    return res.status(404).json({ ok: false, message: 'Dispositivo não encontrado' });
+  }
+
+  const { type = 'annual', layoutId = null, name = '' } = req.body;
+  const years = type === 'two_years' ? 2 : 1;
+
+  devices[index].active = true;
+  devices[index].status = 'active';
+  devices[index].layout = layoutId || devices[index].layout || null;
+  devices[index].name = name || devices[index].name || '';
+  devices[index].expiresAt = addYears(new Date(), years);
+
+  if (type === 'two_years') {
+    devices[index].creditsTwoYears = Number(devices[index].creditsTwoYears || 0) + 1;
+  } else {
+    devices[index].creditsAnnual = Number(devices[index].creditsAnnual || 0) + 1;
+  }
+
+  db.saveDevices(devices);
+  res.json({ ok: true, device: devices[index] });
+});
+
+app.post('/devices/:id/deactivate', (req, res) => {
+  const devices = db.getDevices();
+  const index = devices.findIndex(d => d.id === req.params.id);
+
+  if (index === -1) {
+    return res.status(404).json({ ok: false, message: 'Dispositivo não encontrado' });
+  }
+
+  devices[index].active = false;
+  devices[index].status = 'pending';
+  devices[index].expiresAt = null;
+
+  db.saveDevices(devices);
+  res.json({ ok: true, device: devices[index] });
+});
+
+app.get('/resellers', (req, res) => {
+  res.json(db.getResellers());
+});
+
+app.post('/resellers', (req, res) => {
+  const resellers = db.getResellers();
+  const reseller = normalizeReseller(req.body);
+  resellers.push(reseller);
+  db.saveResellers(resellers);
+  res.json({ ok: true, reseller });
+});
+
+app.put('/resellers/:id', (req, res) => {
+  const resellers = db.getResellers();
+  const index = resellers.findIndex(r => r.id === req.params.id);
+
+  if (index === -1) {
+    return res.status(404).json({ ok: false, message: 'Revenda não encontrada' });
+  }
+
+  resellers[index] = normalizeReseller({
+    ...resellers[index],
+    ...req.body,
+    id: resellers[index].id,
+    createdAt: resellers[index].createdAt
+  });
+
+  db.saveResellers(resellers);
+  res.json({ ok: true, reseller: resellers[index] });
+});
+
+app.delete('/resellers/:id', (req, res) => {
+  const resellers = db.getResellers().filter(r => r.id !== req.params.id);
+  db.saveResellers(resellers);
+  res.json({ ok: true });
+});
+
+app.post('/resellers/:id/add-credits', (req, res) => {
+  const resellers = db.getResellers();
+  const index = resellers.findIndex(r => r.id === req.params.id);
+
+  if (index === -1) {
+    return res.status(404).json({ ok: false, message: 'Revenda não encontrada' });
+  }
+
+  const annual = Number(req.body.annual || 0);
+  const twoYears = Number(req.body.twoYears || 0);
+
+  resellers[index].annualCredits += annual;
+  resellers[index].twoYearsCredits += twoYears;
+
+  db.saveResellers(resellers);
+  res.json({ ok: true, reseller: resellers[index] });
+});
+
+app.get('/launcher/device/:code', (req, res) => {
+  const devices = db.getDevices();
+  let device = devices.find(d => d.code === req.params.code);
+
+  if (!device) {
+    device = {
+      id: uid(),
+      code: req.params.code,
+      active: false,
+      layout: null,
+      name: '',
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      creditsAnnual: 0,
+      creditsTwoYears: 0,
+      expiresAt: null,
+      resellerId: null,
+      resellerName: '',
+      lastSeen: new Date().toISOString()
+    };
+
+    devices.push(device);
+    db.saveDevices(devices);
+  } else {
+    device.lastSeen = new Date().toISOString();
+    db.saveDevices(devices);
+  }
+
+  const layouts = db.getLayouts();
+  const apps = db.getApps();
+
+  const layout = layouts.find(l => l.id === device.layout) || null;
+  const layoutApps = layout
+    ? layout.apps.map(id => apps.find(a => a.id === id)).filter(Boolean)
+    : [];
+
+  res.json({
+    ok: true,
+    device: {
+      ...device,
+      layoutObject: layout
+        ? {
+            ...layout,
+            appObjects: layoutApps
+          }
+        : null
+    }
+  });
+});
+
+app.get('/launcher/download', (req, res) => {
+  const settings = db.getSettings();
+  res.json({
+    ok: true,
+    url: settings.launcherDownloadUrl
+  });
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Servidor rodando em http://0.0.0.0:${PORT}`);
+});

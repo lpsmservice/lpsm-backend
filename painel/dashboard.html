@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LPSM BOX - Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #031a3a;
+      color: #fff;
+    }
+
+    .topbar {
+      height: 88px;
+      background: #041c42;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .menu-btn {
+      position: absolute;
+      left: 22px;
+      font-size: 34px;
+      cursor: pointer;
+      color: #fff;
+      user-select: none;
+    }
+
+    .bell {
+      position: absolute;
+      right: 22px;
+      font-size: 34px;
+    }
+
+    .logo-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .page {
+      padding: 18px;
+    }
+
+    .welcome-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .welcome-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 24px;
+    }
+
+    .credit-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 26px;
+    }
+
+    .credit-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .credit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .credit-card {
+      background: #050505;
+      border-radius: 999px;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      gap: 12px;
+    }
+
+    .credit-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .credit-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #2f7cff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .credit-value {
+      min-width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: #22c55e;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 20px;
+      padding: 0 10px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 18px 0 14px;
+      text-transform: uppercase;
+    }
+
+    .menu-list {
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 74px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 12px;
+      font-size: 18px;
+      transition: background 0.2s ease;
+    }
+
+    .menu-item:hover {
+      background: rgba(255,255,255,0.04);
+    }
+
+    .badge {
+      min-width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #2f7cff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+      padding: 0 10px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 58px;
+      background: #041c42;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      font-size: 28px;
+    }
+
+    .page-space {
+      height: 76px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="menu-btn">☰</div>
+    <div class="logo-title">LPSM BOX</div>
+    <div class="bell">🔔</div>
+  </div>
+
+  <div class="page">
+    <div class="welcome-title">Bem-vindo(a)</div>
+    <div class="welcome-sub">
+      Gerencie seus clientes, aplicativos instalados, banners, temas, planos e muito mais.
+    </div>
+
+    <div class="credit-box">
+      <div class="credit-title">SEUS CRÉDITOS</div>
+
+      <div class="credit-grid">
+        <div class="credit-card">
+          <div class="credit-left">
+            <div class="credit-icon">›</div>
+            <span>ANUAL:</span>
+          </div>
+          <div class="credit-value" id="annualCredits">0</div>
+        </div>
+
+        <div class="credit-card">
+          <div class="credit-left">
+            <div class="credit-icon">📅</div>
+            <span>Validade dos créditos:</span>
+          </div>
+          <div class="credit-value" id="creditsExpiry">--/--/----</div>
+        </div>
+
+        <div class="credit-card">
+          <div class="credit-left">
+            <div class="credit-icon">🧾</div>
+            <span>Layouts:</span>
+          </div>
+          <div class="credit-value" id="totalLayouts">0</div>
+        </div>
+
+        <div class="credit-card">
+          <div class="credit-left">
+            <div class="credit-icon">📦</div>
+            <span>Apps:</span>
+          </div>
+          <div class="credit-value" id="totalApps">0</div>
+        </div>
+
+        <div class="credit-card">
+          <div class="credit-left">
+            <div class="credit-icon">🖥️</div>
+            <span>Dispositivos ativos:</span>
+          </div>
+          <div class="credit-value" id="activeDevices">0</div>
+        </div>
+
+        <div class="credit-card">
+          <div class="credit-left">
+            <div class="credit-icon">⏳</div>
+            <span>Pendentes:</span>
+          </div>
+          <div class="credit-value" id="pendingDevices">0</div>
+        </div>
+
+        <div class="credit-card">
+          <div class="credit-left">
+            <div class="credit-icon">›</div>
+            <span>2 ANOS:</span>
+          </div>
+          <div class="credit-value" id="twoYearCredits">0</div>
+        </div>
+
+        <div class="credit-card">
+          <div class="credit-left">
+            <div class="credit-icon">👥</div>
+            <span>Revendas:</span>
+          </div>
+          <div class="credit-value" id="totalResellers">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">OPÇÕES</div>
+
+    <div class="menu-list">
+      <div class="menu-item" data-go="glauncher.html">
+        <span>Gerenciar launcher</span>
+        <span class="badge" id="glauncherCount">0</span>
+      </div>
+
+      <div class="menu-item" data-go="devices.html">
+        <span>Gerenciar dispositivos/clientes</span>
+        <span class="badge" id="devicesCount">0</span>
+      </div>
+
+      <div class="menu-item" data-go="resellers.html">
+        <span>Gerenciar revendas</span>
+        <span class="badge" id="resellersCount">0</span>
+      </div>
+
+      <div class="menu-item" data-go="apps.html">
+        <span>Meus aplicativos</span>
+        <span class="badge" id="appsCount">0</span>
+      </div>
+
+      <div class="menu-item" data-go="configuracoes.html">
+        <span>Configurações</span>
+        <span class="badge">></span>
+      </div>
+    </div>
+
+    <div class="page-space"></div>
+  </div>
+
+  <div class="bottom-nav">
+    <span>⌂</span>
+    <span>🗨</span>
+    <span>▣</span>
+    <span>⇧</span>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    bindMenuLinks();
+    loadDashboardStats();
+  </script>
+</body>
+</html>

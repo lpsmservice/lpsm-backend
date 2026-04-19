@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Revendas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Arial,sans-serif; background:#071a33; color:#fff; }
+    .topbar {
+      height:70px; background:#081b34; display:flex; align-items:center; justify-content:center;
+      border-bottom:1px solid rgba(255,255,255,.08); position:sticky; top:0; z-index:20;
+    }
+    .menu-btn { position:absolute; left:18px; font-size:34px; }
+    .bell { position:absolute; right:18px; font-size:30px; }
+    .container { padding:18px; padding-bottom:90px; }
+    .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-bottom:10px; }
+    input {
+      width:100%; padding:14px; border:none; border-radius:8px; font-size:16px;
+    }
+    .save-btn {
+      width:100%; padding:16px; border:none; border-radius:8px; margin-bottom:18px;
+      background:#2f76f3; color:#fff; font-size:18px; cursor:pointer;
+    }
+    .reseller-row {
+      display:flex; align-items:center; justify-content:space-between;
+      border-bottom:1px solid rgba(255,255,255,.06); padding:16px 8px; cursor:pointer;
+    }
+    .expand {
+      background: rgba(255,255,255,.02);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:12px;
+      padding:16px;
+      margin:10px 0 16px;
+      display:none;
+    }
+    .mini-btn {
+      width:100%; padding:14px; border:none; border-radius:8px; margin-bottom:10px;
+      background:#102846; color:#fff; font-size:17px; cursor:pointer; text-align:left;
+    }
+    .bottom-nav {
+      position:fixed; left:0; right:0; bottom:0; height:64px; background:#0a1d39;
+      display:flex; justify-content:space-around; align-items:center; border-top:1px solid rgba(255,255,255,.08);
+    }
+    .bottom-nav a { text-decoration:none; color:#fff; font-size:30px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="menu-btn">☰</div>
+    <div style="font-size:22px;font-weight:bold;">LPSM BOX</div>
+    <div class="bell">🔔</div>
+  </div>
+
+  <div class="container">
+    <div style="font-size:18px;font-weight:bold;margin-bottom:14px;">ADICIONAR REVENDA</div>
+    <div class="form-grid">
+      <input type="text" id="name" placeholder="Nome">
+      <input type="text" id="login" placeholder="Login ou email">
+      <input type="text" id="password" placeholder="Senha">
+    </div>
+    <button class="save-btn" onclick="saveReseller()">SALVAR REVENDA</button>
+
+    <div style="font-size:18px;font-weight:bold;margin-bottom:10px;">LISTA DE REVENDAS</div>
+    <div id="resellersList"></div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html">⌂</a>
+    <a href="#">🗨</a>
+    <a href="devices.html">▣</a>
+    <a href="glauncher.html">◫</a>
+    <a href="#">↑</a>
+  </nav>
+
+  <script>
+    const API = window.location.origin;
+    let ALL_RESELLERS = [];
+
+    async function loadResellers() {
+      try {
+        const res = await fetch(API + '/resellers');
+        const data = await res.json();
+        ALL_RESELLERS = data.resellers || [];
+
+        const list = document.getElementById('resellersList');
+        list.innerHTML = '';
+
+        if (!ALL_RESELLERS.length) {
+          list.innerHTML = '<div style="color:#b7c7dd;">Nenhuma revenda cadastrada.</div>';
+          return;
+        }
+
+        ALL_RESELLERS.forEach(r => {
+          const wrap = document.createElement('div');
+
+          const row = document.createElement('div');
+          row.className = 'reseller-row';
+          row.innerHTML = `<div>${r.name}</div><div>⌄</div>`;
+          wrap.appendChild(row);
+
+          const panel = document.createElement('div');
+          panel.className = 'expand';
+          panel.innerHTML = `
+            <div style="margin-bottom:10px;">Login: ${r.login || '-'}</div>
+            <div style="margin-bottom:10px;">Créditos anual: ${r.annualCredits || 0}</div>
+            <div style="margin-bottom:14px;">Créditos 2 anos: ${r.twoYearsCredits || 0}</div>
+            <button class="mini-btn" onclick="addCredits('${r.id}')">Adicionar créditos</button>
+            <button class="mini-btn" onclick="deleteReseller('${r.id}')">Excluir revenda</button>
+          `;
+          row.onclick = () => {
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+          };
+
+          wrap.appendChild(panel);
+          list.appendChild(wrap);
+        });
+      } catch (e) {
+        console.error(e);
+        alert('Erro ao carregar revendas');
+      }
+    }
+
+    async function saveReseller() {
+      const name = document.getElementById('name').value.trim();
+      const login = document.getElementById('login').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!name || !login || !password) {
+        alert('Preencha nome, login e senha');
+        return;
+      }
+
+      try {
+        const res = await fetch(API + '/resellers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, login, password, annualCredits: 0, twoYearsCredits: 0 })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.message || 'Erro ao salvar revenda');
+        alert('Revenda salva');
+        document.getElementById('name').value = '';
+        document.getElementById('login').value = '';
+        document.getElementById('password').value = '';
+        loadResellers();
+      } catch (e) {
+        alert('Erro: ' + e.message);
+      }
+    }
+
+    async function addCredits(id) {
+      const annual = prompt('Adicionar créditos anuais:', '1');
+      if (annual === null) return;
+      const twoYears = prompt('Adicionar créditos de 2 anos:', '0');
+      if (twoYears === null) return;
+
+      try {
+        const reseller = ALL_RESELLERS.find(r => r.id === id);
+        if (!reseller) return;
+
+        const res = await fetch(API + '/resellers/' + id, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            annualCredits: Number(reseller.annualCredits || 0) + Number(annual || 0),
+            twoYearsCredits: Number(reseller.twoYearsCredits || 0) + Number(twoYears || 0)
+          })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.message || 'Erro ao adicionar créditos');
+        alert('Créditos atualizados');
+        loadResellers();
+      } catch (e) {
+        alert('Erro: ' + e.message);
+      }
+    }
+
+    async function deleteReseller(id) {
+      if (!confirm('Excluir esta revenda?')) return;
+      try {
+        const res = await fetch(API + '/resellers/' + id, { method: 'DELETE' });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.message || 'Erro ao excluir revenda');
+        alert('Revenda excluída');
+        loadResellers();
+      } catch (e) {
+        alert('Erro: ' + e.message);
+      }
+    }
+
+    loadResellers();
+  </script>
+</body>
+</html>

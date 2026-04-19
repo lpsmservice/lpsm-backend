@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LPSM BOX - Planos de Fundo</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <aside class="drawer" id="drawer">
+    <div class="drawer-header">
+      <div class="drawer-title">LPSM BOX</div>
+      <button class="icon-btn" id="closeDrawer">✕</button>
+    </div>
+
+    <div class="drawer-menu">
+      <div class="menu-item" data-go="dashboard.html">
+        <span>Dashboard</span>
+      </div>
+      <div class="menu-item" data-go="glauncher.html">
+        <span>Gerenciar launcher</span>
+      </div>
+      <div class="menu-item" data-go="devices.html">
+        <span>Clientes / dispositivos</span>
+      </div>
+      <div class="menu-item" data-go="resellers.html">
+        <span>Revendas</span>
+      </div>
+      <div class="menu-item" data-go="settings.html">
+        <span>Configurações</span>
+      </div>
+    </div>
+  </aside>
+
+  <header class="topbar">
+    <button class="icon-btn" id="openDrawer">☰</button>
+    <div class="topbar-title">LPSM BOX</div>
+    <button class="icon-btn">🔔</button>
+  </header>
+
+  <main class="page">
+    <section class="hero-card">
+      <h1>Meus planos de fundo</h1>
+      <p>Aqui você poderá visualizar os fundos cadastrados no painel.</p>
+    </section>
+
+    <section class="section-block">
+      <h2>OPÇÕES</h2>
+
+      <div class="menu-list">
+        <div class="menu-item" data-go="glauncher.html">
+          <span>Voltar para gerenciar launcher</span>
+          <span class="badge">↩</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <h2>PLANOS DE FUNDO CADASTRADOS</h2>
+      <div id="backgroundsList" class="menu-list">
+        <div class="empty-box">Carregando planos de fundo...</div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <div class="bottom-item" data-go="dashboard.html">⌂</div>
+    <div class="bottom-item" data-go="glauncher.html">▦</div>
+    <div class="bottom-item" data-go="devices.html">▣</div>
+    <div class="bottom-item" data-go="settings.html">↑</div>
+  </nav>
+
+  <script>
+    function go(page) {
+      window.location.href = page;
+    }
+
+    function bindGoElements() {
+      document.querySelectorAll('[data-go]').forEach(el => {
+        el.onclick = () => go(el.getAttribute('data-go'));
+      });
+    }
+
+    const drawer = document.getElementById('drawer');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const openDrawer = document.getElementById('openDrawer');
+    const closeDrawer = document.getElementById('closeDrawer');
+
+    function openMenu() {
+      drawer.classList.add('open');
+      drawerOverlay.classList.add('show');
+    }
+
+    function closeMenu() {
+      drawer.classList.remove('open');
+      drawerOverlay.classList.remove('show');
+    }
+
+    openDrawer.onclick = openMenu;
+    closeDrawer.onclick = closeMenu;
+    drawerOverlay.onclick = closeMenu;
+
+    async function loadBackgrounds() {
+      const list = document.getElementById('backgroundsList');
+
+      try {
+        const resp = await fetch('/layouts');
+        const layouts = await resp.json();
+
+        if (!Array.isArray(layouts) || layouts.length === 0) {
+          list.innerHTML = '<div class="empty-box">Nenhum layout cadastrado ainda.</div>';
+          return;
+        }
+
+        const withBackground = layouts.filter(item => item.background && String(item.background).trim() !== '');
+
+        if (withBackground.length === 0) {
+          list.innerHTML = '<div class="empty-box">Nenhum plano de fundo encontrado nos layouts.</div>';
+          return;
+        }
+
+        list.innerHTML = withBackground.map(item => `
+          <div class="list-card">
+            <div class="list-card-header">
+              <div>
+                <div class="list-title">${item.name || 'Sem nome'}</div>
+                <div class="list-meta">
+                  Fundo: ${item.background || '-'}<br>
+                  Criado em: ${item.createdAt || '-'}
+                </div>
+              </div>
+              <div class="list-actions">
+                <button class="action-btn" onclick="go('layouts.html')">Abrir layouts</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        list.innerHTML = '<div class="empty-box">Erro ao carregar planos de fundo.</div>';
+      }
+    }
+
+    bindGoElements();
+    loadBackgrounds();
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "mo367wmuffdzi5",
+    "name": "test1",
+    "background": "http://localhost:3000/downloads/uploads/1776446231265-506393749.png",
+    "banner": "http://localhost:3000/downloads/uploads/1776446231275-555222954.png",
+    "apps": [
+      "mo365bl8q5czv0"
+    ],
+    "createdAt": "2026-04-17T17:17:11.286Z"
+  },
+  {
+    "id": "mo3mzg8oicetvo",
+    "name": "teste02",
+    "background": "http://localhost:3000/downloads/uploads/1776474390241-930243276.png",
+    "banner": "http://localhost:3000/downloads/uploads/1776474390261-763768725.jpg",
+    "topApps": [],
+    "bottomApps": [],
+    "showAllAppsButton": true,
+    "createdAt": "2026-04-18T01:06:30.264Z"
+  }
+]

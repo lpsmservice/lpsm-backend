@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Configurações</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      margin: 0;
+      background: #071a33;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    .topbar {
+      background: #2f76f3;
+      color: #fff;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .back-btn {
+      position: absolute;
+      left: 16px;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    .page {
+      padding: 16px;
+      padding-bottom: 90px;
+    }
+
+    .upload-box {
+      border: 1px solid rgba(255,255,255,0.08);
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8aa0c0;
+      background: rgba(255,255,255,0.02);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .upload-box img {
+      width: 100%;
+      max-height: 260px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .section-title {
+      font-size: 30px;
+      font-weight: bold;
+      margin: 10px 0 24px;
+    }
+
+    .field {
+      margin-bottom: 22px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      box-sizing: border-box;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: transparent;
+      color: #dbe8ff;
+      font-size: 16px;
+      padding: 10px 0;
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .hint {
+      color: #7c90ac;
+      font-size: 13px;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .save-btn {
+      width: 100%;
+      border: none;
+      background: #2f76f3;
+      color: #fff;
+      font-size: 18px;
+      padding: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 25px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 58px;
+      background: #0a1d39;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .bottom-nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 30px;
+    }
+
+    .ok {
+      color: #2ad15a;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="back-btn" onclick="history.back()">‹</div>
+    <div style="font-size: 20px;">Configurações</div>
+  </div>
+
+  <div class="page">
+    <div class="field">
+      <label>Foto de perfil da empresa</label>
+      <label class="upload-box" for="companyPhotoFile" id="companyPhotoPreview">
+        Clique para escolher
+      </label>
+      <input id="companyPhotoFile" type="file" accept="image/*" style="display:none;">
+    </div>
+
+    <div class="section-title" style="font-size:24px;">Informações</div>
+
+    <div class="field">
+      <label>Nome da sua empresa (fantasia)</label>
+      <input id="fantasyName" type="text">
+      <div class="hint">Informe seu nome ou nome fantasia da sua empresa.</div>
+    </div>
+
+    <div class="field">
+      <label>Tipo de empresa</label>
+      <select id="companyType">
+        <option value="Pessoa física">Pessoa física</option>
+        <option value="Pessoa jurídica">Pessoa jurídica</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Nome completo ou razão social</label>
+      <input id="companyName" type="text">
+      <div class="hint">Informe seu nome completo ou razão social da sua empresa.</div>
+    </div>
+
+    <div class="field">
+      <label>CPF ou CNPJ</label>
+      <input id="cpfCnpj" type="text">
+    </div>
+
+    <div class="field">
+      <label>Email</label>
+      <input id="email" type="email">
+      <div class="hint">Este email é utilizado para notificações do sistema.</div>
+      <div class="ok" id="emailOk"></div>
+    </div>
+
+    <div class="switch-row">
+      <div>
+        <div style="font-size:16px;">Autenticação em 2 Fatores</div>
+        <div class="hint">Ao ativar esta opção, sempre que fizer login em um novo dispositivo, você receberá um código de verificação por email.</div>
+      </div>
+      <input id="twoFactorAuth" type="checkbox" style="width:28px;height:28px;">
+    </div>
+
+    <div class="field">
+      <label>CEP</label>
+      <input id="cep" type="text">
+    </div>
+
+    <div class="field">
+      <label>Estado</label>
+      <input id="state" type="text">
+    </div>
+
+    <div class="field">
+      <label>Cidade</label>
+      <input id="city" type="text">
+    </div>
+
+    <div class="field">
+      <label>Bairro</label>
+      <input id="district" type="text">
+    </div>
+
+    <div class="field">
+      <label>Logradouro</label>
+      <input id="street" type="text">
+    </div>
+
+    <div class="field">
+      <label>Número</label>
+      <input id="number" type="text">
+    </div>
+
+    <div class="field">
+      <label>Nova senha</label>
+      <input id="newPassword" type="text">
+      <div class="hint">Informe uma nova senha com no mínimo 5 caracteres.</div>
+    </div>
+
+    <div class="field">
+      <label>Senha master</label>
+      <input id="masterPassword" type="text">
+    </div>
+
+    <div class="field">
+      <label>WhatsApp</label>
+      <input id="whatsapp" type="text">
+      <div class="hint">Informe um telefone com DDD+NÚMERO.</div>
+    </div>
+
+    <div class="field">
+      <label>Horário de atendimento</label>
+      <textarea id="businessHours"></textarea>
+      <div class="hint">Esses dados aparecem no assistente da launcher.</div>
+    </div>
+
+    <div class="field">
+      <label>API do WhatsApp</label>
+      <input id="paymentApiWhatsapp" type="text">
+    </div>
+
+    <div class="field">
+      <label>API Externa</label>
+      <input id="externalApiUrl" type="text">
+    </div>
+
+    <div class="field">
+      <label>Link para baixar a launcher</label>
+      <input id="launcherDownloadUrl" type="text">
+    </div>
+
+    <button class="save-btn" onclick="saveSettings()">ALTERAR DADOS</button>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html">⌂</a>
+    <a href="#">🗨</a>
+    <a href="devices.html">▣</a>
+    <a href="layouts.html">◫</a>
+    <a href="#">↑</a>
+  </nav>
+
+  <script>
+    const API = window.location.origin;
+    let uploadedCompanyPhoto = "";
+
+    async function uploadImage(file) {
+      const form = new FormData();
+      form.append("file", file);
+
+      const res = await fetch(API + "/upload/image", {
+        method: "POST",
+        body: form
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        throw new Error(data.message || "Erro ao enviar imagem");
+      }
+
+      return data.url;
+    }
+
+    function showPhoto(url) {
+      const box = document.getElementById("companyPhotoPreview");
+      if (url) {
+        box.innerHTML = `<img src="${url}" alt="Foto da empresa">`;
+      } else {
+        box.innerHTML = `Clique para escolher`;
+      }
+    }
+
+    async function loadSettings() {
+      const res = await fetch(API + "/settings");
+      const data = await res.json();
+
+      if (!data.ok) return;
+
+      const s = data.settings || {};
+
+      uploadedCompanyPhoto = s.companyPhoto || "";
+
+      document.getElementById("fantasyName").value = s.fantasyName || "";
+      document.getElementById("companyType").value = s.companyType || "Pessoa física";
+      document.getElementById("companyName").value = s.companyName || "";
+      document.getElementById("cpfCnpj").value = s.cpfCnpj || "";
+      document.getElementById("email").value = s.email || "";
+      document.getElementById("twoFactorAuth").checked = !!s.twoFactorAuth;
+      document.getElementById("cep").value = s.cep || "";
+      document.getElementById("state").value = s.state || "";
+      document.getElementById("city").value = s.city || "";
+      document.getElementById("district").value = s.district || "";
+      document.getElementById("street").value = s.street || "";
+      document.getElementById("number").value = s.number || "";
+      document.getElementById("newPassword").value = s.newPassword || "";
+      document.getElementById("masterPassword").value = s.masterPassword || "951753";
+      document.getElementById("whatsapp").value = s.whatsapp || "";
+      document.getElementById("businessHours").value = (s.businessHours || "").replace(/\\n/g, "\n");
+      document.getElementById("paymentApiWhatsapp").value = s.paymentApiWhatsapp || "";
+      document.getElementById("externalApiUrl").value = s.externalApiUrl || "";
+      document.getElementById("launcherDownloadUrl").value = s.launcherDownloadUrl || "";
+
+      document.getElementById("emailOk").textContent = s.email ? `Email cadastrado: ${s.email}` : "";
+
+      showPhoto(uploadedCompanyPhoto);
+    }
+
+    async function saveSettings() {
+      try {
+        const photoFile = document.getElementById("companyPhotoFile").files[0];
+
+        if (photoFile) {
+          uploadedCompanyPhoto = await uploadImage(photoFile);
+        }
+
+        const payload = {
+          companyPhoto: uploadedCompanyPhoto,
+          fantasyName: document.getElementById("fantasyName").value.trim(),
+          companyType: document.getElementById("companyType").value,
+          companyName: document.getElementById("companyName").value.trim(),
+          cpfCnpj: document.getElementById("cpfCnpj").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          twoFactorAuth: document.getElementById("twoFactorAuth").checked,
+          cep: document.getElementById("cep").value.trim(),
+          state: document.getElementById("state").value.trim(),
+          city: document.getElementById("city").value.trim(),
+          district: document.getElementById("district").value.trim(),
+          street: document.getElementById("street").value.trim(),
+          number: document.getElementById("number").value.trim(),
+          newPassword: document.getElementById("newPassword").value.trim(),
+          masterPassword: document.getElementById("masterPassword").value.trim(),
+          whatsapp: document.getElementById("whatsapp").value.trim(),
+          businessHours: document.getElementById("businessHours").value,
+          paymentApiWhatsapp: document.getElementById("paymentApiWhatsapp").value.trim(),
+          externalApiUrl: document.getElementById("externalApiUrl").value.trim(),
+          launcherDownloadUrl: document.getElementById("launcherDownloadUrl").value.trim()
+        };
+
+        const res = await fetch(API + "/settings", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.ok) {
+          throw new Error(data.message || "Erro ao salvar");
+        }
+
+        alert("Configurações salvas com sucesso");
+        loadSettings();
+      } catch (err) {
+        alert("Erro: " + err.message);
+      }
+    }
+
+    document.getElementById("companyPhotoFile").addEventListener("change", async function () {
+      const file = this.files[0];
+      if (!file) return;
+      showPhoto(URL.createObjectURL(file));
+    });
+
+    loadSettings();
+  </script>
+</body>
+</html>
