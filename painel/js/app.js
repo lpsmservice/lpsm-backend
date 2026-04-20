@@ -47,7 +47,9 @@ async function apiPut(path, body = {}) {
 }
 
 async function apiDelete(path) {
-  const res = await fetch(apiUrl(path), { method: 'DELETE' });
+  const res = await fetch(apiUrl(path), {
+    method: 'DELETE'
+  });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Erro DELETE');
   return data;
@@ -90,24 +92,32 @@ function isInactive3Days(device) {
   return Date.now() - new Date(device.lastSeen).getTime() >= 3 * 24 * 60 * 60 * 1000;
 }
 
-function getStatusDot(device) {
-  if (isExpired(device)) {
-    return '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ff4040;margin-right:8px"></span>';
-  }
-  if (device.active && isInactive3Days(device)) {
-    return '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ff4040;margin-right:8px"></span>';
-  }
-  if (device.active) {
-    return '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#26d94c;margin-right:8px"></span>';
-  }
-  return '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#999;margin-right:8px"></span>';
-}
+function bindDrawer() {
+  const menuBtn = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('drawerOverlay');
+  const close = document.getElementById('drawerClose');
 
-function getStatusText(device) {
-  if (isExpired(device)) return 'VENCIDO';
-  if (device.active && isInactive3Days(device)) return 'SEM ENTRAR 3+ DIAS';
-  if (device.active) return 'ONLINE';
-  return 'PENDENTE';
+  if (menuBtn) {
+    menuBtn.onclick = () => {
+      drawer.classList.add('open');
+      overlay.classList.add('show');
+    };
+  }
+
+  if (close) {
+    close.onclick = () => {
+      drawer.classList.remove('open');
+      overlay.classList.remove('show');
+    };
+  }
+
+  if (overlay) {
+    overlay.onclick = () => {
+      drawer.classList.remove('open');
+      overlay.classList.remove('show');
+    };
+  }
 }
 
 document.addEventListener('DOMContentLoaded', authGuard);

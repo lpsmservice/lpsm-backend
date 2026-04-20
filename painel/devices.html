@@ -4,190 +4,261 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LPSM BOX - Dispositivos</title>
-  <style>
-    body{margin:0;background:#03152f;color:#fff;font-family:Arial,Helvetica,sans-serif}
-    .topbar{height:88px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#08244b}
-    .page{padding:18px;padding-bottom:100px}
-    .hero{font-size:22px;font-weight:800;margin-bottom:14px}
-    .toolbar{display:grid;grid-template-columns:1fr 180px 180px;gap:12px;margin-bottom:18px}
-    input,select,button{height:52px;border:none;border-radius:12px;padding:0 14px;font-size:16px;box-sizing:border-box}
-    input,select{background:#10274a;color:#fff}
-    button{background:#2f76f3;color:#fff;font-weight:700;cursor:pointer}
-    .list{display:flex;flex-direction:column;gap:14px}
-    .card{background:#071b39;border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:18px}
-    .head{display:flex;justify-content:space-between;align-items:center;gap:12px}
-    .name{font-size:22px;font-weight:800}
-    .meta{font-size:15px;line-height:1.8;color:rgba(255,255,255,.82);margin-top:10px}
-    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-    .small-danger{background:#922d2d}
-    .small-dark{background:#333}
-    .legend{margin:16px 0;color:#cdd8ea}
-    .status-line{display:flex;align-items:center;gap:8px}
-    .x-expired{display:inline-flex;width:18px;height:18px;border-radius:50%;background:#ff4040;color:#fff;align-items:center;justify-content:center;font-size:12px;font-weight:700}
-    @media (max-width:900px){.toolbar{grid-template-columns:1fr}.actions{grid-template-columns:1fr}}
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="topbar">
-    <b>LPSM BOX</b>
-    <button onclick="window.location.href='dashboard.html'">Voltar</button>
-  </div>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
 
-  <div class="page">
-    <div class="hero">Gerenciar dispositivos/clientes</div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head">
+      <div class="drawer-avatar">LP</div>
+      <div class="drawer-user">
+        <strong id="drawerUserName">LPSM BOX</strong>
+        <span id="drawerUserEmail">admin@lpsm.com</span>
+      </div>
+      <div class="drawer-close" id="drawerClose">×</div>
+    </div>
 
-    <div class="toolbar">
+    <div class="drawer-item" onclick="window.location.href='dashboard.html'">
+      <div class="drawer-item-left"><span>📋</span><span>Dashboard</span></div><span>›</span>
+    </div>
+    <div class="drawer-item" onclick="window.location.href='devices.html'">
+      <div class="drawer-item-left"><span>🖥️</span><span>Gerenciar clientes</span></div><span>›</span>
+    </div>
+    <div class="drawer-item" onclick="window.location.href='apps.html'">
+      <div class="drawer-item-left"><span>📦</span><span>Meus aplicativos</span></div><span>›</span>
+    </div>
+
+    <div class="drawer-section-title">Configurações</div>
+
+    <div class="drawer-item" onclick="logout()">
+      <div class="drawer-item-left"><span>↩</span><span>Sair</span></div><span>›</span>
+    </div>
+
+    <div class="drawer-bottom">
+      <div class="db-item">👤</div>
+      <div class="db-item">🧱</div>
+      <div class="db-item">⚙</div>
+      <div class="db-item" onclick="logout()">⎋</div>
+    </div>
+  </aside>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="icon-btn" id="menuBtn">☰</button>
+    </div>
+    <div class="logo-title">LAUNCHER BOX</div>
+    <div class="topbar-right">
+      <button class="icon-btn">🔔</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="hero-title">Gerenciar dispositivos/clientes</div>
+    <div class="hero-sub">
+      Aqui você poderá ver os dispositivos que estão usando a launcher e administrar seus clientes.
+    </div>
+
+    <section class="credits-card">
+      <div class="credits-title">SEUS CRÉDITOS</div>
+      <div class="credits-grid">
+        <div class="credit-pill"><span class="pill-label">ANUAL:</span><span class="pill-value" id="annualCount">0</span></div>
+        <div class="credit-pill"><span class="pill-label">2 ANOS:</span><span class="pill-value" id="twoYearsCount">0</span></div>
+        <div class="credit-pill"><span class="pill-label">Layouts:</span><span class="pill-value" id="layoutsCount">0</span></div>
+        <div class="credit-pill"><span class="pill-label">Ativos:</span><span class="pill-value" id="activeCount">0</span></div>
+      </div>
+    </section>
+
+    <button class="blue-big-btn" onclick="openAddDeviceModal()">ADD DISPOSITIVO</button>
+    <button class="blue-big-btn">Renovar em Massa</button>
+
+    <div class="toolbar-row">
+      <button class="gray-btn" onclick="loadDevices()">EXIBIR</button>
       <input id="search" placeholder="Buscar por nome ou código">
-      <button onclick="addManualDevice()">ADD DISPOSITIVO</button>
-      <button onclick="loadDevices()">ATUALIZAR</button>
+      <button class="gray-btn" onclick="renderDevices()">BUSCAR</button>
     </div>
 
-    <div class="legend">
-      <div><span class="x-expired">×</span> vencido</div>
-      <div><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ff4040"></span> cliente sem entrar há 3 dias ou mais</div>
-      <div><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#26d94c"></span> online</div>
+    <div class="section-box">
+      <div class="section-line">
+        <span>❔ Legenda</span>
+        <span class="row-arrow">⌄</span>
+      </div>
+      <div class="legend">
+        <div><span class="status-expired">×</span> vencido</div>
+        <div><span class="status-dot status-red"></span> cliente não entra há 3 dias ou mais</div>
+        <div><span class="status-dot status-green"></span> online</div>
+      </div>
     </div>
 
-    <div id="list" class="list"></div>
+    <div class="devices-title">DISPOSITIVOS:</div>
+    <div id="deviceList" class="device-list"></div>
+  </main>
+
+  <div class="modal-bg" id="deviceModal">
+    <div class="modal-box">
+      <div class="modal-title">Cadastrar / Editar dispositivo</div>
+      <div class="modal-grid">
+        <input id="modalName" placeholder="Nome do cliente">
+        <input id="modalCode" placeholder="Código do aparelho">
+        <select id="modalLayout"></select>
+        <select id="modalPlan">
+          <option value="annual">Plano anual</option>
+          <option value="two_years">Plano 2 anos</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-save" onclick="saveModalDevice()">Salvar</button>
+        <button class="modal-cancel" onclick="closeDeviceModal()">Cancelar</button>
+      </div>
+    </div>
   </div>
 
   <script src="js/app.js"></script>
   <script>
     let DEVICES = [];
     let LAYOUTS = [];
+    let EDITING_ID = null;
 
-    function render() {
+    function fillDrawerUser() {
+      try {
+        const user = JSON.parse(localStorage.getItem('painel_user') || '{}');
+        document.getElementById('drawerUserName').textContent = user.companyName || 'LPSM BOX';
+        document.getElementById('drawerUserEmail').textContent = user.email || 'admin@lpsm.com';
+      } catch {}
+    }
+
+    function renderStats() {
+      const annual = DEVICES.reduce((acc, d) => acc + Number(d.creditsAnnual || 0), 0);
+      const twoYears = DEVICES.reduce((acc, d) => acc + Number(d.creditsTwoYears || 0), 0);
+      const active = DEVICES.filter(d => d.active).length;
+
+      document.getElementById('annualCount').textContent = annual;
+      document.getElementById('twoYearsCount').textContent = twoYears;
+      document.getElementById('activeCount').textContent = active;
+      document.getElementById('layoutsCount').textContent = LAYOUTS.length;
+    }
+
+    function layoutOptions(selected = '') {
+      return `
+        <option value="">Sem layout</option>
+        ${LAYOUTS.map(l => `<option value="${l.id}" ${selected === l.id ? 'selected' : ''}>${l.name}</option>`).join('')}
+      `;
+    }
+
+    function deviceIcon(device) {
+      if (isExpired(device)) {
+        return `<span class="status-expired">×</span>`;
+      }
+      if (device.active && isInactive3Days(device)) {
+        return `<span class="status-dot status-red"></span>`;
+      }
+      if (device.active) {
+        return `<span class="status-dot status-green"></span>`;
+      }
+      return `<span class="status-dot status-gray"></span>`;
+    }
+
+    function renderDevices() {
+      const box = document.getElementById('deviceList');
       const q = document.getElementById('search').value.trim().toLowerCase();
-      const box = document.getElementById('list');
 
       const items = DEVICES.filter(d => {
         return !q || (d.name || '').toLowerCase().includes(q) || (d.code || '').toLowerCase().includes(q);
       });
 
       if (!items.length) {
-        box.innerHTML = '<div class="card">Nenhum dispositivo encontrado.</div>';
+        box.innerHTML = `<div class="device-row"><div class="device-name">Nenhum dispositivo encontrado.</div></div>`;
         return;
       }
 
-      box.innerHTML = items.map(d => {
-        const expired = isExpired(d);
-        const statusHtml = expired
-          ? '<span class="x-expired">×</span>'
-          : getStatusDot(d);
-
-        return `
-          <div class="card">
-            <div class="head">
-              <div class="name">${statusHtml} ${safe(d.name, 'Sem nome')}</div>
-              <div>${getStatusText(d)}</div>
-            </div>
-
-            <div class="meta">
-              Código: ${safe(d.code)}<br>
-              Expira: ${safe(formatDate(d.expiresAt))}<br>
-              Último acesso: ${safe(formatDate(d.lastSeen))}<br>
-              Layout atual: ${safe(d.layoutName || '-')}
-            </div>
-
-            <div style="margin-top:14px">
-              <input id="name_${d.id}" value="${(d.name || '').replace(/"/g, '&quot;')}" placeholder="Nome do cliente" style="width:100%;margin-bottom:10px">
-              <select id="layout_${d.id}" style="width:100%">
-                <option value="">Sem layout</option>
-                ${LAYOUTS.map(l => `<option value="${l.id}" ${d.layout === l.id ? 'selected' : ''}>${l.name}</option>`).join('')}
-              </select>
-            </div>
-
-            <div class="actions">
-              <button onclick="saveDevice('${d.id}')">Salvar layout</button>
-              <button onclick="activateDeviceUi('${d.id}')">Ativar</button>
-              <button class="small-dark" onclick="deactivateDeviceUi('${d.id}')">Desativar</button>
-              <button class="small-danger" onclick="deleteDeviceUi('${d.id}')">Excluir</button>
-            </div>
-          </div>
-        `;
-      }).join('');
+      box.innerHTML = items.map(d => `
+        <div class="device-row" onclick="openEditDevice('${d.id}')">
+          ${deviceIcon(d)}
+          <div class="device-name">${safe(d.name, 'Sem nome')}</div>
+          <div class="row-arrow">⌄</div>
+        </div>
+      `).join('');
     }
 
     async function loadDevices() {
       try {
-        [DEVICES, LAYOUTS] = await Promise.all([
+        const [devices, layouts] = await Promise.all([
           apiGet('/devices'),
           apiGet('/layouts')
         ]);
-        render();
+        DEVICES = devices;
+        LAYOUTS = layouts;
+        renderStats();
+        renderDevices();
       } catch (e) {
         alert('Erro ao carregar dispositivos');
         console.error(e);
       }
     }
 
-    async function addManualDevice() {
-      const name = prompt('Nome do cliente:');
-      if (!name) return;
+    function openAddDeviceModal() {
+      EDITING_ID = null;
+      document.getElementById('modalName').value = '';
+      document.getElementById('modalCode').value = '';
+      document.getElementById('modalLayout').innerHTML = layoutOptions('');
+      document.getElementById('modalPlan').value = 'annual';
+      document.getElementById('deviceModal').classList.add('show');
+    }
+
+    function openEditDevice(id) {
+      const d = DEVICES.find(x => x.id === id);
+      if (!d) return;
+
+      EDITING_ID = id;
+      document.getElementById('modalName').value = d.name || '';
+      document.getElementById('modalCode').value = d.code || '';
+      document.getElementById('modalLayout').innerHTML = layoutOptions(d.layout || '');
+      document.getElementById('modalPlan').value = 'annual';
+      document.getElementById('deviceModal').classList.add('show');
+    }
+
+    function closeDeviceModal() {
+      document.getElementById('deviceModal').classList.remove('show');
+    }
+
+    async function saveModalDevice() {
+      const name = document.getElementById('modalName').value.trim();
+      const code = document.getElementById('modalCode').value.trim();
+      const layout = document.getElementById('modalLayout').value || null;
+      const plan = document.getElementById('modalPlan').value;
+
+      if (!name) {
+        alert('Digite o nome do cliente');
+        return;
+      }
 
       try {
-        await apiPost('/devices', { name });
-        alert('Dispositivo criado');
+        if (!EDITING_ID) {
+          await apiPost('/devices', { name, code, layout });
+        } else {
+          await apiPut(`/devices/${EDITING_ID}`, { name, layout });
+          const activateNow = confirm('Deseja ativar esse aparelho agora?');
+          if (activateNow) {
+            await apiPost(`/devices/${EDITING_ID}/activate`, {
+              name,
+              layoutId: layout,
+              type: plan
+            });
+          }
+        }
+
+        closeDeviceModal();
         loadDevices();
       } catch (e) {
-        alert('Erro ao criar dispositivo');
+        alert('Erro ao salvar dispositivo');
         console.error(e);
       }
     }
 
-    async function saveDevice(id) {
-      try {
-        const name = document.getElementById(`name_${id}`).value.trim();
-        const layout = document.getElementById(`layout_${id}`).value || null;
-        await apiPut(`/devices/${id}`, { name, layout });
-        alert('Salvo com sucesso');
-        loadDevices();
-      } catch (e) {
-        alert('Erro ao salvar');
-        console.error(e);
-      }
-    }
+    document.getElementById('search').addEventListener('input', renderDevices);
 
-    async function activateDeviceUi(id) {
-      try {
-        const name = document.getElementById(`name_${id}`).value.trim();
-        const layoutId = document.getElementById(`layout_${id}`).value || null;
-        const type = confirm('OK = anual\nCancelar = 2 anos') ? 'annual' : 'two_years';
-
-        await apiPost(`/devices/${id}/activate`, { name, layoutId, type });
-        alert('Aparelho ativado');
-        loadDevices();
-      } catch (e) {
-        alert('Erro ao ativar');
-        console.error(e);
-      }
-    }
-
-    async function deactivateDeviceUi(id) {
-      if (!confirm('Desativar aparelho?')) return;
-      try {
-        await apiPost(`/devices/${id}/deactivate`, {});
-        alert('Desativado');
-        loadDevices();
-      } catch (e) {
-        alert('Erro ao desativar');
-        console.error(e);
-      }
-    }
-
-    async function deleteDeviceUi(id) {
-      if (!confirm('Excluir cliente/dispositivo?')) return;
-      try {
-        await apiDelete(`/devices/${id}`);
-        alert('Excluído');
-        loadDevices();
-      } catch (e) {
-        alert('Erro ao excluir');
-        console.error(e);
-      }
-    }
-
-    document.getElementById('search').addEventListener('input', render);
+    fillDrawerUser();
+    bindDrawer();
     loadDevices();
   </script>
 </body>

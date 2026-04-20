@@ -4,47 +4,96 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LPSM BOX - Dashboard</title>
-  <style>
-    body{margin:0;font-family:Arial,sans-serif;background:#031a3a;color:#fff}
-    .topbar{height:88px;background:#041c42;display:flex;align-items:center;justify-content:space-between;padding:0 22px}
-    .logo-title{font-size:28px;font-weight:700}
-    .page{padding:18px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-    .card{background:#050505;border-radius:999px;min-height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
-    .card b{font-size:18px}
-    .v{min-width:38px;height:38px;border-radius:999px;background:#22c55e;display:flex;align-items:center;justify-content:center;font-weight:700}
-    .menu{margin-top:28px;display:flex;flex-direction:column;gap:14px}
-    .item{background:#0a2346;border-radius:14px;padding:20px;font-size:18px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between}
-    button{background:#2f76f3;color:#fff;border:none;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer}
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="topbar">
-    <div class="logo-title">LPSM BOX</div>
-    <button onclick="logout()">SAIR</button>
-  </div>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
 
-  <div class="page">
-    <h2>Dashboard</h2>
-
-    <div class="grid">
-      <div class="card"><b>ANUAL</b><span class="v" id="annualCredits">0</span></div>
-      <div class="card"><b>2 ANOS</b><span class="v" id="twoYearCredits">0</span></div>
-      <div class="card"><b>Layouts</b><span class="v" id="totalLayouts">0</span></div>
-      <div class="card"><b>Apps</b><span class="v" id="totalApps">0</span></div>
-      <div class="card"><b>Ativos</b><span class="v" id="activeDevices">0</span></div>
-      <div class="card"><b>Pendentes</b><span class="v" id="pendingDevices">0</span></div>
-      <div class="card"><b>Revendas</b><span class="v" id="totalResellers">0</span></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head">
+      <div class="drawer-avatar">LP</div>
+      <div class="drawer-user">
+        <strong id="drawerUserName">LPSM BOX</strong>
+        <span id="drawerUserEmail">admin@lpsm.com</span>
+      </div>
+      <div class="drawer-close" id="drawerClose">×</div>
     </div>
 
-    <div class="menu">
-      <div class="item" onclick="window.location.href='devices.html'">Gerenciar dispositivos/clientes <span>></span></div>
-      <div class="item" onclick="window.location.href='apps.html'">Meus aplicativos <span>></span></div>
+    <div class="drawer-item" onclick="window.location.href='dashboard.html'">
+      <div class="drawer-item-left"><span>📋</span><span>Dashboard</span></div><span>›</span>
     </div>
-  </div>
+    <div class="drawer-item" onclick="window.location.href='devices.html'">
+      <div class="drawer-item-left"><span>🖥️</span><span>Gerenciar clientes</span></div><span>›</span>
+    </div>
+    <div class="drawer-item" onclick="window.location.href='apps.html'">
+      <div class="drawer-item-left"><span>📦</span><span>Meus aplicativos</span></div><span>›</span>
+    </div>
+
+    <div class="drawer-section-title">Configurações</div>
+
+    <div class="drawer-item" onclick="logout()">
+      <div class="drawer-item-left"><span>↩</span><span>Sair</span></div><span>›</span>
+    </div>
+
+    <div class="drawer-bottom">
+      <div class="db-item">👤</div>
+      <div class="db-item">🧱</div>
+      <div class="db-item">⚙</div>
+      <div class="db-item" onclick="logout()">⎋</div>
+    </div>
+  </aside>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="icon-btn" id="menuBtn">☰</button>
+    </div>
+    <div class="logo-title">LAUNCHER BOX</div>
+    <div class="topbar-right">
+      <button class="icon-btn">🔔</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="hero-title" id="welcomeTitle">Bem-vindo</div>
+    <div class="hero-sub">
+      Aqui você poderá gerenciar seus clientes, dispositivos, aplicativos instalados, banners, temas, planos e muito mais.
+    </div>
+
+    <section class="credits-card">
+      <div class="credits-title">SEUS CRÉDITOS</div>
+      <div class="credits-grid">
+        <div class="credit-pill"><span class="pill-label">ANUAL:</span><span class="pill-value" id="annualCredits">0</span></div>
+        <div class="credit-pill"><span class="pill-label">2 ANOS:</span><span class="pill-value" id="twoYearCredits">0</span></div>
+        <div class="credit-pill"><span class="pill-label">Layouts:</span><span class="pill-value" id="totalLayouts">0</span></div>
+        <div class="credit-pill"><span class="pill-label">Apps:</span><span class="pill-value" id="totalApps">0</span></div>
+        <div class="credit-pill"><span class="pill-label">Ativos:</span><span class="pill-value" id="activeDevices">0</span></div>
+        <div class="credit-pill"><span class="pill-label">Pendentes:</span><span class="pill-value" id="pendingDevices">0</span></div>
+      </div>
+    </section>
+
+    <div class="section-box">
+      <div class="section-line" onclick="window.location.href='devices.html'">
+        <span>Gerenciar dispositivos/clientes</span>
+        <span class="row-arrow">›</span>
+      </div>
+      <div class="section-line" onclick="window.location.href='apps.html'">
+        <span>Meus aplicativos</span>
+        <span class="row-arrow">›</span>
+      </div>
+    </div>
+  </main>
 
   <script src="js/app.js"></script>
   <script>
+    function fillUser() {
+      try {
+        const user = JSON.parse(localStorage.getItem('painel_user') || '{}');
+        document.getElementById('drawerUserName').textContent = user.companyName || 'LPSM BOX';
+        document.getElementById('drawerUserEmail').textContent = user.email || 'admin@lpsm.com';
+        document.getElementById('welcomeTitle').textContent = user.companyName || 'Bem-vindo';
+      } catch {}
+    }
+
     async function loadStats() {
       try {
         const d = await apiGet('/dashboard');
@@ -54,12 +103,14 @@
         document.getElementById('totalApps').textContent = d.totalApps || 0;
         document.getElementById('activeDevices').textContent = d.activeDevices || 0;
         document.getElementById('pendingDevices').textContent = d.pendingDevices || 0;
-        document.getElementById('totalResellers').textContent = d.totalResellers || 0;
       } catch (e) {
         alert('Erro ao carregar dashboard');
         console.error(e);
       }
     }
+
+    fillUser();
+    bindDrawer();
     loadStats();
   </script>
 </body>

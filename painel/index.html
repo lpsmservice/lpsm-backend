@@ -4,72 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LPSM BOX - Login</title>
-  <style>
-    body{
-      margin:0;
-      background:#06162f;
-      color:#fff;
-      font-family:Arial,Helvetica,sans-serif;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:100vh;
-    }
-    .login-box{
-      width:360px;
-      background:#0b2247;
-      border-radius:18px;
-      padding:26px;
-      box-shadow:0 10px 30px rgba(0,0,0,.35);
-    }
-    h1{
-      text-align:center;
-      margin:0 0 20px;
-      font-size:30px;
-    }
-    input{
-      width:100%;
-      box-sizing:border-box;
-      height:54px;
-      margin-bottom:14px;
-      border:none;
-      border-radius:12px;
-      padding:0 16px;
-      font-size:17px;
-      background:#132f59;
-      color:#fff;
-    }
-    button{
-      width:100%;
-      height:56px;
-      border:none;
-      border-radius:12px;
-      background:#2f76f3;
-      color:#fff;
-      font-size:20px;
-      font-weight:700;
-      cursor:pointer;
-    }
-    .tip{
-      margin-top:14px;
-      color:#bcd0ef;
-      font-size:14px;
-      text-align:center;
-      line-height:1.6;
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="login-box">
-    <h1>LOGIN</h1>
-    <input id="email" type="text" placeholder="LOGIN ou EMAIL">
-    <input id="senha" type="password" placeholder="SENHA">
-    <button onclick="login()">ENTRAR</button>
-    <div class="tip">
-      Login padrão:<br>
-      admin@lpsm.com<br>
-      Senha padrão:<br>
-      951753
+  <div class="login-wrap">
+    <div class="login-card">
+      <h1 class="login-title">LOGIN</h1>
+
+      <input id="email" class="login-input" type="text" placeholder="LOGIN ou EMAIL">
+      <input id="senha" class="login-input" type="password" placeholder="SENHA">
+
+      <button class="login-btn" onclick="login()">ENTRAR</button>
+
+      <div class="login-tip">
+        Login padrão:<br>
+        admin@lpsm.com<br>
+        Senha padrão:<br>
+        951753
+      </div>
     </div>
   </div>
 
