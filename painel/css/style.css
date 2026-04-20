@@ -23,8 +23,6 @@ button, input, select {
   font-family: inherit;
 }
 
-/* TOPO */
-
 .topbar {
   height: 58px;
   background: linear-gradient(90deg, #0a2347, #081a35);
@@ -76,13 +74,10 @@ button, input, select {
   font-size: 26px;
 }
 
-/* DASHBOARD */
-
 .page-dashboard {
   min-height: calc(100vh - 58px);
   padding: 12px 0 92px;
-  background:
-    linear-gradient(180deg, #001019 0%, #011629 20%, #041a32 100%);
+  background: linear-gradient(180deg, #001019 0%, #011629 20%, #041a32 100%);
 }
 
 .hero-wrap {
@@ -103,8 +98,6 @@ button, input, select {
   font-size: 16px;
   line-height: 1.55;
 }
-
-/* CRÉDITOS */
 
 .credit-box-home {
   margin: 26px 16px 0;
@@ -233,8 +226,6 @@ button, input, select {
   white-space: nowrap;
 }
 
-/* OPÇÕES */
-
 .options-home {
   margin-top: 34px;
 }
@@ -290,7 +281,62 @@ button, input, select {
   line-height: 1;
 }
 
-/* BARRA DE BAIXO */
+.theme-card {
+  margin: 26px 16px 0;
+  background: #0a2042;
+  border-radius: 10px;
+  padding: 28px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.theme-card-title {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 62px;
+  height: 36px;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-slider {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  background: #6c7a91;
+  border-radius: 999px;
+  transition: 0.2s;
+}
+
+.theme-slider::before {
+  content: "";
+  position: absolute;
+  height: 28px;
+  width: 28px;
+  left: 4px;
+  top: 4px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.theme-switch input:checked + .theme-slider {
+  background: #2f7cff;
+}
+
+.theme-switch input:checked + .theme-slider::before {
+  transform: translateX(26px);
+}
 
 .bottom-nav-home {
   position: fixed;
@@ -324,8 +370,6 @@ button, input, select {
   font-size: 28px;
   line-height: 1;
 }
-
-/* DRAWER */
 
 .drawer-overlay {
   position: fixed;
@@ -442,8 +486,6 @@ button, input, select {
   cursor: pointer;
 }
 
-/* LOGIN */
-
 .login-wrap {
   min-height: 100vh;
   display: flex;
@@ -501,8 +543,6 @@ button, input, select {
   margin-top: 16px;
   line-height: 1.8;
 }
-
-/* RESTO DO SISTEMA */
 
 .blue-big-btn {
   width: 100%;
@@ -827,6 +867,43 @@ button, input, select {
   background: #2f76f3;
 }
 
+body.light-mode {
+  background: #eef2f8;
+  color: #0b1d33;
+}
+
+body.light-mode .page-dashboard {
+  background: linear-gradient(180deg, #f4f7fc 0%, #e8eef7 100%);
+  color: #0b1d33;
+}
+
+body.light-mode .hero-sub-main,
+body.light-mode .options-home-title,
+body.light-mode .topbar-center-title {
+  color: #0b1d33;
+}
+
+body.light-mode .topbar,
+body.light-mode .bottom-nav-home {
+  background: #dfe8f5;
+}
+
+body.light-mode .icon-btn,
+body.light-mode .bottom-home-icon {
+  color: #0b1d33;
+}
+
+body.light-mode .credit-box-home,
+body.light-mode .options-home-list,
+body.light-mode .theme-card {
+  background: #ffffff;
+  color: #0b1d33;
+}
+
+body.light-mode .home-row {
+  border-bottom-color: rgba(11,29,51,0.08);
+}
+
 @media (max-width: 1100px) {
   .credit-grid-home {
     grid-template-columns: 1fr;
@@ -865,7 +942,8 @@ button, input, select {
     font-size: 15px;
   }
 
-  .credit-box-home {
+  .credit-box-home,
+  .theme-card {
     margin-left: 12px;
     margin-right: 12px;
   }
@@ -883,6 +961,10 @@ button, input, select {
 
   .home-row-left {
     font-size: 15px;
+  }
+
+  .theme-card-title {
+    font-size: 22px;
   }
 
   .login-card {

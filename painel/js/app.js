@@ -68,10 +68,6 @@ async function uploadFile(route, file) {
   return data;
 }
 
-function safe(value, fallback = '-') {
-  return value === undefined || value === null || value === '' ? fallback : value;
-}
-
 function bindDrawer() {
   const menuBtn = document.getElementById('menuBtn');
   const drawer = document.getElementById('drawer');
@@ -160,6 +156,46 @@ function getAppsLimit(dashboard) {
   return Number(settings.appLimit ?? settings.appsLimit ?? settings.maxApps ?? dashboard.totalApps ?? 0);
 }
 
+function bindThemeToggle() {
+  const themeToggle = document.getElementById('themeToggle');
+  if (!themeToggle) return;
+
+  const saved = localStorage.getItem('painel_dark_mode');
+  if (saved === null) {
+    themeToggle.checked = true;
+    document.body.classList.remove('light-mode');
+  } else {
+    themeToggle.checked = saved === '1';
+    document.body.classList.toggle('light-mode', saved !== '1');
+  }
+
+  themeToggle.addEventListener('change', () => {
+    const dark = themeToggle.checked;
+    localStorage.setItem('painel_dark_mode', dark ? '1' : '0');
+    document.body.classList.toggle('light-mode', !dark);
+  });
+}
+
+function bindDownloadLauncher() {
+  const btn = document.getElementById('downloadLauncherBtn');
+  if (!btn) return;
+
+  btn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    try {
+      const data = await apiGet('/launcher/download');
+      if (data && data.url) {
+        window.open(apiUrl(data.url), '_blank');
+      } else {
+        alert('Link do launcher não encontrado.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao baixar launcher.');
+    }
+  });
+}
+
 async function loadDashboardHome() {
   const welcomeTitle = document.getElementById('welcomeTitle');
   const annualCreditsValue = document.getElementById('annualCreditsValue');
@@ -215,5 +251,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   authGuard();
   bindDrawer();
   setDrawerUser();
+  bindThemeToggle();
+  bindDownloadLauncher();
   await loadDashboardHome();
 });
