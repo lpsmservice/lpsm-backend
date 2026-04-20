@@ -3,115 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LPSM BOX - Dashboard</title>
+  <title>LAUNCHER BOX</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div id="drawerOverlay" class="drawer-overlay"></div>
 
-  <aside class="drawer" id="drawer">
+  <aside id="drawer" class="drawer">
     <div class="drawer-head">
-      <div class="drawer-avatar">LP</div>
+      <div class="drawer-avatar" id="drawerAvatar">L</div>
       <div class="drawer-user">
-        <strong id="drawerUserName">LPSM BOX</strong>
-        <span id="drawerUserEmail">admin@lpsm.com</span>
+        <strong id="drawerUserName">Launcher Box</strong>
+        <span id="drawerUserEmail">Painel administrativo</span>
       </div>
-      <div class="drawer-close" id="drawerClose">×</div>
+      <div id="drawerClose" class="drawer-close">×</div>
     </div>
 
-    <div class="drawer-item" onclick="window.location.href='dashboard.html'">
-      <div class="drawer-item-left"><span>📋</span><span>Dashboard</span></div><span>›</span>
-    </div>
-    <div class="drawer-item" onclick="window.location.href='devices.html'">
-      <div class="drawer-item-left"><span>🖥️</span><span>Gerenciar clientes</span></div><span>›</span>
-    </div>
-    <div class="drawer-item" onclick="window.location.href='apps.html'">
-      <div class="drawer-item-left"><span>📦</span><span>Meus aplicativos</span></div><span>›</span>
-    </div>
+    <div class="drawer-section-title">MENU</div>
 
-    <div class="drawer-section-title">Configurações</div>
+    <a class="drawer-item" href="dashboard.html">
+      <div class="drawer-item-left">
+        <span>🏠</span>
+        <span>Início</span>
+      </div>
+      <span>›</span>
+    </a>
 
-    <div class="drawer-item" onclick="logout()">
-      <div class="drawer-item-left"><span>↩</span><span>Sair</span></div><span>›</span>
-    </div>
+    <a class="drawer-item" href="launcher.html">
+      <div class="drawer-item-left">
+        <span>🧩</span>
+        <span>Gerenciar launcher</span>
+      </div>
+      <span>›</span>
+    </a>
+
+    <a class="drawer-item" href="devices.html">
+      <div class="drawer-item-left">
+        <span>📁</span>
+        <span>Gerenciar dispositivos/clientes</span>
+      </div>
+      <span>›</span>
+    </a>
+
+    <a class="drawer-item" href="resellers.html">
+      <div class="drawer-item-left">
+        <span>👥</span>
+        <span>Gerenciar Revendas</span>
+      </div>
+      <span>›</span>
+    </a>
+
+    <a class="drawer-item" href="notifications.html">
+      <div class="drawer-item-left">
+        <span>🔔</span>
+        <span>Notificações</span>
+      </div>
+      <span>›</span>
+    </a>
+
+    <a class="drawer-item" href="logs.html">
+      <div class="drawer-item-left">
+        <span>📚</span>
+        <span>LOGs</span>
+      </div>
+      <span>›</span>
+    </a>
+
+    <a class="drawer-item" href="settings.html">
+      <div class="drawer-item-left">
+        <span>⚙️</span>
+        <span>Configurações</span>
+      </div>
+      <span>›</span>
+    </a>
 
     <div class="drawer-bottom">
-      <div class="db-item">👤</div>
-      <div class="db-item">🧱</div>
-      <div class="db-item">⚙</div>
       <div class="db-item" onclick="logout()">⎋</div>
     </div>
   </aside>
 
-  <header class="topbar">
+  <header class="topbar topbar-center">
     <div class="topbar-left">
-      <button class="icon-btn" id="menuBtn">☰</button>
+      <button id="menuBtn" class="icon-btn" aria-label="Abrir menu">☰</button>
     </div>
-    <div class="logo-title">LAUNCHER BOX</div>
+
+    <div class="topbar-title-center">LAUNCHER BOX</div>
+
     <div class="topbar-right">
-      <button class="icon-btn">🔔</button>
+      <button class="icon-btn bell-btn" aria-label="Notificações">🔔</button>
     </div>
   </header>
 
-  <main class="page">
-    <div class="hero-title" id="welcomeTitle">Bem-vindo</div>
-    <div class="hero-sub">
-      Aqui você poderá gerenciar seus clientes, dispositivos, aplicativos instalados, banners, temas, planos e muito mais.
-    </div>
+  <main class="dashboard-page">
+    <section class="hero-block">
+      <h1 class="hero-main-title" id="welcomeTitle">Bem vindo(a)</h1>
+      <p class="hero-main-sub">
+        Gerencie seus clientes, aplicativos instalados, banners, temas, planos e muito mais.
+      </p>
+    </section>
 
-    <section class="credits-card">
-      <div class="credits-title">SEUS CRÉDITOS</div>
-      <div class="credits-grid">
-        <div class="credit-pill"><span class="pill-label">ANUAL:</span><span class="pill-value" id="annualCredits">0</span></div>
-        <div class="credit-pill"><span class="pill-label">2 ANOS:</span><span class="pill-value" id="twoYearCredits">0</span></div>
-        <div class="credit-pill"><span class="pill-label">Layouts:</span><span class="pill-value" id="totalLayouts">0</span></div>
-        <div class="credit-pill"><span class="pill-label">Apps:</span><span class="pill-value" id="totalApps">0</span></div>
-        <div class="credit-pill"><span class="pill-label">Ativos:</span><span class="pill-value" id="activeDevices">0</span></div>
-        <div class="credit-pill"><span class="pill-label">Pendentes:</span><span class="pill-value" id="pendingDevices">0</span></div>
+    <section class="credits-panel">
+      <div class="credits-panel-title">SEUS CRÉDITOS</div>
+
+      <div class="credits-panel-grid">
+        <div class="credit-side left-side">
+          <div class="credit-chip">
+            <span class="chip-icon">›</span>
+            <span class="chip-text">ANUAL:</span>
+            <span class="chip-value" id="annualCreditsValue">0</span>
+          </div>
+        </div>
+
+        <div class="credit-center">
+          <div class="credit-row">
+            <span class="credit-row-icon">📅</span>
+            <span class="credit-row-label">Validade dos créditos:</span>
+            <span class="credit-row-badge" id="creditsValidity">--/--/----</span>
+          </div>
+
+          <div class="credit-row">
+            <span class="credit-row-icon">🧩</span>
+            <span class="credit-row-label">Limite de layouts:</span>
+            <span class="credit-row-badge" id="layoutLimitValue">0</span>
+          </div>
+
+          <div class="credit-row">
+            <span class="credit-row-icon">👜</span>
+            <span class="credit-row-label">Limite de aplicativos:</span>
+            <span class="credit-row-badge" id="appsLimitValue">0</span>
+          </div>
+        </div>
+
+        <div class="credit-side right-side">
+          <div class="credit-chip">
+            <span class="chip-icon">›</span>
+            <span class="chip-text">2 ANOS:</span>
+            <span class="chip-value" id="twoYearsCreditsValue">0</span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <div class="section-box">
-      <div class="section-line" onclick="window.location.href='devices.html'">
-        <span>Gerenciar dispositivos/clientes</span>
-        <span class="row-arrow">›</span>
+    <section class="options-area">
+      <div class="options-title">OPÇÕES</div>
+
+      <div class="options-list">
+        <a class="option-row" href="launcher.html">
+          <div class="option-left">
+            <div class="option-circle">🧩</div>
+            <span>Gerenciar launcher</span>
+          </div>
+          <span class="option-arrow">›</span>
+        </a>
+
+        <a class="option-row" href="devices.html">
+          <div class="option-left">
+            <div class="option-circle">📁</div>
+            <span>Gerenciar dispositivos/clientes</span>
+          </div>
+          <span class="option-arrow">›</span>
+        </a>
+
+        <a class="option-row" href="resellers.html">
+          <div class="option-left">
+            <div class="option-circle">👥</div>
+            <span>Gerenciar Revendas</span>
+          </div>
+          <span class="option-arrow">›</span>
+        </a>
+
+        <a class="option-row" href="notifications.html">
+          <div class="option-left">
+            <div class="option-circle">🔔</div>
+            <span>Notificações</span>
+          </div>
+          <span class="option-arrow">›</span>
+        </a>
+
+        <a class="option-row" href="logs.html">
+          <div class="option-left">
+            <div class="option-circle">📚</div>
+            <span>LOGs</span>
+          </div>
+          <span class="option-arrow">›</span>
+        </a>
+
+        <a class="option-row" href="settings.html">
+          <div class="option-left">
+            <div class="option-circle">⚙️</div>
+            <span>Configurações</span>
+          </div>
+          <span class="option-arrow">›</span>
+        </a>
       </div>
-      <div class="section-line" onclick="window.location.href='apps.html'">
-        <span>Meus aplicativos</span>
-        <span class="row-arrow">›</span>
-      </div>
-    </div>
+    </section>
   </main>
 
+  <nav class="bottom-nav">
+    <a class="bottom-nav-item active" href="dashboard.html">⌂</a>
+    <a class="bottom-nav-item" href="https://wa.me/" target="_blank" rel="noopener noreferrer">◔</a>
+    <a class="bottom-nav-item" href="devices.html">▭</a>
+    <a class="bottom-nav-item" href="launcher.html">▦</a>
+    <a class="bottom-nav-item" href="#top">↑</a>
+  </nav>
+
   <script src="js/app.js"></script>
-  <script>
-    function fillUser() {
-      try {
-        const user = JSON.parse(localStorage.getItem('painel_user') || '{}');
-        document.getElementById('drawerUserName').textContent = user.companyName || 'LPSM BOX';
-        document.getElementById('drawerUserEmail').textContent = user.email || 'admin@lpsm.com';
-        document.getElementById('welcomeTitle').textContent = user.companyName || 'Bem-vindo';
-      } catch {}
-    }
-
-    async function loadStats() {
-      try {
-        const d = await apiGet('/dashboard');
-        document.getElementById('annualCredits').textContent = d.annualCreditsInUse || 0;
-        document.getElementById('twoYearCredits').textContent = d.twoYearsCreditsInUse || 0;
-        document.getElementById('totalLayouts').textContent = d.totalLayouts || 0;
-        document.getElementById('totalApps').textContent = d.totalApps || 0;
-        document.getElementById('activeDevices').textContent = d.activeDevices || 0;
-        document.getElementById('pendingDevices').textContent = d.pendingDevices || 0;
-      } catch (e) {
-        alert('Erro ao carregar dashboard');
-        console.error(e);
-      }
-    }
-
-    fillUser();
-    bindDrawer();
-    loadStats();
-  </script>
 </body>
 </html>
