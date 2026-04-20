@@ -82,129 +82,143 @@
     </div>
   </aside>
 
-  <header class="topbar topbar-center">
+  <header class="topbar">
     <div class="topbar-left">
       <button id="menuBtn" class="icon-btn" aria-label="Abrir menu">☰</button>
     </div>
 
-    <div class="topbar-title-center">LAUNCHER BOX</div>
+    <div class="topbar-center-title">LAUNCHER BOX</div>
 
     <div class="topbar-right">
       <button class="icon-btn bell-btn" aria-label="Notificações">🔔</button>
     </div>
   </header>
 
-  <main class="dashboard-page">
-    <section class="hero-block">
-      <h1 class="hero-main-title" id="welcomeTitle">Bem vindo(a)</h1>
-      <p class="hero-main-sub">
+  <main class="page-dashboard">
+    <section class="hero-wrap">
+      <h1 class="hero-title-main" id="welcomeTitle">Bem vindo(a)</h1>
+      <p class="hero-sub-main">
         Gerencie seus clientes, aplicativos instalados, banners, temas, planos e muito mais.
       </p>
     </section>
 
-    <section class="credits-panel">
-      <div class="credits-panel-title">SEUS CRÉDITOS</div>
+    <section class="credit-box-home">
+      <div class="credit-title-home">SEUS CRÉDITOS</div>
 
-      <div class="credits-panel-grid">
-        <div class="credit-side left-side">
-          <div class="credit-chip">
-            <span class="chip-icon">›</span>
-            <span class="chip-text">ANUAL:</span>
-            <span class="chip-value" id="annualCreditsValue">0</span>
+      <div class="credit-grid-home">
+        <div class="credit-col-side">
+          <div class="mini-pill home-pill-left">
+            <span class="mini-pill-icon">›</span>
+            <span class="mini-pill-text">ANUAL:</span>
+            <span class="mini-pill-value" id="annualCreditsValue">0</span>
           </div>
         </div>
 
-        <div class="credit-center">
-          <div class="credit-row">
-            <span class="credit-row-icon">📅</span>
-            <span class="credit-row-label">Validade dos créditos:</span>
-            <span class="credit-row-badge" id="creditsValidity">--/--/----</span>
+        <div class="credit-col-center">
+          <div class="long-pill">
+            <span class="long-pill-icon">📅</span>
+            <span class="long-pill-label">Validade dos créditos:</span>
+            <span class="long-pill-value" id="creditsValidity">--/--/----</span>
           </div>
 
-          <div class="credit-row">
-            <span class="credit-row-icon">🧩</span>
-            <span class="credit-row-label">Limite de layouts:</span>
-            <span class="credit-row-badge" id="layoutLimitValue">0</span>
+          <div class="long-pill">
+            <span class="long-pill-icon">🧩</span>
+            <span class="long-pill-label">Limite de layouts:</span>
+            <span class="long-pill-value" id="layoutLimitValue">0</span>
           </div>
 
-          <div class="credit-row">
-            <span class="credit-row-icon">👜</span>
-            <span class="credit-row-label">Limite de aplicativos:</span>
-            <span class="credit-row-badge" id="appsLimitValue">0</span>
+          <div class="long-pill">
+            <span class="long-pill-icon">👜</span>
+            <span class="long-pill-label">Limite de aplicativos:</span>
+            <span class="long-pill-value" id="appsLimitValue">0</span>
           </div>
         </div>
 
-        <div class="credit-side right-side">
-          <div class="credit-chip">
-            <span class="chip-icon">›</span>
-            <span class="chip-text">2 ANOS:</span>
-            <span class="chip-value" id="twoYearsCreditsValue">0</span>
+        <div class="credit-col-side credit-col-side-right">
+          <div class="mini-pill home-pill-right">
+            <span class="mini-pill-icon">›</span>
+            <span class="mini-pill-text">2 ANOS:</span>
+            <span class="mini-pill-value" id="twoYearsCreditsValue">0</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="options-area">
-      <div class="options-title">OPÇÕES</div>
+    <section class="options-home">
+      <div class="options-home-title">OPÇÕES</div>
 
-      <div class="options-list">
-        <a class="option-row" href="launcher.html">
-          <div class="option-left">
-            <div class="option-circle">🧩</div>
+      <div class="options-home-list">
+        <a class="home-row" href="launcher.html">
+          <div class="home-row-left">
+            <div class="home-row-circle">🧩</div>
             <span>Gerenciar launcher</span>
           </div>
-          <span class="option-arrow">›</span>
+          <span class="home-row-arrow">›</span>
         </a>
 
-        <a class="option-row" href="devices.html">
-          <div class="option-left">
-            <div class="option-circle">📁</div>
+        <a class="home-row" href="devices.html">
+          <div class="home-row-left">
+            <div class="home-row-circle">📁</div>
             <span>Gerenciar dispositivos/clientes</span>
           </div>
-          <span class="option-arrow">›</span>
+          <span class="home-row-arrow">›</span>
         </a>
 
-        <a class="option-row" href="resellers.html">
-          <div class="option-left">
-            <div class="option-circle">👥</div>
+        <a class="home-row" href="resellers.html">
+          <div class="home-row-left">
+            <div class="home-row-circle">👥</div>
             <span>Gerenciar Revendas</span>
           </div>
-          <span class="option-arrow">›</span>
+          <span class="home-row-arrow">›</span>
         </a>
 
-        <a class="option-row" href="notifications.html">
-          <div class="option-left">
-            <div class="option-circle">🔔</div>
+        <a class="home-row" href="notifications.html">
+          <div class="home-row-left">
+            <div class="home-row-circle">🔔</div>
             <span>Notificações</span>
           </div>
-          <span class="option-arrow">›</span>
+          <span class="home-row-arrow">›</span>
         </a>
 
-        <a class="option-row" href="logs.html">
-          <div class="option-left">
-            <div class="option-circle">📚</div>
+        <a class="home-row" href="logs.html">
+          <div class="home-row-left">
+            <div class="home-row-circle">📚</div>
             <span>LOGs</span>
           </div>
-          <span class="option-arrow">›</span>
+          <span class="home-row-arrow">›</span>
         </a>
 
-        <a class="option-row" href="settings.html">
-          <div class="option-left">
-            <div class="option-circle">⚙️</div>
+        <a class="home-row" href="settings.html">
+          <div class="home-row-left">
+            <div class="home-row-circle">⚙️</div>
             <span>Configurações</span>
           </div>
-          <span class="option-arrow">›</span>
+          <span class="home-row-arrow">›</span>
         </a>
       </div>
     </section>
   </main>
 
-  <nav class="bottom-nav">
-    <a class="bottom-nav-item active" href="dashboard.html">⌂</a>
-    <a class="bottom-nav-item" href="https://wa.me/" target="_blank" rel="noopener noreferrer">◔</a>
-    <a class="bottom-nav-item" href="devices.html">▭</a>
-    <a class="bottom-nav-item" href="launcher.html">▦</a>
-    <a class="bottom-nav-item" href="#top">↑</a>
+  <nav class="bottom-nav-home">
+    <a class="bottom-home-item active" href="dashboard.html" aria-label="Início">
+      <span class="bottom-home-icon">⌂</span>
+    </a>
+
+    <a class="bottom-home-item" href="https://wa.me/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+      <span class="bottom-home-icon">◔</span>
+    </a>
+
+    <a class="bottom-home-item" href="devices.html" aria-label="Clientes">
+      <span class="bottom-home-icon">▭</span>
+    </a>
+
+    <a class="bottom-home-item" href="launcher.html" aria-label="Launcher">
+      <span class="bottom-home-icon">▦</span>
+    </a>
+
+    <a class="bottom-home-item" href="#top" aria-label="Subir">
+      <span class="bottom-home-icon">↑</span>
+    </a>
   </nav>
 
   <script src="js/app.js"></script>

@@ -10,6 +10,7 @@ function authGuard() {
 function logout() {
   localStorage.removeItem('painel_logado');
   localStorage.removeItem('painel_user');
+  localStorage.removeItem('painel_company_name');
   window.location.href = 'index.html';
 }
 
@@ -47,9 +48,7 @@ async function apiPut(path, body = {}) {
 }
 
 async function apiDelete(path) {
-  const res = await fetch(apiUrl(path), {
-    method: 'DELETE'
-  });
+  const res = await fetch(apiUrl(path), { method: 'DELETE' });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Erro DELETE');
   return data;
@@ -71,15 +70,6 @@ async function uploadFile(route, file) {
 
 function safe(value, fallback = '-') {
   return value === undefined || value === null || value === '' ? fallback : value;
-}
-
-function formatDate(value) {
-  if (!value) return '-';
-  try {
-    return new Date(value).toLocaleString('pt-BR');
-  } catch {
-    return value;
-  }
 }
 
 function bindDrawer() {
@@ -112,30 +102,28 @@ function bindDrawer() {
 
 function setDrawerUser() {
   const user = JSON.parse(localStorage.getItem('painel_user') || '{}');
-  const settingsName = localStorage.getItem('painel_company_name') || 'LAUNCHER BOX';
-
   const drawerUserName = document.getElementById('drawerUserName');
   const drawerUserEmail = document.getElementById('drawerUserEmail');
   const drawerAvatar = document.getElementById('drawerAvatar');
 
-  const displayName =
-    safe(user.companyName, '').trim() ||
-    settingsName ||
+  const companyName =
+    (user.companyName || '').trim() ||
+    localStorage.getItem('painel_company_name') ||
     'LAUNCHER BOX';
 
-  const displayEmail =
-    safe(user.email, '').trim() ||
+  const email =
+    (user.email || '').trim() ||
     'Painel administrativo';
 
-  if (drawerUserName) drawerUserName.textContent = displayName;
-  if (drawerUserEmail) drawerUserEmail.textContent = displayEmail;
-  if (drawerAvatar) drawerAvatar.textContent = (displayName[0] || 'L').toUpperCase();
+  if (drawerUserName) drawerUserName.textContent = companyName;
+  if (drawerUserEmail) drawerUserEmail.textContent = email;
+  if (drawerAvatar) drawerAvatar.textContent = (companyName[0] || 'L').toUpperCase();
 }
 
-function formatCreditsValidity(raw) {
-  if (!raw) return '--/--/----';
+function formatCreditsValidity(value) {
+  if (!value) return '--/--/----';
   try {
-    return new Date(raw).toLocaleString('pt-BR', {
+    return new Date(value).toLocaleString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
@@ -143,34 +131,33 @@ function formatCreditsValidity(raw) {
       minute: '2-digit'
     });
   } catch {
-    return raw;
+    return value;
   }
 }
 
 function getCreditsValidity(settings) {
-  if (settings && settings.creditsExpiresAt) return settings.creditsExpiresAt;
-  if (settings && settings.expiresAt) return settings.expiresAt;
-  if (settings && settings.validUntil) return settings.validUntil;
-  if (settings && settings.validadeCreditos) return settings.validadeCreditos;
-  return null;
+  if (!settings) return null;
+  return settings.creditsExpiresAt || settings.expiresAt || settings.validUntil || settings.validadeCreditos || null;
+}
+
+function getAnnualCredits(dashboard) {
+  const settings = dashboard.settings || {};
+  return Number(settings.annualCredits ?? settings.annual ?? dashboard.annualCreditsInUse ?? 0);
+}
+
+function getTwoYearsCredits(dashboard) {
+  const settings = dashboard.settings || {};
+  return Number(settings.twoYearsCredits ?? settings.twoYears ?? dashboard.twoYearsCreditsInUse ?? 0);
 }
 
 function getLayoutLimit(dashboard) {
-  if (dashboard && dashboard.settings) {
-    if (dashboard.settings.layoutLimit !== undefined) return Number(dashboard.settings.layoutLimit || 0);
-    if (dashboard.settings.layoutsLimit !== undefined) return Number(dashboard.settings.layoutsLimit || 0);
-    if (dashboard.settings.maxLayouts !== undefined) return Number(dashboard.settings.maxLayouts || 0);
-  }
-  return Number(dashboard.totalLayouts || 0);
+  const settings = dashboard.settings || {};
+  return Number(settings.layoutLimit ?? settings.layoutsLimit ?? settings.maxLayouts ?? dashboard.totalLayouts ?? 0);
 }
 
 function getAppsLimit(dashboard) {
-  if (dashboard && dashboard.settings) {
-    if (dashboard.settings.appLimit !== undefined) return Number(dashboard.settings.appLimit || 0);
-    if (dashboard.settings.appsLimit !== undefined) return Number(dashboard.settings.appsLimit || 0);
-    if (dashboard.settings.maxApps !== undefined) return Number(dashboard.settings.maxApps || 0);
-  }
-  return Number(dashboard.totalApps || 0);
+  const settings = dashboard.settings || {};
+  return Number(settings.appLimit ?? settings.appsLimit ?? settings.maxApps ?? dashboard.totalApps ?? 0);
 }
 
 async function loadDashboardHome() {
@@ -190,47 +177,29 @@ async function loadDashboardHome() {
     const settings = dashboard.settings || {};
 
     const companyName =
-      safe(settings.companyName, '').trim() ||
-      safe(localUser.companyName, '').trim() ||
-      'launcher box';
+      (settings.companyName || '').trim() ||
+      (localUser.companyName || '').trim() ||
+      'LAUNCHER BOX';
 
     localStorage.setItem('painel_company_name', companyName);
 
     welcomeTitle.textContent = `Bem vindo(a) ${companyName.toLowerCase()}`;
 
-    if (annualCreditsValue) {
-      annualCreditsValue.textContent = String(
-        Number(settings.annualCredits ?? settings.annual ?? dashboard.annualCreditsInUse ?? 0)
-      );
-    }
-
-    if (twoYearsCreditsValue) {
-      twoYearsCreditsValue.textContent = String(
-        Number(settings.twoYearsCredits ?? settings.twoYears ?? dashboard.twoYearsCreditsInUse ?? 0)
-      );
-    }
-
-    if (creditsValidity) {
-      creditsValidity.textContent = formatCreditsValidity(getCreditsValidity(settings));
-    }
-
-    if (layoutLimitValue) {
-      layoutLimitValue.textContent = String(getLayoutLimit(dashboard));
-    }
-
-    if (appsLimitValue) {
-      appsLimitValue.textContent = String(getAppsLimit(dashboard));
-    }
+    if (annualCreditsValue) annualCreditsValue.textContent = String(getAnnualCredits(dashboard));
+    if (twoYearsCreditsValue) twoYearsCreditsValue.textContent = String(getTwoYearsCredits(dashboard));
+    if (creditsValidity) creditsValidity.textContent = formatCreditsValidity(getCreditsValidity(settings));
+    if (layoutLimitValue) layoutLimitValue.textContent = String(getLayoutLimit(dashboard));
+    if (appsLimitValue) appsLimitValue.textContent = String(getAppsLimit(dashboard));
 
     setDrawerUser();
   } catch (error) {
     console.error('Erro ao carregar dashboard:', error);
 
-    const companyName =
-      safe(localUser.companyName, '').trim() ||
-      'launcher box';
+    const fallbackName =
+      (localUser.companyName || '').trim() ||
+      'LAUNCHER BOX';
 
-    welcomeTitle.textContent = `Bem vindo(a) ${companyName.toLowerCase()}`;
+    welcomeTitle.textContent = `Bem vindo(a) ${fallbackName.toLowerCase()}`;
 
     if (annualCreditsValue) annualCreditsValue.textContent = '0';
     if (twoYearsCreditsValue) twoYearsCreditsValue.textContent = '0';
