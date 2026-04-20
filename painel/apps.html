@@ -1,490 +1,213 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LPSM BOX - Aplicativos</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LPSM BOX - Apps</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #04152d;
-      color: #fff;
-    }
-
-    .topbar {
-      height: 82px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      background: #0b2a55;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .menu-btn, .icon-btn {
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 34px;
-      cursor: pointer;
-    }
-
-    .brand {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    .page {
-      padding: 18px;
-      padding-bottom: 110px;
-    }
-
-    .hero {
-      background: #0a2346;
-      border-radius: 18px;
-      padding: 24px;
-      margin-bottom: 18px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
-    }
-
-    .hero h1 {
-      margin: 0 0 10px;
-      font-size: 30px;
-    }
-
-    .hero p {
-      margin: 0;
-      color: #c9d5ea;
-      font-size: 18px;
-    }
-
-    .action-btn {
-      width: 100%;
-      border: none;
-      border-radius: 12px;
-      background: #2f76f3;
-      color: #fff;
-      font-size: 20px;
-      font-weight: 700;
-      padding: 18px;
-      margin-bottom: 14px;
-      cursor: pointer;
-    }
-
-    .tools-row {
-      display: grid;
-      grid-template-columns: 180px 1fr 180px;
-      gap: 14px;
-      margin: 18px 0;
-    }
-
-    .tools-row button,
-    .tools-row input {
-      height: 56px;
-      border-radius: 12px;
-      border: none;
-      font-size: 18px;
-      padding: 0 18px;
-      box-sizing: border-box;
-    }
-
-    .tools-row input {
-      background: #0d2344;
-      color: #fff;
-      outline: none;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .secondary-btn {
-      background: #7285a4;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .warning-box {
-      background: #f59600;
-      color: #fff;
-      border-radius: 12px;
-      padding: 18px;
-      margin-bottom: 18px;
-      line-height: 1.6;
-      font-size: 18px;
-    }
-
-    .section-title {
-      font-size: 18px;
-      font-weight: 800;
-      margin: 24px 0 10px;
-      text-transform: uppercase;
-    }
-
-    .app-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .app-card {
-      background: #0a2346;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .app-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px;
-      cursor: pointer;
-    }
-
-    .app-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .app-left img {
-      width: 64px;
-      height: 64px;
-      border-radius: 12px;
-      object-fit: cover;
-      background: #fff;
-    }
-
-    .app-name {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .arrow {
-      font-size: 22px;
-      color: #bcd0ef;
-    }
-
-    .app-body {
-      display: none;
-      padding: 0 18px 18px 18px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .app-body.open {
-      display: block;
-    }
-
-    .app-action {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-    .app-action:last-child {
-      border-bottom: none;
-    }
-
-    .app-data {
-      margin-top: 18px;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .app-data-title {
-      background: #2fc85f;
-      color: #fff;
-      text-align: center;
-      font-size: 18px;
-      font-weight: 800;
-      padding: 14px;
-    }
-
-    .app-data-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .app-data-cell {
-      padding: 18px;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      border-right: 1px solid rgba(255,255,255,0.05);
-      text-align: center;
-      font-size: 18px;
-    }
-
-    .app-data-cell:nth-child(2n) {
-      border-right: none;
-    }
-
-    .empty-box {
-      background: #0a2346;
-      border-radius: 18px;
-      padding: 24px;
-      color: #c9d5ea;
-      font-size: 18px;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 72px;
-      background: #0b2348;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .bottom-nav a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 30px;
-    }
-
-    @media (max-width: 900px) {
-      .tools-row {
-        grid-template-columns: 1fr;
-      }
-
-      .app-data-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .app-data-cell {
-        border-right: none;
-      }
-    }
+    body{margin:0;background:#04152d;color:#fff;font-family:Arial,Helvetica,sans-serif}
+    .topbar{height:82px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#0b2a55}
+    .page{padding:18px;padding-bottom:100px}
+    .form{background:#0a2346;border-radius:18px;padding:18px;margin-bottom:18px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+    input,button{height:52px;border:none;border-radius:12px;padding:0 14px;font-size:16px;box-sizing:border-box}
+    input{background:#10274a;color:#fff}
+    button{background:#2f76f3;color:#fff;font-weight:700;cursor:pointer}
+    .list{display:flex;flex-direction:column;gap:12px}
+    .card{background:#0a2346;border-radius:16px;padding:16px}
+    .head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .title{font-size:20px;font-weight:800}
+    .meta{margin-top:10px;line-height:1.8;color:#d8e3f4}
+    .icon{width:52px;height:52px;border-radius:10px;object-fit:cover;background:#fff}
+    .danger{background:#922d2d}
+    @media (max-width:900px){.row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div class="topbar">
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-    <div class="brand">LPSM BOX</div>
-    <button class="icon-btn">🔔</button>
+    <b>LPSM BOX</b>
+    <button onclick="window.location.href='dashboard.html'">Voltar</button>
   </div>
 
   <div class="page">
-    <div class="hero">
-      <h1>Meus aplicativos</h1>
-      <p>Aqui você poderá cadastrar, editar e organizar os APKs do painel.</p>
+    <div class="form">
+      <h2>Cadastrar aplicativo</h2>
+
+      <div class="row">
+        <input id="appName" placeholder="Nome do app">
+        <input id="appPackage" placeholder="Pacote do app">
+      </div>
+
+      <div class="row">
+        <input id="appVersion" placeholder="Versão">
+        <input id="appApkUrl" placeholder="URL APK (opcional)">
+      </div>
+
+      <div class="row">
+        <input id="appIconUrl" placeholder="URL ícone (opcional)">
+        <input id="search" placeholder="Buscar app">
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Upload APK</label><br>
+          <input id="apkFile" type="file" accept=".apk">
+        </div>
+        <div>
+          <label>Upload ícone</label><br>
+          <input id="iconFile" type="file" accept="image/*">
+        </div>
+      </div>
+
+      <div class="row">
+        <button onclick="saveApp()">SALVAR APP</button>
+        <button onclick="loadApps()">ATUALIZAR LISTA</button>
+      </div>
     </div>
 
-    <button class="action-btn" onclick="window.location.href='addapkauto.html'">ADD APK AUTOMÁTICO</button>
-    <button class="action-btn" onclick="window.location.href='addapkmanual.html'">ADD APK MANUAL</button>
-    <button class="action-btn" onclick="window.location.href='addpack.html'">ADD PACOTE</button>
-
-    <div class="tools-row">
-      <button class="secondary-btn" onclick="loadApps()">EXIBIR</button>
-      <input id="searchInput" type="text" placeholder="Buscar aplicativo" />
-      <button class="secondary-btn" onclick="filterApps()">BUSCAR</button>
-    </div>
-
-    <div class="warning-box">
-      <strong>ATENÇÃO</strong><br><br>
-      Após adicionar algum aplicativo, NÃO ESQUEÇA de ir em gerenciar launcher &gt; meus layouts
-      para adicionar o aplicativo ao layout desejado.<br><br>
-      O fato de você cadastrar o aplicativo aqui não significa que ele já vai aparecer na launcher.
-    </div>
-
-    <div class="section-title">MEUS APLICATIVOS:</div>
-    <div id="appsList" class="app-list"></div>
+    <div id="list" class="list"></div>
   </div>
 
-  <div class="bottom-nav">
-    <a href="dashboard.html">⌂</a>
-    <a href="resellers.html">💬</a>
-    <a href="devices.html">▣</a>
-    <a href="glauncher.html">▦</a>
-    <a href="#">⇧</a>
-  </div>
-
+  <script src="js/app.js"></script>
   <script>
-    let ALL_APPS = [];
-
-    function toggleMenu() {
-      alert('Menu lateral depois eu junto com você sem quebrar o painel.');
-    }
+    let APPS = [];
 
     function iconSrc(app) {
-      return app.icon || 'https://via.placeholder.com/64x64.png?text=APP';
+      if (!app.icon) return 'https://via.placeholder.com/52x52.png?text=APP';
+      return app.icon.startsWith('http') ? app.icon : `${window.location.origin}${app.icon}`;
     }
 
-    function buildAppCard(app) {
-      const createdAt = app.createdAt ? new Date(app.createdAt).toLocaleString('pt-BR') : '-';
-      const version = app.version || '-';
-      const activeText = app.active === false ? 'DESATIVADO' : 'ATIVO';
+    function render() {
+      const q = document.getElementById('search').value.trim().toLowerCase();
+      const box = document.getElementById('list');
 
-      return `
-        <div class="app-card">
-          <div class="app-head" onclick="toggleBody('${app.id}')">
-            <div class="app-left">
-              <img src="${iconSrc(app)}" alt="${app.name}">
-              <div class="app-name">- ${app.name || 'APP SEM NOME'}</div>
-            </div>
-            <div class="arrow">⌄</div>
-          </div>
+      const items = APPS.filter(a => {
+        return !q || (a.name || '').toLowerCase().includes(q) || (a.package || '').toLowerCase().includes(q);
+      });
 
-          <div id="body-${app.id}" class="app-body">
-            <div class="app-action" onclick="goEditApp('${app.id}')">
-              <span>Editar aplicativo</span>
-              <span>›</span>
-            </div>
-
-            <div class="app-action" onclick="renameApp('${app.id}', '${(app.name || '').replace(/'/g, "\\'")}')">
-              <span>Alterar nome do app</span>
-              <span>›</span>
-            </div>
-
-            <div class="app-action" onclick="toggleAppActive('${app.id}', ${app.active === false ? 'true' : 'false'})">
-              <span>${app.active === false ? 'Ativar' : 'Desativar'}</span>
-              <span>›</span>
-            </div>
-
-            <div class="app-action" onclick="deleteApp('${app.id}')">
-              <span>Excluir</span>
-              <span>›</span>
-            </div>
-
-            <div class="app-data">
-              <div class="app-data-title">${activeText}</div>
-              <div class="app-data-grid">
-                <div class="app-data-cell"><strong>Versão</strong><br>${version}</div>
-                <div class="app-data-cell"><strong>Pacote</strong><br>${app.package || '-'}</div>
-                <div class="app-data-cell"><strong>APK</strong><br>${app.apk || '-'}</div>
-                <div class="app-data-cell"><strong>Criado em</strong><br>${createdAt}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderApps(apps) {
-      const box = document.getElementById('appsList');
-
-      if (!apps.length) {
-        box.innerHTML = `<div class="empty-box">Nenhum aplicativo cadastrado ainda.</div>`;
+      if (!items.length) {
+        box.innerHTML = '<div class="card">Nenhum app cadastrado.</div>';
         return;
       }
 
-      box.innerHTML = apps.map(buildAppCard).join('');
-    }
-
-    function toggleBody(id) {
-      const el = document.getElementById(`body-${id}`);
-      el.classList.toggle('open');
+      box.innerHTML = items.map(app => `
+        <div class="card">
+          <div class="head">
+            <div style="display:flex;align-items:center;gap:12px">
+              <img class="icon" src="${iconSrc(app)}">
+              <div class="title">${safe(app.name, 'Sem nome')}</div>
+            </div>
+            <div>
+              <button onclick="editAppUi('${app.id}')">Editar</button>
+              <button class="danger" onclick="deleteAppUi('${app.id}')">Excluir</button>
+            </div>
+          </div>
+          <div class="meta">
+            Pacote: ${safe(app.package)}<br>
+            Versão: ${safe(app.version)}<br>
+            APK: ${safe(app.apk)}<br>
+            Status: ${app.active === false ? 'Desativado' : 'Ativo'}
+          </div>
+        </div>
+      `).join('');
     }
 
     async function loadApps() {
       try {
-        const res = await fetch('/apps');
-        const data = await res.json();
-        ALL_APPS = Array.isArray(data) ? data : [];
-        renderApps(ALL_APPS);
+        APPS = await apiGet('/apps');
+        render();
       } catch (e) {
         alert('Erro ao carregar apps');
         console.error(e);
       }
     }
 
-    function filterApps() {
-      const term = document.getElementById('searchInput').value.toLowerCase().trim();
-      if (!term) {
-        renderApps(ALL_APPS);
-        return;
-      }
-
-      const filtered = ALL_APPS.filter(app =>
-        (app.name || '').toLowerCase().includes(term) ||
-        (app.package || '').toLowerCase().includes(term)
-      );
-
-      renderApps(filtered);
-    }
-
-    function goEditApp(id) {
-      window.location.href = `editapp.html?id=${id}`;
-    }
-
-    async function renameApp(id, oldName) {
-      const newName = prompt('Novo nome do aplicativo:', oldName || '');
-      if (!newName) return;
-
+    async function saveApp() {
       try {
-        const app = ALL_APPS.find(a => a.id === id);
-        if (!app) return;
+        const name = document.getElementById('appName').value.trim();
+        const packageName = document.getElementById('appPackage').value.trim();
+        const version = document.getElementById('appVersion').value.trim() || '1.0';
+        let apk = document.getElementById('appApkUrl').value.trim();
+        let icon = document.getElementById('appIconUrl').value.trim();
 
-        const res = await fetch(`/apps/${id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            ...app,
-            name: newName
-          })
-        });
+        const apkFile = document.getElementById('apkFile').files[0];
+        const iconFile = document.getElementById('iconFile').files[0];
 
-        const json = await res.json();
-        if (!json.ok) {
-          alert(json.message || 'Erro ao renomear app');
+        if (!name) {
+          alert('Digite o nome do app');
           return;
         }
 
+        if (apkFile) {
+          const upApk = await uploadFile('/upload/apk', apkFile);
+          apk = upApk.url;
+        }
+
+        if (iconFile) {
+          const upIcon = await uploadFile('/upload/image', iconFile);
+          icon = upIcon.url;
+        }
+
+        await apiPost('/apps', {
+          name,
+          package: packageName,
+          version,
+          apk,
+          icon,
+          active: true
+        });
+
+        alert('App salvo com sucesso');
+
+        document.getElementById('appName').value = '';
+        document.getElementById('appPackage').value = '';
+        document.getElementById('appVersion').value = '';
+        document.getElementById('appApkUrl').value = '';
+        document.getElementById('appIconUrl').value = '';
+        document.getElementById('apkFile').value = '';
+        document.getElementById('iconFile').value = '';
+
         loadApps();
       } catch (e) {
-        alert('Erro ao renomear app');
+        alert('Erro ao salvar app');
         console.error(e);
       }
     }
 
-    async function toggleAppActive(id, active) {
+    async function editAppUi(id) {
+      const app = APPS.find(a => a.id === id);
+      if (!app) return;
+
+      const newName = prompt('Nome do app:', app.name || '');
+      if (newName === null) return;
+
+      const newPackage = prompt('Pacote do app:', app.package || '');
+      if (newPackage === null) return;
+
+      const newVersion = prompt('Versão do app:', app.version || '1.0');
+      if (newVersion === null) return;
+
       try {
-        const app = ALL_APPS.find(a => a.id === id);
-        if (!app) return;
-
-        const res = await fetch(`/apps/${id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            ...app,
-            active
-          })
+        await apiPut(`/apps/${id}`, {
+          ...app,
+          name: newName,
+          package: newPackage,
+          version: newVersion
         });
-
-        const json = await res.json();
-        if (!json.ok) {
-          alert(json.message || 'Erro ao atualizar app');
-          return;
-        }
-
+        alert('App atualizado');
         loadApps();
       } catch (e) {
-        alert('Erro ao atualizar app');
+        alert('Erro ao editar app');
         console.error(e);
       }
     }
 
-    async function deleteApp(id) {
-      if (!confirm('Deseja realmente excluir este app?')) return;
+    async function deleteAppUi(id) {
+      if (!confirm('Excluir app?')) return;
 
       try {
-        const res = await fetch(`/apps/${id}`, { method: 'DELETE' });
-        const json = await res.json();
-
-        if (!json.ok) {
-          alert(json.message || 'Erro ao excluir app');
-          return;
-        }
-
+        await apiDelete(`/apps/${id}`);
+        alert('App excluído');
         loadApps();
       } catch (e) {
         alert('Erro ao excluir app');
@@ -492,6 +215,7 @@
       }
     }
 
+    document.getElementById('search').addEventListener('input', render);
     loadApps();
   </script>
 </body>

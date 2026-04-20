@@ -4,214 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LPSM BOX - Layouts</title>
-  <link rel="stylesheet" href="css/style.css" />
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #04152d;
-      color: #fff;
-    }
-
-    .topbar {
-      height: 82px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      background: #0b2a55;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .menu-btn, .icon-btn {
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 34px;
-      cursor: pointer;
-    }
-
-    .brand {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    .page {
-      padding: 18px;
-      padding-bottom: 110px;
-    }
-
-    .action-btn {
-      width: 100%;
-      border: none;
-      border-radius: 12px;
-      background: #2f76f3;
-      color: #fff;
-      font-size: 20px;
-      font-weight: 700;
-      padding: 18px;
-      margin-bottom: 14px;
-      cursor: pointer;
-    }
-
-    .tools-row {
-      display: grid;
-      grid-template-columns: 150px 1fr 150px;
-      gap: 12px;
-      margin: 18px 0;
-    }
-
-    .tools-row button,
-    .tools-row input {
-      height: 56px;
-      border-radius: 12px;
-      border: none;
-      font-size: 18px;
-      padding: 0 18px;
-      box-sizing: border-box;
-    }
-
-    .tools-row input {
-      background: #0d2344;
-      color: #fff;
-      outline: none;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .secondary-btn {
-      background: #7285a4;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .section-title {
-      font-size: 18px;
-      font-weight: 800;
-      margin: 24px 0 10px;
-      text-transform: uppercase;
-    }
-
-    .layout-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .layout-card {
-      background: #0a2346;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .layout-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 18px;
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .layout-body {
-      display: none;
-      padding: 0 18px 18px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .layout-body.open {
-      display: block;
-    }
-
-    .row-action {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-    .row-action:last-child {
-      border-bottom: none;
-    }
-
-    .data-grid {
-      margin-top: 18px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-
-    .data-cell {
-      padding: 18px;
-      text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.05);
-      border-top: 1px solid rgba(255,255,255,0.05);
-      font-size: 17px;
-    }
-
-    .data-cell:nth-child(2n) {
-      border-right: none;
-    }
-
-    .empty-box {
-      background: #0a2346;
-      border-radius: 18px;
-      padding: 24px;
-      color: #c9d5ea;
-      font-size: 18px;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 72px;
-      background: #0b2348;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .bottom-nav a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 30px;
-    }
-
-    @media (max-width: 900px) {
-      .tools-row {
-        grid-template-columns: 1fr;
-      }
-
-      .data-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .data-cell {
-        border-right: none;
-      }
-    }
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#04152d;color:#fff}
+    .topbar{height:82px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#0b2a55;border-bottom:1px solid rgba(255,255,255,0.08)}
+    .menu-btn,.icon-btn{background:transparent;border:none;color:#fff;font-size:34px;cursor:pointer}
+    .brand{font-size:22px;font-weight:800;letter-spacing:1px}
+    .page{padding:18px;padding-bottom:110px}
+    .action-btn{width:100%;border:none;border-radius:12px;background:#2f76f3;color:#fff;font-size:20px;font-weight:700;padding:18px;margin-bottom:14px;cursor:pointer}
+    .tools-row{display:grid;grid-template-columns:150px 1fr 150px;gap:12px;margin:18px 0}
+    .tools-row button,.tools-row input{height:56px;border-radius:12px;border:none;font-size:18px;padding:0 18px;box-sizing:border-box}
+    .tools-row input{background:#0d2344;color:#fff;outline:none;border:1px solid rgba(255,255,255,0.08)}
+    .secondary-btn{background:#7285a4;color:#fff;font-weight:700;cursor:pointer}
+    .section-title{font-size:18px;font-weight:800;margin:24px 0 10px;text-transform:uppercase}
+    .layout-list{display:flex;flex-direction:column;gap:14px}
+    .layout-card{background:#0a2346;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,0.06)}
+    .layout-head{display:flex;justify-content:space-between;align-items:center;padding:18px;cursor:pointer;font-size:18px;font-weight:700}
+    .layout-body{display:none;padding:0 18px 18px;border-top:1px solid rgba(255,255,255,0.06)}
+    .layout-body.open{display:block}
+    .row-action{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer;font-size:18px}
+    .row-action:last-child{border-bottom:none}
+    .data-grid{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(255,255,255,0.05);border-radius:14px;overflow:hidden}
+    .data-cell{padding:18px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);border-top:1px solid rgba(255,255,255,0.05);font-size:17px}
+    .data-cell:nth-child(2n){border-right:none}
+    .empty-box{background:#0a2346;border-radius:18px;padding:24px;color:#c9d5ea;font-size:18px}
+    .bottom-nav{position:fixed;left:0;right:0;bottom:0;height:72px;background:#0b2348;display:flex;align-items:center;justify-content:space-around;border-top:1px solid rgba(255,255,255,0.08)}
+    .bottom-nav a{color:#fff;text-decoration:none;font-size:30px}
+    @media (max-width:900px){.tools-row{grid-template-columns:1fr}.data-grid{grid-template-columns:1fr}.data-cell{border-right:none}}
   </style>
 </head>
 <body>
   <div class="topbar">
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <button class="menu-btn" onclick="window.location.href='dashboard.html'">☰</button>
     <div class="brand">LPSM BOX</div>
     <button class="icon-btn">🔔</button>
   </div>
 
   <div class="page">
-    <button class="action-btn" onclick="window.location.href='addlayout.html'">ADD LAYOUT</button>
+    <button class="action-btn" onclick="alert('Tela ADD LAYOUT completa eu faço no próximo passo.')">ADD LAYOUT</button>
     <button class="action-btn" onclick="copyLayout()">COPIAR LAYOUT</button>
 
     <div class="tools-row">
@@ -232,27 +61,20 @@
     <a href="#">⇧</a>
   </div>
 
+  <script src="js/app.js"></script>
   <script>
     let ALL_LAYOUTS = [];
     let ALL_DEVICES = [];
 
-    function toggleMenu() {
-      alert('Menu lateral depois eu junto sem quebrar o painel.');
-    }
-
     async function loadLayouts() {
       try {
-        const [layoutsRes, devicesRes] = await Promise.all([
-          fetch('/layouts'),
-          fetch('/devices')
+        const [layouts, devices] = await Promise.all([
+          apiGet('/layouts'),
+          apiGet('/devices')
         ]);
 
-        ALL_LAYOUTS = await layoutsRes.json();
-        ALL_DEVICES = await devicesRes.json();
-
-        if (!Array.isArray(ALL_LAYOUTS)) ALL_LAYOUTS = [];
-        if (!Array.isArray(ALL_DEVICES)) ALL_DEVICES = [];
-
+        ALL_LAYOUTS = Array.isArray(layouts) ? layouts : [];
+        ALL_DEVICES = Array.isArray(devices) ? devices : [];
         renderLayouts(ALL_LAYOUTS);
       } catch (e) {
         alert('Erro ao carregar layouts');
@@ -333,7 +155,7 @@
     }
 
     function goManageApps(id) {
-      window.location.href = `layout-apps.html?id=${id}`;
+      alert(`Gerenciar apps do layout ${id}\n\nNa próxima etapa eu te entrego a tela completa para escolher apps, banner e fundo.`);
     }
 
     async function renameLayout(id, oldName) {
@@ -344,16 +166,11 @@
         const layout = ALL_LAYOUTS.find(l => l.id === id);
         if (!layout) return;
 
-        const res = await fetch(`/layouts/${id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            ...layout,
-            name: newName
-          })
+        const json = await apiPut(`/layouts/${id}`, {
+          ...layout,
+          name: newName
         });
 
-        const json = await res.json();
         if (!json.ok) {
           alert(json.message || 'Erro ao renomear layout');
           return;
@@ -370,14 +187,11 @@
       if (!confirm('Deseja realmente excluir este layout?')) return;
 
       try {
-        const res = await fetch(`/layouts/${id}`, { method: 'DELETE' });
-        const json = await res.json();
-
+        const json = await apiDelete(`/layouts/${id}`);
         if (!json.ok) {
           alert(json.message || 'Erro ao excluir layout');
           return;
         }
-
         loadLayouts();
       } catch (e) {
         alert('Erro ao excluir layout');

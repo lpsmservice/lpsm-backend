@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const multer = require('multer');
+const fs = require('fs');
 const db = require('./database');
 
 const app = express();
@@ -12,6 +14,22 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 app.use('/painel', express.static(path.join(__dirname, '..', 'painel')));
 app.use('/downloads', express.static(path.join(__dirname, 'public')));
+
+const uploadDir = path.join(__dirname, 'public', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: (_, __, cb) => cb(null, uploadDir),
+  filename: (_, file, cb) => {
+    const ext = path.extname(file.originalname || '');
+    const base = Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+    cb(null, `${base}${ext}`);
+  }
+});
+
+const upload = multer({ storage });
 
 function uid() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
@@ -120,7 +138,67 @@ function getDashboardStats() {
 }
 
 app.get('/', (req, res) => {
-  res.redirect('/painel/dashboard.html');
+  res.redirect('/painel/index.html');
+});
+
+app.post('/login', (req, res) => {
+  try {
+    const settings = db.getSettings();
+    const { email, password } = req.body || {};
+
+    if (email === settings.email && password === settings.masterPassword) {
+      return res.json({
+        ok: true,
+        user: {
+          email: settings.email,
+          companyName: settings.companyName || 'LPSM BOX'
+        }
+      });
+    }
+
+    return res.status(401).json({
+      ok: false,
+      message: 'Login ou senha inválidos'
+    });
+  } catch (error) {
+    console.error('POST /login', error);
+    return res.status(500).json({
+      ok: false,
+      message: 'Erro ao fazer login'
+    });
+  }
+});
+
+app.post('/upload/apk', upload.single('file'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ ok: false, message: 'Arquivo não enviado' });
+    }
+
+    return res.json({
+      ok: true,
+      url: `/downloads/uploads/${req.file.filename}`
+    });
+  } catch (error) {
+    console.error('POST /upload/apk', error);
+    return res.status(500).json({ ok: false, message: 'Erro no upload do APK' });
+  }
+});
+
+app.post('/upload/image', upload.single('file'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ ok: false, message: 'Arquivo não enviado' });
+    }
+
+    return res.json({
+      ok: true,
+      url: `/downloads/uploads/${req.file.filename}`
+    });
+  } catch (error) {
+    console.error('POST /upload/image', error);
+    return res.status(500).json({ ok: false, message: 'Erro no upload da imagem' });
+  }
 });
 
 app.get('/dashboard', (req, res) => {
@@ -304,10 +382,30 @@ app.delete('/layouts/:id', (req, res) => {
 app.get('/devices', (req, res) => {
   try {
     const layouts = db.getLayouts();
-    const devices = db.getDevices().map(device => ({
-      ...device,
-      layoutObject: device.layout ? layouts.find(l => l.id === device.layout) || null : null
-    }));
+    const now = Date.now();
+
+    const devices = db.getDevices().map(device => {
+      const expiresAt = device.expiresAt ? new Date(device.expiresAt).getTime() : null;
+      const lastSeen = device.lastSeen ? new Date(device.lastSeen).getTime() : null;
+
+      let displayStatus = 'pending';
+
+      if (device.active && expiresAt && expiresAt < now) {
+        displayStatus = 'expired';
+      } else if (device.active && lastSeen && now - lastSeen >= 3 * 24 * 60 * 60 * 1000) {
+        displayStatus = 'inactive3d';
+      } else if (device.active) {
+        displayStatus = 'online';
+      }
+
+      return {
+        ...device,
+        layoutObject: device.layout ? layouts.find(l => l.id === device.layout) || null : null,
+        layoutName: device.layout ? (layouts.find(l => l.id === device.layout)?.name || '') : '',
+        displayStatus
+      };
+    });
+
     res.json(devices);
   } catch (error) {
     console.error('GET /devices', error);
@@ -318,7 +416,10 @@ app.get('/devices', (req, res) => {
 app.post('/devices', (req, res) => {
   try {
     const devices = db.getDevices();
-    const device = normalizeDevice(req.body);
+    const device = normalizeDevice({
+      ...req.body,
+      code: req.body.code || generateCode()
+    });
     devices.push(device);
     db.saveDevices(devices);
     res.json({ ok: true, device });

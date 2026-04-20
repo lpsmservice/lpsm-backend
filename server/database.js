@@ -19,6 +19,7 @@ function ensureDir() {
 
 function ensureFile(filePath, defaultValue) {
   ensureDir();
+
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, JSON.stringify(defaultValue, null, 2), 'utf8');
     return;
@@ -85,9 +86,10 @@ function saveResellers(data) {
 function getSettings() {
   return readJson(FILES.settings, {
     companyName: 'LPSM BOX',
+    email: 'admin@lpsm.com',
+    masterPassword: '951753',
     fullName: '',
     cpfCnpj: '',
-    email: '',
     cep: '',
     state: '',
     city: '',
@@ -95,8 +97,7 @@ function getSettings() {
     street: '',
     number: '',
     whatsapp: '',
-    supportHours: '',
-    masterPassword: '951753'
+    supportHours: ''
   });
 }
 
