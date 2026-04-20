@@ -1,22 +1,15 @@
 {
-  "companyPhoto": "",
-  "fantasyName": "",
-  "companyType": "Pessoa física",
-  "companyName": "",
+  "companyName": "LPSM BOX",
+  "email": "lpzovendasg@gmail.com",
+  "masterPassword": "951753",
+  "fullName": "",
   "cpfCnpj": "",
-  "email": "",
-  "twoFactorAuth": false,
   "cep": "",
   "state": "",
   "city": "",
   "district": "",
   "street": "",
   "number": "",
-  "newPassword": "",
-  "masterPassword": "951753",
   "whatsapp": "",
-  "businessHours": "",
-  "paymentApiWhatsapp": "",
-  "externalApiUrl": "",
-  "launcherDownloadUrl": ""
+  "supportHours": ""
 }
