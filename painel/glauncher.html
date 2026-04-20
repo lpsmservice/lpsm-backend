@@ -1,58 +1,294 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LPSM BOX - Gerenciar Launcher</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAUNCHER BOX - Gerenciar launcher</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="topbar">
-    <button id="menuBtn" class="icon-btn">☰</button>
-    <div class="topbar-title">LPSM BOX</div>
-    <div class="icon-btn">🔔</div>
-  </div>
-
   <div id="drawerOverlay" class="drawer-overlay"></div>
 
   <aside id="drawer" class="drawer">
-    <div class="drawer-header">
-      <div class="drawer-title">Menu</div>
-      <button id="drawerClose" class="icon-btn">✕</button>
+    <div class="drawer-profile">
+      <div class="drawer-profile-avatar">
+        <img
+          id="drawerProfileImage"
+          src="https://via.placeholder.com/56x56.png?text=IMG"
+          alt="Imagem"
+          onerror="this.style.display='none'; document.getElementById('drawerProfileFallback').style.display='flex';"
+        >
+        <div id="drawerProfileFallback" class="drawer-profile-fallback" style="display:none;">LP</div>
+      </div>
+
+      <div class="drawer-profile-info">
+        <div class="drawer-profile-name" id="drawerUserName">lpzovendas vacaria rs</div>
+        <div class="drawer-profile-phone" id="drawerUserPhone">📱 54997146384</div>
+      </div>
+
+      <button id="drawerClose" class="drawer-profile-close" aria-label="Fechar menu">×</button>
     </div>
 
     <div class="drawer-menu">
-      <div class="menu-item" data-go="dashboard.html"><span>Dashboard</span></div>
-      <div class="menu-item" data-go="glauncher.html"><span>Gerenciar launcher</span></div>
-      <div class="menu-item" data-go="devices.html"><span>Clientes / dispositivos</span></div>
-      <div class="menu-item" data-go="resellers.html"><span>Revendas</span></div>
-      <div class="menu-item" data-go="settings.html"><span>Configurações</span></div>
+      <a class="drawer-menu-row" href="glauncher.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon">🧩</div>
+          <span>Gerenciar launcher</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
+
+      <a class="drawer-menu-row" href="devices.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon">📁</div>
+          <span>Gerenciar clientes</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
+
+      <a class="drawer-menu-row" href="resellers.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon">👥</div>
+          <span>Gerenciar revendas</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
+
+      <a class="drawer-menu-row" href="notifications.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon">🔔</div>
+          <span>Notificações</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
+
+      <div class="drawer-menu-row drawer-theme-row">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon">🌙</div>
+          <span>Tema escuro</span>
+        </div>
+
+        <label class="drawer-switch">
+          <input type="checkbox" id="themeToggle" checked>
+          <span class="drawer-switch-slider"></span>
+        </label>
+      </div>
+
+      <div class="drawer-section-label">Logs</div>
+
+      <a class="drawer-menu-row" href="logs.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon drawer-menu-icon-gray">📚</div>
+          <span>Logs gerais</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
+
+      <a class="drawer-menu-row" href="creditos-recebidos.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon drawer-menu-icon-gray">🛰</div>
+          <span>Créditos recebidos</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
+
+      <a class="drawer-menu-row" href="recargas-feitas.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon drawer-menu-icon-gray">🛰</div>
+          <span>Recargas feitas</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
+
+      <div class="drawer-section-label">Configurações</div>
+
+      <a class="drawer-menu-row" href="settings.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon drawer-menu-icon-dark">⚙</div>
+          <span>Configurações</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
+    </div>
+
+    <div class="drawer-bottom-bar">
+      <a class="drawer-bottom-btn" href="perfil.html" aria-label="Perfil">◌</a>
+      <a class="drawer-bottom-btn" href="dashboard.html" aria-label="Camadas">◈</a>
+      <a class="drawer-bottom-btn" href="settings.html" aria-label="Configurações">⚙</a>
+      <button class="drawer-bottom-btn" onclick="logout()" aria-label="Sair">⇥</button>
     </div>
   </aside>
 
-  <main class="page">
-    <section class="hero-card">
-      <div class="hero-text">
-        <h1>Gerenciar launcher</h1>
-        <p>Aqui você poderá configurar a launcher de acordo com suas definições.</p>
+  <header class="topbar">
+    <div class="topbar-left">
+      <button id="menuBtn" class="icon-btn" aria-label="Abrir menu">☰</button>
+    </div>
+
+    <div class="topbar-center-title">LAUNCHER BOX</div>
+
+    <div class="topbar-right">
+      <button class="icon-btn bell-btn" aria-label="Notificações">🔔</button>
+    </div>
+  </header>
+
+  <main class="page-dashboard">
+    <section class="credit-box-home" style="margin-top: 0;">
+      <div class="credit-grid-home" style="padding-top: 10px;">
+        <div class="credit-col-side">
+          <div class="mini-pill home-pill-left">
+            <span class="mini-pill-icon">›</span>
+            <span class="mini-pill-text">ANUAL:</span>
+            <span class="mini-pill-value" id="annualCreditsValue">1</span>
+          </div>
+        </div>
+
+        <div class="credit-col-center">
+          <div class="long-pill">
+            <span class="long-pill-icon">📅</span>
+            <span class="long-pill-label">Validade dos créditos:</span>
+            <span class="long-pill-value" id="creditsValidity">15/11/2026 - 19:50</span>
+          </div>
+
+          <div class="long-pill">
+            <span class="long-pill-icon">🧩</span>
+            <span class="long-pill-label">Limite de layouts:</span>
+            <span class="long-pill-value" id="layoutLimitValue">20</span>
+          </div>
+
+          <div class="long-pill">
+            <span class="long-pill-icon">👜</span>
+            <span class="long-pill-label">Limite de aplicativos:</span>
+            <span class="long-pill-value" id="appsLimitValue">1</span>
+          </div>
+        </div>
+
+        <div class="credit-col-side credit-col-side-right">
+          <div class="mini-pill home-pill-right">
+            <span class="mini-pill-icon">›</span>
+            <span class="mini-pill-text">2 ANOS:</span>
+            <span class="mini-pill-value" id="twoYearsCreditsValue">0</span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="creditsBox" class="credits-box"></section>
+    <section class="options-home" style="margin-top: 24px;">
+      <div class="options-home-title">OPÇÕES</div>
 
-    <section class="section-block">
-      <h2>OPÇÕES</h2>
-      <div id="launcherMenu" class="menu-list">
-        <div class="empty-box">Carregando opções...</div>
+      <div class="options-home-list">
+        <a class="home-row" href="layouts.html">
+          <div class="home-row-left">
+            <span>Meus layouts</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="mini-pill-value" style="margin-left:0; min-width:26px; height:26px; font-size:13px;">10</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
+
+        <a class="home-row" href="apps.html">
+          <div class="home-row-left">
+            <span>Meus aplicativos</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="mini-pill-value" style="margin-left:0; min-width:26px; height:26px; font-size:13px;">29</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
+
+        <a class="home-row" href="gavetas-apps.html">
+          <div class="home-row-left">
+            <span>Gavetas de aplicativos</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="mini-pill-value" style="margin-left:0; min-width:26px; height:26px; font-size:13px;">0</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
+
+        <a class="home-row" href="links.html">
+          <div class="home-row-left">
+            <span>Meus links</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="mini-pill-value" style="margin-left:0; min-width:26px; height:26px; font-size:13px;">0</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
+
+        <a class="home-row" href="banners.html">
+          <div class="home-row-left">
+            <span>Meus banners</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="mini-pill-value" style="margin-left:0; min-width:26px; height:26px; font-size:13px;">28</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
+
+        <a class="home-row" href="fundos.html">
+          <div class="home-row-left">
+            <span>Meus planos de fundo (imagens)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="mini-pill-value" style="margin-left:0; min-width:26px; height:26px; font-size:13px;">34</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
+
+        <a class="home-row" href="packs-fundos.html">
+          <div class="home-row-left">
+            <span>Meus packs de planos de fundo</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="mini-pill-value" style="margin-left:0; min-width:26px; height:26px; font-size:13px;">1</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
+
+        <a class="home-row" href="planos-pacotes.html">
+          <div class="home-row-left">
+            <span>Meus planos valores dos pacotes</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="mini-pill-value" style="margin-left:0; min-width:26px; height:26px; font-size:13px;">2</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
+
+        <a class="home-row" href="temas.html">
+          <div class="home-row-left">
+            <span>Meus temas</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="mini-pill-value" style="margin-left:0; min-width:26px; height:26px; font-size:13px;">5</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
       </div>
     </section>
   </main>
 
-  <nav class="bottom-nav">
-    <div class="bottom-item" data-go="dashboard.html">⌂</div>
-    <div class="bottom-item" data-go="devices.html">💬</div>
-    <div class="bottom-item" data-go="glauncher.html">▣</div>
-    <div class="bottom-item" data-go="settings.html">⇧</div>
+  <nav class="bottom-nav-home">
+    <a class="bottom-home-item" href="dashboard.html" aria-label="Início">
+      <span class="bottom-home-icon">⌂</span>
+    </a>
+
+    <a class="bottom-home-item" href="https://wa.me/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+      <span class="bottom-home-icon">◔</span>
+    </a>
+
+    <a class="bottom-home-item" href="devices.html" aria-label="Clientes">
+      <span class="bottom-home-icon">▭</span>
+    </a>
+
+    <a class="bottom-home-item active" href="glauncher.html" aria-label="Launcher">
+      <span class="bottom-home-icon">▦</span>
+    </a>
+
+    <a class="bottom-home-item" href="#top" aria-label="Subir">
+      <span class="bottom-home-icon">↑</span>
+    </a>
   </nav>
 
   <script src="js/app.js"></script>
