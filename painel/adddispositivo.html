@@ -179,6 +179,11 @@
     .wizard-hidden {
       display: none;
     }
+
+    .wizard-loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -212,7 +217,6 @@
   <main class="page-dashboard wizard-page">
     <div class="wizard-error" id="wizardError"></div>
 
-    <!-- ETAPA 1 -->
     <section id="step1">
       <div class="wizard-card">
         <div class="wizard-center-text">
@@ -228,10 +232,9 @@
         </div>
       </div>
 
-      <button class="wizard-primary-btn" id="step1NextBtn">Prosseguir >>></button>
+      <button class="wizard-primary-btn" id="step1NextBtn">Prosseguir &gt;&gt;&gt;</button>
     </section>
 
-    <!-- ETAPA 2 -->
     <section id="step2" class="wizard-hidden">
       <div class="wizard-tip">
         <strong>DICA</strong><br>
@@ -286,7 +289,7 @@
 
           <div class="wizard-help">
             Ao habilitar esta opção, TODOS aplicativos da tela inicial da launcher serão bloqueados após vencer a validade.<br>
-            Irá então aparecer uma mensagem com o plano do cliente e preço (caso você tenha configurado um plano), seu whatsapp e seu pix para que ele possa pagar.<br>
+            Irá então aparecer uma mensagem com o plano do cliente e preço, seu whatsapp e seu pix para que ele possa pagar.<br>
             Para aparecer todos estes dados citados, favor deixar tudo configurado!
           </div>
         </div>
@@ -300,7 +303,7 @@
 
           <div class="wizard-help">
             Ao habilitar esta opção, o sistema irá bloquear os aplicativos após vencer usando os dados de nosso servidor bem como a data e hora do aparelho.<br>
-            ATENÇÃO: Na maioria dos aparelhos o ideal é deixar esta opção ativa, no entanto em alguns pode ocasionar erros.
+            ATENÇÃO: Na maioria dos aparelhos o ideal é deixar esta opção ativa.
           </div>
         </div>
       </div>
@@ -346,6 +349,19 @@
       document.getElementById('wizardError').classList.remove('show');
     }
 
+    function setLoading(loading) {
+      const btn = document.getElementById('step1NextBtn');
+      if (loading) {
+        btn.textContent = 'Verificando...';
+        btn.classList.add('wizard-loading');
+        btn.disabled = true;
+      } else {
+        btn.textContent = 'Prosseguir >>>';
+        btn.classList.remove('wizard-loading');
+        btn.disabled = false;
+      }
+    }
+
     function goToStep2() {
       document.getElementById('step1').classList.add('wizard-hidden');
       document.getElementById('step2').classList.remove('wizard-hidden');
@@ -355,14 +371,16 @@
     }
 
     async function validatePendingDeviceCode(code) {
-      const devices = await apiGet('/devices');
       const normalized = (code || '').trim().toUpperCase();
 
-      return (devices || []).find(device => {
-        const sameCode = (device.code || '').toUpperCase() === normalized;
-        const pending = !device.active || device.status === 'pending';
-        return sameCode && pending;
-      }) || null;
+      const res = await fetch(`${window.location.origin}/launcher/device/${encodeURIComponent(normalized)}`);
+      const data = await res.json();
+
+      if (!res.ok || !data || !data.ok || !data.device) {
+        throw new Error('Falha ao verificar o dispositivo');
+      }
+
+      return data.device;
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
@@ -384,10 +402,11 @@
         }
 
         try {
+          setLoading(true);
           matchedDevice = await validatePendingDeviceCode(code);
 
-          if (!matchedDevice) {
-            showError('NENHUM dispositivo pendente de ativação encontrado com este ID!');
+          if (matchedDevice.active) {
+            showError('Este dispositivo já está ativo e não está pendente de ativação.');
             return;
           }
 
@@ -395,6 +414,8 @@
         } catch (error) {
           console.error(error);
           showError('Erro ao verificar o ID do dispositivo.');
+        } finally {
+          setLoading(false);
         }
       });
 
@@ -407,7 +428,7 @@
         }
 
         hideError();
-        alert('Etapa 2 validada com sucesso. Agora você pode me enviar o próximo print para montarmos a etapa seguinte.');
+        alert('Etapa 2 validada com sucesso. Me envie o próximo print para eu montar a próxima etapa.');
       });
     });
   </script>
