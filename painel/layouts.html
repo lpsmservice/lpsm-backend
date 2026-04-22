@@ -1,209 +1,265 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LPSM BOX - Layouts</title>
-  <style>
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#04152d;color:#fff}
-    .topbar{height:82px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#0b2a55;border-bottom:1px solid rgba(255,255,255,0.08)}
-    .menu-btn,.icon-btn{background:transparent;border:none;color:#fff;font-size:34px;cursor:pointer}
-    .brand{font-size:22px;font-weight:800;letter-spacing:1px}
-    .page{padding:18px;padding-bottom:110px}
-    .action-btn{width:100%;border:none;border-radius:12px;background:#2f76f3;color:#fff;font-size:20px;font-weight:700;padding:18px;margin-bottom:14px;cursor:pointer}
-    .tools-row{display:grid;grid-template-columns:150px 1fr 150px;gap:12px;margin:18px 0}
-    .tools-row button,.tools-row input{height:56px;border-radius:12px;border:none;font-size:18px;padding:0 18px;box-sizing:border-box}
-    .tools-row input{background:#0d2344;color:#fff;outline:none;border:1px solid rgba(255,255,255,0.08)}
-    .secondary-btn{background:#7285a4;color:#fff;font-weight:700;cursor:pointer}
-    .section-title{font-size:18px;font-weight:800;margin:24px 0 10px;text-transform:uppercase}
-    .layout-list{display:flex;flex-direction:column;gap:14px}
-    .layout-card{background:#0a2346;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,0.06)}
-    .layout-head{display:flex;justify-content:space-between;align-items:center;padding:18px;cursor:pointer;font-size:18px;font-weight:700}
-    .layout-body{display:none;padding:0 18px 18px;border-top:1px solid rgba(255,255,255,0.06)}
-    .layout-body.open{display:block}
-    .row-action{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer;font-size:18px}
-    .row-action:last-child{border-bottom:none}
-    .data-grid{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(255,255,255,0.05);border-radius:14px;overflow:hidden}
-    .data-cell{padding:18px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);border-top:1px solid rgba(255,255,255,0.05);font-size:17px}
-    .data-cell:nth-child(2n){border-right:none}
-    .empty-box{background:#0a2346;border-radius:18px;padding:24px;color:#c9d5ea;font-size:18px}
-    .bottom-nav{position:fixed;left:0;right:0;bottom:0;height:72px;background:#0b2348;display:flex;align-items:center;justify-content:space-around;border-top:1px solid rgba(255,255,255,0.08)}
-    .bottom-nav a{color:#fff;text-decoration:none;font-size:30px}
-    @media (max-width:900px){.tools-row{grid-template-columns:1fr}.data-grid{grid-template-columns:1fr}.data-cell{border-right:none}}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAUNCHER BOX - Meus layouts</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="topbar">
-    <button class="menu-btn" onclick="window.location.href='dashboard.html'">☰</button>
-    <div class="brand">LPSM BOX</div>
-    <button class="icon-btn">🔔</button>
-  </div>
+  <div id="drawerOverlay" class="drawer-overlay"></div>
 
-  <div class="page">
-    <button class="action-btn" onclick="alert('Tela ADD LAYOUT completa eu faço no próximo passo.')">ADD LAYOUT</button>
-    <button class="action-btn" onclick="copyLayout()">COPIAR LAYOUT</button>
+  <aside id="drawer" class="drawer">
+    <div class="drawer-profile">
+      <div class="drawer-profile-avatar">
+        <img
+          id="drawerProfileImage"
+          src="https://via.placeholder.com/56x56.png?text=IMG"
+          alt="Imagem"
+          onerror="this.style.display='none'; document.getElementById('drawerProfileFallback').style.display='flex';"
+        >
+        <div id="drawerProfileFallback" class="drawer-profile-fallback" style="display:none;">LP</div>
+      </div>
 
-    <div class="tools-row">
-      <button class="secondary-btn" onclick="loadLayouts()">EXIBIR</button>
-      <input id="searchInput" type="text" placeholder="Buscar layout" />
-      <button class="secondary-btn" onclick="filterLayouts()">BUSCAR</button>
+      <div class="drawer-profile-info">
+        <div class="drawer-profile-name" id="drawerUserName">lpzovendas vacaria rs</div>
+        <div class="drawer-profile-phone" id="drawerUserPhone">📱 54997146384</div>
+      </div>
+
+      <button id="drawerClose" class="drawer-profile-close" aria-label="Fechar menu">×</button>
     </div>
 
-    <div class="section-title">LAYOUTS MEUS:</div>
-    <div id="layoutsList" class="layout-list"></div>
-  </div>
+    <div class="drawer-menu">
+      <a class="drawer-menu-row" href="launcher.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon">🧩</div>
+          <span>Gerenciar launcher</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
 
-  <div class="bottom-nav">
-    <a href="dashboard.html">⌂</a>
-    <a href="resellers.html">💬</a>
-    <a href="devices.html">▣</a>
-    <a href="glauncher.html">▦</a>
-    <a href="#">⇧</a>
-  </div>
+      <a class="drawer-menu-row" href="devices.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon">📁</div>
+          <span>Gerenciar clientes</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
 
-  <script src="js/app.js"></script>
-  <script>
-    let ALL_LAYOUTS = [];
-    let ALL_DEVICES = [];
+      <a class="drawer-menu-row" href="resellers.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon">👥</div>
+          <span>Gerenciar revendas</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
 
-    async function loadLayouts() {
-      try {
-        const [layouts, devices] = await Promise.all([
-          apiGet('/layouts'),
-          apiGet('/devices')
-        ]);
+      <a class="drawer-menu-row" href="notifications.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon">🔔</div>
+          <span>Notificações</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
 
-        ALL_LAYOUTS = Array.isArray(layouts) ? layouts : [];
-        ALL_DEVICES = Array.isArray(devices) ? devices : [];
-        renderLayouts(ALL_LAYOUTS);
-      } catch (e) {
-        alert('Erro ao carregar layouts');
-        console.error(e);
-      }
-    }
+      <div class="drawer-menu-row drawer-theme-row">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon">🌙</div>
+          <span>Tema escuro</span>
+        </div>
 
-    function devicesUsingLayout(layoutId) {
-      return ALL_DEVICES.filter(d => d.layout === layoutId || d.layoutId === layoutId).length;
-    }
+        <label class="drawer-switch">
+          <input type="checkbox" id="themeToggle" checked>
+          <span class="drawer-switch-slider"></span>
+        </label>
+      </div>
 
-    function buildLayoutCard(layout) {
-      const createdAt = layout.createdAt ? new Date(layout.createdAt).toLocaleString('pt-BR') : '-';
-      const appsCount = Array.isArray(layout.apps) ? layout.apps.length : 0;
-      const bannersCount = Array.isArray(layout.banners) ? layout.banners.length : 0;
+      <div class="drawer-section-label">Logs</div>
 
-      return `
-        <div class="layout-card">
-          <div class="layout-head" onclick="toggleBody('${layout.id}')">
-            <span>${layout.name || 'Novo layout'}</span>
-            <span>⌄</span>
-          </div>
+      <a class="drawer-menu-row" href="logs.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon drawer-menu-icon-gray">📚</div>
+          <span>Logs gerais</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
 
-          <div id="body-${layout.id}" class="layout-body">
-            <div class="row-action" onclick="goManageApps('${layout.id}')">
-              <span>Escolher aplicativos do layout</span>
-              <span>›</span>
-            </div>
+      <a class="drawer-menu-row" href="creditos-recebidos.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon drawer-menu-icon-gray">🛰</div>
+          <span>Créditos recebidos</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
 
-            <div class="row-action" onclick="renameLayout('${layout.id}', '${(layout.name || '').replace(/'/g, "\\'")}')">
-              <span>Alterar nome do layout</span>
-              <span>›</span>
-            </div>
+      <a class="drawer-menu-row" href="recargas-feitas.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon drawer-menu-icon-gray">🛰</div>
+          <span>Recargas feitas</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
 
-            <div class="row-action" onclick="deleteLayout('${layout.id}')">
-              <span>Excluir</span>
-              <span>›</span>
-            </div>
+      <div class="drawer-section-label">Configurações</div>
 
-            <div class="data-grid">
-              <div class="data-cell"><strong>QTD Dispositivos</strong><br>${devicesUsingLayout(layout.id)}</div>
-              <div class="data-cell"><strong>Última alteração</strong><br>${createdAt}</div>
-              <div class="data-cell"><strong>Apps no layout</strong><br>${appsCount}</div>
-              <div class="data-cell"><strong>Banners</strong><br>${bannersCount}</div>
-            </div>
+      <a class="drawer-menu-row" href="configuracoes.html">
+        <div class="drawer-menu-left">
+          <div class="drawer-menu-icon drawer-menu-icon-dark">⚙</div>
+          <span>Configurações</span>
+        </div>
+        <span class="drawer-menu-arrow">›</span>
+      </a>
+    </div>
+
+    <div class="drawer-bottom-bar">
+      <a class="drawer-bottom-btn" href="perfil.html" aria-label="Perfil">◌</a>
+      <a class="drawer-bottom-btn" href="dashboard.html" aria-label="Camadas">◈</a>
+      <a class="drawer-bottom-btn" href="configuracoes.html" aria-label="Configurações">⚙</a>
+      <button class="drawer-bottom-btn" onclick="logout()" aria-label="Sair">⇥</button>
+    </div>
+  </aside>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <button id="menuBtn" class="icon-btn" aria-label="Abrir menu">☰</button>
+    </div>
+
+    <div class="topbar-center-title">LAUNCHER BOX</div>
+
+    <div class="topbar-right">
+      <button class="icon-btn bell-btn" aria-label="Notificações">🔔</button>
+    </div>
+  </header>
+
+  <main class="page-dashboard">
+    <section class="credit-box-home" style="margin-top:0;">
+      <div class="credit-grid-home" style="padding-top:10px;">
+        <div class="credit-col-side">
+          <div class="mini-pill home-pill-left">
+            <span class="mini-pill-icon">›</span>
+            <span class="mini-pill-text">ANUAL:</span>
+            <span class="mini-pill-value" id="annualCreditsValue">1</span>
           </div>
         </div>
-      `;
-    }
 
-    function renderLayouts(layouts) {
-      const box = document.getElementById('layoutsList');
+        <div class="credit-col-center">
+          <div class="long-pill">
+            <span class="long-pill-icon">📅</span>
+            <span class="long-pill-label">Validade dos créditos:</span>
+            <span class="long-pill-value" id="creditsValidity">15/11/2026 - 19:50</span>
+          </div>
 
-      if (!layouts.length) {
-        box.innerHTML = `<div class="empty-box">Nenhum layout cadastrado ainda.</div>`;
-        return;
-      }
+          <div class="long-pill">
+            <span class="long-pill-icon">🧩</span>
+            <span class="long-pill-label">Limite de layouts:</span>
+            <span class="long-pill-value" id="layoutLimitValue">20</span>
+          </div>
 
-      box.innerHTML = layouts.map(buildLayoutCard).join('');
-    }
+          <div class="long-pill">
+            <span class="long-pill-icon">👜</span>
+            <span class="long-pill-label">Limite de aplicativos:</span>
+            <span class="long-pill-value" id="appsLimitValue">1</span>
+          </div>
+        </div>
 
-    function toggleBody(id) {
-      document.getElementById(`body-${id}`).classList.toggle('open');
-    }
+        <div class="credit-col-side credit-col-side-right">
+          <div class="mini-pill home-pill-right">
+            <span class="mini-pill-icon">›</span>
+            <span class="mini-pill-text">2 ANOS:</span>
+            <span class="mini-pill-value" id="twoYearsCreditsValue">0</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    function filterLayouts() {
-      const term = document.getElementById('searchInput').value.toLowerCase().trim();
-      if (!term) {
-        renderLayouts(ALL_LAYOUTS);
-        return;
-      }
+    <section class="options-home" style="margin-top:24px;">
+      <div class="options-home-title">MEUS LAYOUTS</div>
 
-      const filtered = ALL_LAYOUTS.filter(l =>
-        (l.name || '').toLowerCase().includes(term)
-      );
+      <div class="options-home-list">
+        <a class="home-row" href="layout-editor.html">
+          <div class="home-row-left">
+            <span>Layout Principal</span>
+          </div>
+          <div class="launcher-count-wrap">
+            <span class="launcher-count-badge">1</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
 
-      renderLayouts(filtered);
-    }
+        <a class="home-row" href="layout-editor.html">
+          <div class="home-row-left">
+            <span>Layout Cliente 01</span>
+          </div>
+          <div class="launcher-count-wrap">
+            <span class="launcher-count-badge">2</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
 
-    function goManageApps(id) {
-      alert(`Gerenciar apps do layout ${id}\n\nNa próxima etapa eu te entrego a tela completa para escolher apps, banner e fundo.`);
-    }
+        <a class="home-row" href="layout-editor.html">
+          <div class="home-row-left">
+            <span>Layout Cliente 02</span>
+          </div>
+          <div class="launcher-count-wrap">
+            <span class="launcher-count-badge">3</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
 
-    async function renameLayout(id, oldName) {
-      const newName = prompt('Novo nome do layout:', oldName || '');
-      if (!newName) return;
+        <a class="home-row" href="layout-editor.html">
+          <div class="home-row-left">
+            <span>Layout Tema Azul</span>
+          </div>
+          <div class="launcher-count-wrap">
+            <span class="launcher-count-badge">4</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
 
-      try {
-        const layout = ALL_LAYOUTS.find(l => l.id === id);
-        if (!layout) return;
+        <a class="home-row" href="layout-editor.html">
+          <div class="home-row-left">
+            <span>Layout Tema Escuro</span>
+          </div>
+          <div class="launcher-count-wrap">
+            <span class="launcher-count-badge">5</span>
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
 
-        const json = await apiPut(`/layouts/${id}`, {
-          ...layout,
-          name: newName
-        });
+        <a class="home-row" href="novo-layout.html">
+          <div class="home-row-left">
+            <span>+ Criar novo layout</span>
+          </div>
+          <div class="launcher-count-wrap">
+            <span class="home-row-arrow">›</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
 
-        if (!json.ok) {
-          alert(json.message || 'Erro ao renomear layout');
-          return;
-        }
+  <nav class="bottom-nav-home">
+    <a class="bottom-home-item" href="dashboard.html" aria-label="Início">
+      <span class="bottom-home-icon">⌂</span>
+    </a>
 
-        loadLayouts();
-      } catch (e) {
-        alert('Erro ao renomear layout');
-        console.error(e);
-      }
-    }
+    <a class="bottom-home-item" href="https://wa.me/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+      <span class="bottom-home-icon">◔</span>
+    </a>
 
-    async function deleteLayout(id) {
-      if (!confirm('Deseja realmente excluir este layout?')) return;
+    <a class="bottom-home-item" href="devices.html" aria-label="Clientes">
+      <span class="bottom-home-icon">▭</span>
+    </a>
 
-      try {
-        const json = await apiDelete(`/layouts/${id}`);
-        if (!json.ok) {
-          alert(json.message || 'Erro ao excluir layout');
-          return;
-        }
-        loadLayouts();
-      } catch (e) {
-        alert('Erro ao excluir layout');
-        console.error(e);
-      }
-    }
+    <a class="bottom-home-item active" href="launcher.html" aria-label="Launcher">
+      <span class="bottom-home-icon">▦</span>
+    </a>
 
-    function copyLayout() {
-      alert('A cópia do layout eu monto no próximo passo sem quebrar o painel.');
-    }
+    <a class="bottom-home-item" href="#top" aria-label="Subir">
+      <span class="bottom-home-icon">↑</span>
+    </a>
+  </nav>
 
-    loadLayouts();
-  </script>
+  <script src="js/app.js"></script>
 </body>
 </html>
