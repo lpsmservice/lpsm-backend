@@ -6,10 +6,7 @@
   <title>LAUNCHER BOX - Adicionar dispositivo</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .wizard-page {
-      padding-bottom: 92px;
-    }
-
+    .wizard-page { padding-bottom: 92px; }
     .wizard-topbar {
       height: 58px;
       background: #2f7cff;
@@ -20,7 +17,6 @@
       font-size: 18px;
       font-weight: 700;
     }
-
     .wizard-back {
       position: absolute;
       left: 18px;
@@ -33,23 +29,18 @@
       cursor: pointer;
       line-height: 1;
     }
-
     .wizard-steps {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      align-items: center;
       padding: 16px 8px 10px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
       background: #0d1f3b;
     }
-
     .wizard-step {
       text-align: center;
       color: #7f90a8;
       font-size: 13px;
     }
-
     .wizard-step-circle {
       width: 26px;
       height: 26px;
@@ -62,20 +53,8 @@
       font-weight: 700;
       margin-bottom: 6px;
     }
-
-    .wizard-step.active {
-      color: #ffffff;
-    }
-
-    .wizard-step.active .wizard-step-circle {
-      background: #2f7cff;
-      color: #fff;
-    }
-
-    .wizard-step.done .wizard-step-circle {
-      background: #213552;
-      color: #9fb1cb;
-    }
+    .wizard-step.active { color: #fff; }
+    .wizard-step.active .wizard-step-circle { background: #2f7cff; color: #fff; }
 
     .wizard-card {
       background: #0b2042;
@@ -84,7 +63,6 @@
       border-top: 1px solid rgba(255,255,255,0.05);
       border-bottom: 1px solid rgba(255,255,255,0.05);
     }
-
     .wizard-center-text {
       text-align: center;
       line-height: 1.8;
@@ -100,10 +78,18 @@
       display: none;
       line-height: 1.6;
     }
+    .wizard-error.show { display: block; }
 
-    .wizard-error.show {
-      display: block;
+    .wizard-success {
+      background: #20b15a;
+      color: #fff;
+      padding: 14px 18px;
+      margin: 14px 10px 0;
+      border-radius: 10px;
+      display: none;
+      line-height: 1.6;
     }
+    .wizard-success.show { display: block; }
 
     .wizard-tip {
       background: #5f2bd2;
@@ -122,10 +108,7 @@
       padding: 18px;
     }
 
-    .wizard-field {
-      margin-bottom: 16px;
-    }
-
+    .wizard-field { margin-bottom: 16px; }
     .wizard-label {
       display: block;
       font-size: 15px;
@@ -176,10 +159,7 @@
       cursor: pointer;
     }
 
-    .wizard-hidden {
-      display: none;
-    }
-
+    .wizard-hidden { display: none; }
     .wizard-loading {
       opacity: 0.7;
       pointer-events: none;
@@ -208,7 +188,7 @@
       <div>Config. Dispositivo</div>
     </div>
 
-    <div class="wizard-step done" id="stepHead4">
+    <div class="wizard-step" id="stepHead4">
       <div class="wizard-step-circle">✓</div>
       <div>Conclusão</div>
     </div>
@@ -216,6 +196,7 @@
 
   <main class="page-dashboard wizard-page">
     <div class="wizard-error" id="wizardError"></div>
+    <div class="wizard-success" id="wizardSuccess"></div>
 
     <section id="step1">
       <div class="wizard-card">
@@ -308,7 +289,7 @@
         </div>
       </div>
 
-      <button class="wizard-primary-btn" id="step2NextBtn">Prosseguir</button>
+      <button class="wizard-primary-btn" id="step2NextBtn">Ativar dispositivo</button>
     </section>
   </main>
 
@@ -342,21 +323,33 @@
       const box = document.getElementById('wizardError');
       box.innerHTML = `<strong>ERRO</strong><br>${message}`;
       box.classList.add('show');
+      document.getElementById('wizardSuccess').classList.remove('show');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function hideError() {
+    function showSuccess(message) {
+      const box = document.getElementById('wizardSuccess');
+      box.innerHTML = `<strong>SUCESSO</strong><br>${message}`;
+      box.classList.add('show');
       document.getElementById('wizardError').classList.remove('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function setLoading(loading) {
-      const btn = document.getElementById('step1NextBtn');
+    function hideMessages() {
+      document.getElementById('wizardError').classList.remove('show');
+      document.getElementById('wizardSuccess').classList.remove('show');
+    }
+
+    function setLoading(buttonId, loading, textLoading, textNormal) {
+      const btn = document.getElementById(buttonId);
+      if (!btn) return;
+
       if (loading) {
-        btn.textContent = 'Verificando...';
+        btn.textContent = textLoading;
         btn.classList.add('wizard-loading');
         btn.disabled = true;
       } else {
-        btn.textContent = 'Prosseguir >>>';
+        btn.textContent = textNormal;
         btn.classList.remove('wizard-loading');
         btn.disabled = false;
       }
@@ -398,9 +391,7 @@
         const found = devices.find(d => (d.code || '').toUpperCase() === normalized);
 
         if (found) {
-          if (found.active) {
-            return { status: 'active', device: found };
-          }
+          if (found.active) return { status: 'active', device: found };
           return { status: 'pending', device: found };
         }
       } catch (err) {
@@ -408,12 +399,54 @@
       }
 
       const launcherDevice = await fetchLauncherDevice(normalized);
+      if (launcherDevice.active) return { status: 'active', device: launcherDevice };
+      return { status: 'pending', device: launcherDevice };
+    }
 
-      if (launcherDevice.active) {
-        return { status: 'active', device: launcherDevice };
+    async function activateDevice() {
+      const clientName = (document.getElementById('clientName').value || '').trim();
+      const clientPhone = (document.getElementById('clientPhone').value || '').trim();
+      const clientObs = (document.getElementById('clientObs').value || '').trim();
+      const clientPlan = (document.getElementById('clientPlan').value || '').trim();
+      const clientExpireDate = (document.getElementById('clientExpireDate').value || '').trim();
+      const blockOnExpire = (document.getElementById('clientBlockOnExpire').value || '').trim();
+      const forceBlockWrongTime = (document.getElementById('clientForceBlock').value || '').trim();
+
+      if (!clientName) {
+        showError('Informe o nome do cliente para prosseguir.');
+        return;
       }
 
-      return { status: 'pending', device: launcherDevice };
+      if (!matchedDevice || !matchedDevice.id) {
+        showError('Dispositivo não identificado corretamente.');
+        return;
+      }
+
+      const body = {
+        name: clientName,
+        phone: clientPhone,
+        notes: clientObs,
+        planName: clientPlan,
+        expiresAt: clientExpireDate ? `${clientExpireDate}T12:00:00` : null,
+        blockOnExpire,
+        forceBlockWrongTime,
+        type: 'annual'
+      };
+
+      const res = await fetch(`${window.location.origin}/devices/${matchedDevice.id}/complete-activation`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        throw new Error(data.message || 'Erro ao ativar dispositivo');
+      }
+
+      matchedDevice = data.device;
+      return data.device;
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
@@ -425,7 +458,7 @@
       document.getElementById('clientExpireDate').value = today.toISOString().slice(0, 10);
 
       document.getElementById('step1NextBtn').addEventListener('click', async () => {
-        hideError();
+        hideMessages();
 
         const code = (document.getElementById('deviceCodeInput').value || '').trim().toUpperCase();
 
@@ -435,7 +468,7 @@
         }
 
         try {
-          setLoading(true);
+          setLoading('step1NextBtn', true, 'Verificando...', 'Prosseguir >>>');
 
           const result = await validateCode(code);
           matchedDevice = result.device;
@@ -450,20 +483,28 @@
           console.error(error);
           showError('Erro ao verificar o ID do dispositivo.');
         } finally {
-          setLoading(false);
+          setLoading('step1NextBtn', false, 'Verificando...', 'Prosseguir >>>');
         }
       });
 
-      document.getElementById('step2NextBtn').addEventListener('click', () => {
-        const clientName = (document.getElementById('clientName').value || '').trim();
+      document.getElementById('step2NextBtn').addEventListener('click', async () => {
+        hideMessages();
 
-        if (!clientName) {
-          showError('Informe o nome do cliente para prosseguir.');
-          return;
+        try {
+          setLoading('step2NextBtn', true, 'Ativando...', 'Ativar dispositivo');
+          const device = await activateDevice();
+
+          showSuccess(`Dispositivo ativado com sucesso. Código: ${device.code}`);
+
+          setTimeout(() => {
+            window.location.href = 'devices.html';
+          }, 1800);
+        } catch (error) {
+          console.error(error);
+          showError(error.message || 'Erro ao ativar o dispositivo.');
+        } finally {
+          setLoading('step2NextBtn', false, 'Ativando...', 'Ativar dispositivo');
         }
-
-        hideError();
-        alert('Etapa 2 validada com sucesso. Me envie o próximo print para eu montar a próxima etapa.');
       });
     });
   </script>
