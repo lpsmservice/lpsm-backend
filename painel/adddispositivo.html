@@ -363,30 +363,25 @@
       document.getElementById('stepHead2').classList.add('active');
     }
 
-    async function fetchDevicesList() {
-      const res = await fetch(`${window.location.origin}/devices`);
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message || 'Erro ao carregar dispositivos');
-      }
-      return Array.isArray(data) ? data : [];
-    }
-
     async function validateCode(code) {
       const normalized = (code || '').trim().toUpperCase();
-      const devices = await fetchDevicesList();
 
-      const found = devices.find(d => (d.code || '').toUpperCase() === normalized);
+      const res = await fetch(`${window.location.origin}/launcher/device/${encodeURIComponent(normalized)}?checkOnly=1`);
+      const data = await res.json().catch(() => ({}));
 
-      if (!found) {
+      if (res.status === 404) {
         return { status: 'not_found', device: null };
       }
 
-      if (found.active) {
-        return { status: 'active', device: found };
+      if (!res.ok || !data || !data.ok || !data.device) {
+        throw new Error(data.message || 'Erro ao verificar o dispositivo');
       }
 
-      return { status: 'pending', device: found };
+      if (data.device.active) {
+        return { status: 'active', device: data.device };
+      }
+
+      return { status: 'pending', device: data.device };
     }
 
     async function activateDevice() {
@@ -459,7 +454,7 @@
           const result = await validateCode(code);
 
           if (result.status === 'not_found') {
-            showError('Código inválido ou não registrado pela launcher.');
+            showError('Código inválido ou ainda não registrado pela launcher.');
             return;
           }
 
@@ -472,7 +467,7 @@
           goToStep2();
         } catch (error) {
           console.error(error);
-          showError('Erro ao verificar o ID do dispositivo.');
+          showError(error.message || 'Erro ao verificar o ID do dispositivo.');
         } finally {
           setLoading('step1NextBtn', false, 'Verificando...', 'Prosseguir >>>');
         }

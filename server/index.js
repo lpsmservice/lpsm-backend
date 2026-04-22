@@ -695,19 +695,32 @@ app.post('/resellers/:id/add-credits', (req, res) => {
 app.get('/launcher/device/:code', (req, res) => {
   try {
     const devices = db.getDevices();
-    let device = devices.find(d => d.code === req.params.code);
+    const code = String(req.params.code || '').trim().toUpperCase();
+    const checkOnly = String(req.query.checkOnly || '') === '1';
+
+    let device = devices.find(d => String(d.code || '').trim().toUpperCase() === code);
 
     if (!device) {
+      if (checkOnly) {
+        return res.status(404).json({
+          ok: false,
+          message: 'Código não registrado'
+        });
+      }
+
       device = normalizeDevice({
-        code: req.params.code,
+        code,
         active: false,
         status: 'pending'
       });
+
       devices.push(device);
       db.saveDevices(devices);
     } else {
-      device.lastSeen = new Date().toISOString();
-      db.saveDevices(devices);
+      if (!checkOnly) {
+        device.lastSeen = new Date().toISOString();
+        db.saveDevices(devices);
+      }
     }
 
     const layouts = db.getLayouts();
