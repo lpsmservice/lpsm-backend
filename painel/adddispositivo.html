@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAUNCHER BOX - Adicionar dispositivo</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .wizard-page {
+      padding-bottom: 92px;
+    }
+
+    .wizard-topbar {
+      height: 58px;
+      background: #2f7cff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .wizard-back {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 34px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .wizard-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      align-items: center;
+      padding: 16px 8px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: #0d1f3b;
+    }
+
+    .wizard-step {
+      text-align: center;
+      color: #7f90a8;
+      font-size: 13px;
+    }
+
+    .wizard-step-circle {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: #213552;
+      color: #9fb1cb;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .wizard-step.active {
+      color: #ffffff;
+    }
+
+    .wizard-step.active .wizard-step-circle {
+      background: #2f7cff;
+      color: #fff;
+    }
+
+    .wizard-step.done .wizard-step-circle {
+      background: #213552;
+      color: #9fb1cb;
+    }
+
+    .wizard-card {
+      background: #0b2042;
+      margin-top: 16px;
+      padding: 18px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .wizard-center-text {
+      text-align: center;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    .wizard-error {
+      background: #f44336;
+      color: #fff;
+      padding: 14px 18px;
+      margin: 14px 10px 0;
+      border-radius: 10px;
+      display: none;
+      line-height: 1.6;
+    }
+
+    .wizard-error.show {
+      display: block;
+    }
+
+    .wizard-tip {
+      background: #5f2bd2;
+      color: #fff;
+      padding: 14px 18px;
+      margin: 16px 10px 0;
+      border-radius: 10px;
+      line-height: 1.6;
+    }
+
+    .wizard-form-wrap {
+      margin-top: 18px;
+      background: #0b2042;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 18px;
+    }
+
+    .wizard-field {
+      margin-bottom: 16px;
+    }
+
+    .wizard-label {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 8px;
+      color: #dbe8fb;
+    }
+
+    .wizard-input,
+    .wizard-select,
+    .wizard-textarea {
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      background: #1c2e49;
+      color: #fff;
+      padding: 0 14px;
+      font-size: 15px;
+    }
+
+    .wizard-input,
+    .wizard-select {
+      height: 46px;
+    }
+
+    .wizard-textarea {
+      min-height: 70px;
+      padding-top: 12px;
+      resize: vertical;
+    }
+
+    .wizard-help {
+      color: #ffffff;
+      line-height: 1.8;
+      font-size: 15px;
+      margin-top: 8px;
+    }
+
+    .wizard-primary-btn {
+      width: calc(100% - 20px);
+      margin: 22px 10px 0;
+      height: 50px;
+      border: none;
+      border-radius: 8px;
+      background: #2f7cff;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .wizard-hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="wizard-topbar">
+    <button class="wizard-back" onclick="window.location.href='devices.html'">‹</button>
+    Adicionar dispositivo
+  </div>
+
+  <div class="wizard-steps">
+    <div class="wizard-step active" id="stepHead1">
+      <div class="wizard-step-circle">1</div>
+      <div>ID dispositivo</div>
+    </div>
+
+    <div class="wizard-step" id="stepHead2">
+      <div class="wizard-step-circle">2</div>
+      <div>Config. Cliente</div>
+    </div>
+
+    <div class="wizard-step" id="stepHead3">
+      <div class="wizard-step-circle">3</div>
+      <div>Config. Dispositivo</div>
+    </div>
+
+    <div class="wizard-step done" id="stepHead4">
+      <div class="wizard-step-circle">✓</div>
+      <div>Conclusão</div>
+    </div>
+  </div>
+
+  <main class="page-dashboard wizard-page">
+    <div class="wizard-error" id="wizardError"></div>
+
+    <!-- ETAPA 1 -->
+    <section id="step1">
+      <div class="wizard-card">
+        <div class="wizard-center-text">
+          Procure pelo ID do dispositivo.<br>
+          <strong>ATENÇÃO no ID não existe a letra O, portanto sempre que aparece O será o número ZERO!</strong>
+        </div>
+      </div>
+
+      <div class="wizard-form-wrap">
+        <div class="wizard-field">
+          <label class="wizard-label">ID do dispositivo</label>
+          <input id="deviceCodeInput" class="wizard-input" type="text" placeholder="Informe o ID">
+        </div>
+      </div>
+
+      <button class="wizard-primary-btn" id="step1NextBtn">Prosseguir >>></button>
+    </section>
+
+    <!-- ETAPA 2 -->
+    <section id="step2" class="wizard-hidden">
+      <div class="wizard-tip">
+        <strong>DICA</strong><br>
+        Quanto mais informações completar, melhor ficará para poder gerenciar seu cliente depois.<br>
+        Você poderá editar posteriormente estes dados.
+      </div>
+
+      <div class="wizard-card">
+        <div class="wizard-center-text">
+          Informe abaixo os dados do cliente que irá usar a launcher.<br>
+          <span style="color:#b5c3d8;">ATENÇÃO: apenas o nome é obrigatório, os demais dados são opcionais.</span><br>
+          <span style="color:#b5c3d8;">No entanto recomendamos que os preencher para poder gerenciar a conta de seu cliente futuramente.</span>
+        </div>
+      </div>
+
+      <div class="wizard-form-wrap">
+        <div class="wizard-field">
+          <label class="wizard-label">Nome do cliente</label>
+          <input id="clientName" class="wizard-input" type="text">
+        </div>
+
+        <div class="wizard-field">
+          <label class="wizard-label">Telefone Whatsapp</label>
+          <input id="clientPhone" class="wizard-input" type="text">
+        </div>
+
+        <div class="wizard-field">
+          <label class="wizard-label">Observações <span style="font-size:12px;color:#8ea0bb;">(80 caracteres restantes)</span></label>
+          <textarea id="clientObs" class="wizard-textarea" placeholder="Observações sobre o cliente (máx. 80 caracteres)"></textarea>
+        </div>
+
+        <div class="wizard-field">
+          <label class="wizard-label">Plano</label>
+          <select id="clientPlan" class="wizard-select">
+            <option>PLANO(com desconto) R$45.00 mensal</option>
+            <option>PLANO normal R$50.00 mensal</option>
+            <option>Teste grátis</option>
+          </select>
+        </div>
+
+        <div class="wizard-field">
+          <label class="wizard-label">Data vencimento deste cliente</label>
+          <input id="clientExpireDate" class="wizard-input" type="date">
+        </div>
+
+        <div class="wizard-field">
+          <label class="wizard-label">Bloquear aplicativos após vencer?</label>
+          <select id="clientBlockOnExpire" class="wizard-select">
+            <option>NÃO</option>
+            <option>SIM</option>
+          </select>
+
+          <div class="wizard-help">
+            Ao habilitar esta opção, TODOS aplicativos da tela inicial da launcher serão bloqueados após vencer a validade.<br>
+            Irá então aparecer uma mensagem com o plano do cliente e preço (caso você tenha configurado um plano), seu whatsapp e seu pix para que ele possa pagar.<br>
+            Para aparecer todos estes dados citados, favor deixar tudo configurado!
+          </div>
+        </div>
+
+        <div class="wizard-field">
+          <label class="wizard-label">Ativar bloqueio caso a data e hora estiverem erradas?</label>
+          <select id="clientForceBlock" class="wizard-select">
+            <option>SIM</option>
+            <option>NÃO</option>
+          </select>
+
+          <div class="wizard-help">
+            Ao habilitar esta opção, o sistema irá bloquear os aplicativos após vencer usando os dados de nosso servidor bem como a data e hora do aparelho.<br>
+            ATENÇÃO: Na maioria dos aparelhos o ideal é deixar esta opção ativa, no entanto em alguns pode ocasionar erros.
+          </div>
+        </div>
+      </div>
+
+      <button class="wizard-primary-btn" id="step2NextBtn">Prosseguir</button>
+    </section>
+  </main>
+
+  <nav class="bottom-nav-home">
+    <a class="bottom-home-item" href="dashboard.html" aria-label="Início">
+      <span class="bottom-home-icon">⌂</span>
+    </a>
+
+    <a class="bottom-home-item" href="https://wa.me/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+      <span class="bottom-home-icon">◔</span>
+    </a>
+
+    <a class="bottom-home-item active" href="devices.html" aria-label="Clientes">
+      <span class="bottom-home-icon">▭</span>
+    </a>
+
+    <a class="bottom-home-item" href="launcher.html" aria-label="Launcher">
+      <span class="bottom-home-icon">▦</span>
+    </a>
+
+    <a class="bottom-home-item" href="#top" aria-label="Subir">
+      <span class="bottom-home-icon">↑</span>
+    </a>
+  </nav>
+
+  <script src="js/app.js"></script>
+  <script>
+    let matchedDevice = null;
+
+    function showError(message) {
+      const box = document.getElementById('wizardError');
+      box.innerHTML = `<strong>ERRO</strong><br>${message}`;
+      box.classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function hideError() {
+      document.getElementById('wizardError').classList.remove('show');
+    }
+
+    function goToStep2() {
+      document.getElementById('step1').classList.add('wizard-hidden');
+      document.getElementById('step2').classList.remove('wizard-hidden');
+
+      document.getElementById('stepHead1').classList.remove('active');
+      document.getElementById('stepHead2').classList.add('active');
+    }
+
+    async function validatePendingDeviceCode(code) {
+      const devices = await apiGet('/devices');
+      const normalized = (code || '').trim().toUpperCase();
+
+      return (devices || []).find(device => {
+        const sameCode = (device.code || '').toUpperCase() === normalized;
+        const pending = !device.active || device.status === 'pending';
+        return sameCode && pending;
+      }) || null;
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      authGuard();
+      if (typeof bindThemeToggle === 'function') bindThemeToggle();
+
+      const today = new Date();
+      today.setDate(today.getDate() + 3);
+      document.getElementById('clientExpireDate').value = today.toISOString().slice(0, 10);
+
+      document.getElementById('step1NextBtn').addEventListener('click', async () => {
+        hideError();
+
+        const code = (document.getElementById('deviceCodeInput').value || '').trim().toUpperCase();
+
+        if (!code) {
+          showError('Informe o ID do dispositivo.');
+          return;
+        }
+
+        try {
+          matchedDevice = await validatePendingDeviceCode(code);
+
+          if (!matchedDevice) {
+            showError('NENHUM dispositivo pendente de ativação encontrado com este ID!');
+            return;
+          }
+
+          goToStep2();
+        } catch (error) {
+          console.error(error);
+          showError('Erro ao verificar o ID do dispositivo.');
+        }
+      });
+
+      document.getElementById('step2NextBtn').addEventListener('click', () => {
+        const clientName = (document.getElementById('clientName').value || '').trim();
+
+        if (!clientName) {
+          showError('Informe o nome do cliente para prosseguir.');
+          return;
+        }
+
+        hideError();
+        alert('Etapa 2 validada com sucesso. Agora você pode me enviar o próximo print para montarmos a etapa seguinte.');
+      });
+    });
+  </script>
+</body>
+</html>
