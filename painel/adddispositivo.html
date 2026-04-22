@@ -370,10 +370,17 @@
       document.getElementById('stepHead2').classList.add('active');
     }
 
-    async function validatePendingDeviceCode(code) {
-      const normalized = (code || '').trim().toUpperCase();
+    async function fetchDevicesList() {
+      const res = await fetch(`${window.location.origin}/devices`);
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || 'Erro ao carregar dispositivos');
+      }
+      return Array.isArray(data) ? data : [];
+    }
 
-      const res = await fetch(`${window.location.origin}/launcher/device/${encodeURIComponent(normalized)}`);
+    async function fetchLauncherDevice(code) {
+      const res = await fetch(`${window.location.origin}/launcher/device/${encodeURIComponent(code)}`);
       const data = await res.json();
 
       if (!res.ok || !data || !data.ok || !data.device) {
@@ -381,6 +388,32 @@
       }
 
       return data.device;
+    }
+
+    async function validateCode(code) {
+      const normalized = (code || '').trim().toUpperCase();
+
+      try {
+        const devices = await fetchDevicesList();
+        const found = devices.find(d => (d.code || '').toUpperCase() === normalized);
+
+        if (found) {
+          if (found.active) {
+            return { status: 'active', device: found };
+          }
+          return { status: 'pending', device: found };
+        }
+      } catch (err) {
+        console.error('Falha em /devices, tentando launcher/device:', err);
+      }
+
+      const launcherDevice = await fetchLauncherDevice(normalized);
+
+      if (launcherDevice.active) {
+        return { status: 'active', device: launcherDevice };
+      }
+
+      return { status: 'pending', device: launcherDevice };
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
@@ -403,10 +436,12 @@
 
         try {
           setLoading(true);
-          matchedDevice = await validatePendingDeviceCode(code);
 
-          if (matchedDevice.active) {
-            showError('Este dispositivo já está ativo e não está pendente de ativação.');
+          const result = await validateCode(code);
+          matchedDevice = result.device;
+
+          if (result.status === 'active') {
+            showError('Dispositivo já registrado.');
             return;
           }
 
