@@ -372,35 +372,21 @@
       return Array.isArray(data) ? data : [];
     }
 
-    async function fetchLauncherDevice(code) {
-      const res = await fetch(`${window.location.origin}/launcher/device/${encodeURIComponent(code)}`);
-      const data = await res.json();
-
-      if (!res.ok || !data || !data.ok || !data.device) {
-        throw new Error('Falha ao verificar o dispositivo');
-      }
-
-      return data.device;
-    }
-
     async function validateCode(code) {
       const normalized = (code || '').trim().toUpperCase();
+      const devices = await fetchDevicesList();
 
-      try {
-        const devices = await fetchDevicesList();
-        const found = devices.find(d => (d.code || '').toUpperCase() === normalized);
+      const found = devices.find(d => (d.code || '').toUpperCase() === normalized);
 
-        if (found) {
-          if (found.active) return { status: 'active', device: found };
-          return { status: 'pending', device: found };
-        }
-      } catch (err) {
-        console.error('Falha em /devices, tentando launcher/device:', err);
+      if (!found) {
+        return { status: 'not_found', device: null };
       }
 
-      const launcherDevice = await fetchLauncherDevice(normalized);
-      if (launcherDevice.active) return { status: 'active', device: launcherDevice };
-      return { status: 'pending', device: launcherDevice };
+      if (found.active) {
+        return { status: 'active', device: found };
+      }
+
+      return { status: 'pending', device: found };
     }
 
     async function activateDevice() {
@@ -471,13 +457,18 @@
           setLoading('step1NextBtn', true, 'Verificando...', 'Prosseguir >>>');
 
           const result = await validateCode(code);
-          matchedDevice = result.device;
+
+          if (result.status === 'not_found') {
+            showError('Código inválido ou não registrado pela launcher.');
+            return;
+          }
 
           if (result.status === 'active') {
             showError('Dispositivo já registrado.');
             return;
           }
 
+          matchedDevice = result.device;
           goToStep2();
         } catch (error) {
           console.error(error);
