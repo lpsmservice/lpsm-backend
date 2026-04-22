@@ -44,6 +44,12 @@ function generateCode(size = 6) {
   return out;
 }
 
+function addHours(date, hours) {
+  const d = new Date(date);
+  d.setHours(d.getHours() + hours);
+  return d.toISOString();
+}
+
 function addYears(date, years) {
   const d = new Date(date);
   d.setFullYear(d.getFullYear() + years);
@@ -487,59 +493,6 @@ app.delete('/devices/:id', (req, res) => {
   }
 });
 
-app.post('/devices/:id/activate', (req, res) => {
-  try {
-    const devices = db.getDevices();
-    const index = devices.findIndex(d => d.id === req.params.id);
-
-    if (index === -1) {
-      return res.status(404).json({ ok: false, message: 'Dispositivo não encontrado' });
-    }
-
-    const { type = 'annual', layoutId = null, name = '' } = req.body;
-    const years = type === 'two_years' ? 2 : 1;
-
-    devices[index].active = true;
-    devices[index].status = 'active';
-    devices[index].layout = layoutId || devices[index].layout || null;
-    if (name) devices[index].name = name;
-    devices[index].expiresAt = addYears(new Date(), years);
-
-    if (type === 'two_years') {
-      devices[index].creditsTwoYears = Number(devices[index].creditsTwoYears || 0) + 1;
-    } else {
-      devices[index].creditsAnnual = Number(devices[index].creditsAnnual || 0) + 1;
-    }
-
-    db.saveDevices(devices);
-    res.json({ ok: true, device: devices[index] });
-  } catch (error) {
-    console.error('POST /devices/:id/activate', error);
-    res.status(500).json({ ok: false, message: 'Erro ao ativar aparelho' });
-  }
-});
-
-app.post('/devices/:id/deactivate', (req, res) => {
-  try {
-    const devices = db.getDevices();
-    const index = devices.findIndex(d => d.id === req.params.id);
-
-    if (index === -1) {
-      return res.status(404).json({ ok: false, message: 'Dispositivo não encontrado' });
-    }
-
-    devices[index].active = false;
-    devices[index].status = 'pending';
-    devices[index].expiresAt = null;
-
-    db.saveDevices(devices);
-    return res.json({ ok: true, device: devices[index] });
-  } catch (error) {
-    console.error('POST /devices/:id/deactivate', error);
-    return res.status(500).json({ ok: false, message: 'Erro ao desativar aparelho' });
-  }
-});
-
 app.post('/devices/:id/complete-activation', (req, res) => {
   try {
     const devices = db.getDevices();
@@ -558,42 +511,42 @@ app.post('/devices/:id/complete-activation', (req, res) => {
       current.layout ||
       (layouts.length ? layouts[0].id : null);
 
-    const activationType = body.type === 'two_years' ? 'two_years' : 'annual';
+    if (!selectedLayoutId) {
+      return res.status(400).json({
+        ok: false,
+        message: 'Nenhum layout foi selecionado'
+      });
+    }
 
-    const nextExpiresAt =
-      safeIsoDate(body.expiresAt, null) ||
-      current.expiresAt ||
-      addYears(new Date(), activationType === 'two_years' ? 2 : 1);
+    const selectedLayout = layouts.find(l => l.id === selectedLayoutId);
+    if (!selectedLayout) {
+      return res.status(400).json({
+        ok: false,
+        message: 'Layout informado não existe'
+      });
+    }
 
-    const alreadyActive = !!current.active;
+    const explicitExpire = safeIsoDate(body.expiresAt, null);
+    const nextExpiresAt = explicitExpire || addHours(new Date(), 24);
 
     const updated = normalizeDevice({
       ...current,
+      id: current.id,
+      code: current.code,
+      createdAt: current.createdAt,
       name: body.name || current.name,
-      phone: body.phone || current.phone || '',
-      notes: body.notes || current.notes || '',
-      planName: body.planName || current.planName || '',
+      phone: body.phone || '',
+      notes: body.notes || '',
+      planName: body.planName || '',
       layout: selectedLayoutId,
       active: true,
       status: 'active',
       expiresAt: nextExpiresAt,
-      blockOnExpire: parseBooleanLike(body.blockOnExpire, current.blockOnExpire),
-      forceBlockWrongTime: parseBooleanLike(
-        body.forceBlockWrongTime,
-        current.forceBlockWrongTime !== false
-      ),
+      blockOnExpire: parseBooleanLike(body.blockOnExpire, false),
+      forceBlockWrongTime: parseBooleanLike(body.forceBlockWrongTime, true),
       lastSeen: new Date().toISOString(),
-      creditsAnnual:
-        activationType === 'annual'
-          ? Number(current.creditsAnnual || 0) + (alreadyActive ? 0 : 1)
-          : Number(current.creditsAnnual || 0),
-      creditsTwoYears:
-        activationType === 'two_years'
-          ? Number(current.creditsTwoYears || 0) + (alreadyActive ? 0 : 1)
-          : Number(current.creditsTwoYears || 0),
-      id: current.id,
-      code: current.code,
-      createdAt: current.createdAt
+      creditsAnnual: Number(current.creditsAnnual || 0),
+      creditsTwoYears: Number(current.creditsTwoYears || 0)
     });
 
     devices[index] = updated;
@@ -601,13 +554,14 @@ app.post('/devices/:id/complete-activation', (req, res) => {
 
     return res.json({
       ok: true,
+      message: 'Dispositivo ativado com sucesso',
       device: updated
     });
   } catch (error) {
     console.error('POST /devices/:id/complete-activation', error);
     return res.status(500).json({
       ok: false,
-      message: 'Erro ao concluir ativação do dispositivo'
+      message: `Erro ao concluir ativação do dispositivo: ${error.message}`
     });
   }
 });
@@ -666,29 +620,6 @@ app.delete('/resellers/:id', (req, res) => {
   } catch (error) {
     console.error('DELETE /resellers/:id', error);
     res.status(500).json({ ok: false, message: 'Erro ao excluir revenda' });
-  }
-});
-
-app.post('/resellers/:id/add-credits', (req, res) => {
-  try {
-    const resellers = db.getResellers();
-    const index = resellers.findIndex(r => r.id === req.params.id);
-
-    if (index === -1) {
-      return res.status(404).json({ ok: false, message: 'Revenda não encontrada' });
-    }
-
-    const annual = Number(req.body.annual || 0);
-    const twoYears = Number(req.body.twoYears || 0);
-
-    resellers[index].annualCredits = Number(resellers[index].annualCredits || 0) + annual;
-    resellers[index].twoYearsCredits = Number(resellers[index].twoYearsCredits || 0) + twoYears;
-
-    db.saveResellers(resellers);
-    return res.json({ ok: true, reseller: resellers[index] });
-  } catch (error) {
-    console.error('POST /resellers/:id/add-credits', error);
-    return res.status(500).json({ ok: false, message: 'Erro ao adicionar créditos' });
   }
 });
 
