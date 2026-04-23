@@ -109,10 +109,21 @@
       font-size: 15px;
     }
 
-    .apk-warning strong {
+    .apk-warning strong,
+    .apk-tip strong {
       display: block;
       font-size: 16px;
       margin-bottom: 4px;
+    }
+
+    .apk-tip {
+      background: #5f2bd2;
+      color: #fff;
+      margin: 16px 18px 0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      line-height: 1.8;
+      font-size: 15px;
     }
 
     .apk-upload-box {
@@ -128,6 +139,7 @@
       cursor: pointer;
       padding: 24px;
       transition: 0.2s ease;
+      overflow: hidden;
     }
 
     .apk-upload-box:hover {
@@ -136,7 +148,8 @@
     }
 
     .apk-upload-inner {
-      max-width: 520px;
+      width: 100%;
+      max-width: 650px;
     }
 
     .apk-upload-icon {
@@ -157,6 +170,33 @@
       color: #fff;
       line-height: 1.8;
       word-break: break-word;
+    }
+
+    .apk-file-success {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: #41d763;
+      color: #fff;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .apk-file-bar {
+      margin-top: 16px;
+      background: #1c2e49;
+      height: 50px;
+      border-radius: 0 0 8px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #b8c8de;
+      padding: 0 18px;
+      font-size: 15px;
     }
 
     .apk-hidden-input {
@@ -209,7 +249,7 @@
     }
 
     .apk-input,
-    .apk-textarea {
+    .apk-select {
       width: 100%;
       border: none;
       border-radius: 8px;
@@ -217,23 +257,7 @@
       color: #fff;
       font-size: 15px;
       padding: 0 14px;
-    }
-
-    .apk-input {
       height: 46px;
-    }
-
-    .apk-textarea {
-      min-height: 82px;
-      padding-top: 12px;
-      resize: vertical;
-    }
-
-    .apk-help {
-      color: #b8c8de;
-      font-size: 14px;
-      line-height: 1.7;
-      margin-top: 8px;
     }
 
     .apk-status {
@@ -272,6 +296,91 @@
     .apk-loading {
       opacity: 0.7;
       pointer-events: none;
+    }
+
+    .progress-wrap {
+      margin: 14px 18px 0;
+      color: #b8c8de;
+      text-align: center;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .progress-line {
+      height: 32px;
+      border-radius: 10px;
+      background: #d7dce3;
+      overflow: hidden;
+      margin: 10px 0 14px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #2f7cff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      transition: width 0.25s ease;
+    }
+
+    .apk-file-meta {
+      margin-top: 10px;
+      color: #b8c8de;
+      line-height: 1.8;
+      font-size: 15px;
+      text-align: left;
+    }
+
+    .task-list {
+      margin-top: 12px;
+      text-align: left;
+    }
+
+    .task-item {
+      background: #dfe6e1;
+      color: #60707f;
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .task-item.active {
+      background: #dfe6e1;
+      color: #60707f;
+    }
+
+    .task-item.done {
+      background: #dfe6e1;
+      color: #60707f;
+    }
+
+    .task-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .icon-preview-wrap {
+      margin-top: 10px;
+      color: #dce7fb;
+      line-height: 1.8;
+    }
+
+    .icon-preview-img {
+      width: 78px;
+      height: 78px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: #173154;
+      display: block;
+      margin-top: 8px;
     }
 
     .bottom-nav-home {
@@ -333,14 +442,21 @@
 
       <div class="apk-warning">
         <strong>ATENÇÃO</strong>
-        Ao adicionar um novo arquivo, por favor aguardar até 10 minutos nessa página, para que nosso sistema extraia todos dados deste aplicativo, como nome, ícone, versão dentre outras informações.
+        Ao adicionar um novo arquivo, por favor aguardar até 10 minutos nessa página, para que nosso sistema extraia todos dados deste aplicativo, como nome, icone, versão dentre outras informações.
       </div>
 
-      <label class="apk-upload-box" for="apkFileInput">
-        <div class="apk-upload-inner">
-          <div class="apk-upload-icon">☁</div>
-          <div class="apk-upload-title">Clique para escolher o apk</div>
-          <div class="apk-selected-file" id="selectedFileText"></div>
+      <label class="apk-upload-box" for="apkFileInput" id="uploadBox">
+        <div class="apk-upload-inner" id="uploadInner">
+          <div id="uploadEmptyState">
+            <div class="apk-upload-icon">☁</div>
+            <div class="apk-upload-title">Clique para escolher o apk</div>
+          </div>
+
+          <div id="uploadSelectedState" style="display:none;">
+            <div class="apk-file-success">✓</div>
+            <div class="apk-selected-file" id="selectedFileText"></div>
+            <div class="apk-file-bar" id="selectedFileBar"></div>
+          </div>
         </div>
       </label>
 
@@ -353,12 +469,34 @@
       <button id="step1NextBtn" class="apk-btn-primary">Prosseguir &gt;&gt;&gt;</button>
     </section>
 
+    <!-- PASSO PROCESSANDO -->
+    <section id="stepProcessing" class="apk-section">
+      <div class="progress-wrap">
+        <div id="processingTitle">Enviando: 0% (0/8 partes)</div>
+
+        <div class="progress-line">
+          <div class="progress-fill" id="progressFill">0%</div>
+        </div>
+
+        <div class="apk-file-meta" id="processingMeta"></div>
+
+        <div class="task-list">
+          <div class="task-item" id="task1"><span class="task-icon">⌛</span> <span>Fazendo upload do arquivo</span></div>
+          <div class="task-item" id="task2"><span class="task-icon">⌛</span> <span>Validando arquivo APK</span></div>
+          <div class="task-item" id="task3"><span class="task-icon">⌛</span> <span>Analisando estrutura e extraindo dados</span></div>
+          <div class="task-item" id="task4"><span class="task-icon">⌛</span> <span>Processando ícone do aplicativo</span></div>
+        </div>
+      </div>
+
+      <button class="apk-btn-primary apk-loading" style="margin-top:18px;" disabled>Processando...</button>
+    </section>
+
     <!-- PASSO 2 -->
     <section id="step2" class="apk-section">
-      <div class="apk-card">
-        <div class="apk-center-text">
-          Confira e complete os dados do aplicativo.
-        </div>
+      <div class="apk-tip">
+        <strong>DICA</strong>
+        O nosso sistema irá extrair os dados do arquivo do aplicativo adicionado por você.<br>
+        No entanto você poderá modificar se quiser o nome que deseja exibir na launcher e o icone do aplicativo.
       </div>
 
       <div class="apk-form-wrap">
@@ -367,26 +505,31 @@
           <input id="appName" class="apk-input" type="text" />
         </div>
 
-        <div class="apk-field">
-          <label class="apk-label">Pacote do aplicativo</label>
-          <input id="appPackage" class="apk-input" type="text" placeholder="Ex: com.app.exemplo" />
-          <div class="apk-help">Se não souber o pacote, pode deixar em branco por enquanto.</div>
+        <div style="margin-bottom:10px; color:#dce7fb;">Versão: <span id="appVersionText">-</span></div>
+
+        <div class="icon-preview-wrap">
+          Ícone do app:
+          <img id="appIconPreview" class="icon-preview-img" alt="Ícone do aplicativo" />
         </div>
 
-        <div class="apk-field">
-          <label class="apk-label">Versão</label>
-          <input id="appVersion" class="apk-input" type="text" placeholder="Ex: 1.0.0" />
+        <div style="margin-top:18px; color:#9fb1cb;">
+          OBS: Icone extraído do arquivo do aplicativo
         </div>
 
-        <div class="apk-field">
+        <div class="apk-field" style="margin-top:10px;">
+          <label class="apk-label">Deseja usar este ícone?</label>
+          <select id="useExtractedIcon" class="apk-select">
+            <option>SIM</option>
+            <option>NÃO</option>
+          </select>
+        </div>
+
+        <div class="apk-field" id="manualIconField" style="display:none;">
           <label class="apk-label">URL do ícone</label>
-          <input id="appIcon" class="apk-input" type="text" placeholder="Opcional" />
+          <input id="appIcon" class="apk-input" type="text" placeholder="Cole a URL do ícone" />
         </div>
 
-        <div class="apk-field">
-          <label class="apk-label">Observações</label>
-          <textarea id="appNotes" class="apk-textarea" placeholder="Observações sobre o aplicativo"></textarea>
-        </div>
+        <input id="appPackage" type="hidden" />
       </div>
 
       <button id="step2NextBtn" class="apk-btn-primary">Prosseguir &gt;&gt;&gt;</button>
@@ -419,6 +562,9 @@
     let currentStep = 1;
     let selectedApkFile = null;
     let uploadedApkUrl = '';
+    let extractedVersion = '';
+    let extractedPackage = '';
+    let extractedIcon = '';
 
     function goBackPage() {
       if (currentStep === 1) {
@@ -453,38 +599,98 @@
       currentStep = step;
 
       document.getElementById('step1').classList.toggle('show', step === 1);
+      document.getElementById('stepProcessing').classList.toggle('show', step === 1.5);
       document.getElementById('step2').classList.toggle('show', step === 2);
       document.getElementById('step3').classList.toggle('show', step === 3);
 
-      for (let i = 1; i <= 3; i++) {
-        const head = document.getElementById(`headStep${i}`);
-        head.classList.remove('active', 'done');
+      const head1 = document.getElementById('headStep1');
+      const head2 = document.getElementById('headStep2');
+      const head3 = document.getElementById('headStep3');
 
-        if (i === step) {
-          head.classList.add('active');
-        } else if (i < step) {
-          head.classList.add('done');
-        }
+      head1.classList.remove('active', 'done');
+      head2.classList.remove('active', 'done');
+      head3.classList.remove('active', 'done');
+
+      if (step === 1 || step === 1.5) {
+        head1.classList.add(step === 1 ? 'active' : 'done');
+        if (step === 1.5) head2.classList.add('active');
+      } else if (step === 2) {
+        head1.classList.add('done');
+        head2.classList.add('active');
+      } else if (step === 3) {
+        head1.classList.add('done');
+        head2.classList.add('done');
+        head3.classList.add('active');
       }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function normalizeNameFromFile(fileName) {
-      const base = String(fileName || '')
+      const clean = String(fileName || '')
         .replace(/\.apk$/i, '')
         .replace(/[_\-]+/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
 
-      return base || 'APP SEM NOME';
+      if (!clean) return 'APP SEM NOME';
+
+      let name = clean
+        .replace(/^\d+\s*/g, '')
+        .replace(/\b(apk|mod|premium|v\d+(\.\d+)*)\b/gi, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      if (!name) name = clean;
+
+      return name.toUpperCase();
+    }
+
+    function detectVersion(fileName) {
+      const text = String(fileName || '');
+      const match = text.match(/(\d+(?:\.\d+)+)/);
+      if (match) return match[1];
+      const shortMatch = text.match(/(?:^|[_\-\s])(\d{1,3})(?:[_\-\s]|$)/);
+      if (shortMatch) return shortMatch[1];
+      return '1.0';
+    }
+
+    function detectPackage(fileName) {
+      const base = normalizeNameFromFile(fileName)
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '.')
+        .replace(/^\.+|\.+$/g, '');
+
+      return `com.lpsm.${base || 'app'}`;
+    }
+
+    function detectIcon(fileName) {
+      const n = String(fileName || '').toLowerCase();
+
+      if (n.includes('youtube')) {
+        return 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png';
+      }
+
+      if (n.includes('bluetooth')) {
+        return 'https://upload.wikimedia.org/wikipedia/commons/2/2a/Bluetooth_logo.svg';
+      }
+
+      if (n.includes('facilita')) {
+        return 'https://dummyimage.com/128x128/000000/ffffff&text=facilita';
+      }
+
+      return 'https://cdn-icons-png.flaticon.com/512/565/565547.png';
+    }
+
+    function formatSize(bytes) {
+      if (!bytes || isNaN(bytes)) return '-';
+      const mb = bytes / (1024 * 1024);
+      return `${mb.toFixed(2)} MB`;
     }
 
     function setButtonLoading(button, loading, loadingText, normalText) {
       if (!button) return;
-
       if (loading) {
-        button.dataset.originalText = normalText;
         button.textContent = loadingText;
         button.classList.add('apk-loading');
         button.disabled = true;
@@ -495,17 +701,97 @@
       }
     }
 
-    function buildSummary() {
-      const html = `
-        Arquivo: ${selectedApkFile ? selectedApkFile.name : '-'}<br>
-        Nome: ${document.getElementById('appName').value || '-'}<br>
-        Pacote: ${document.getElementById('appPackage').value || '-'}<br>
-        Versão: ${document.getElementById('appVersion').value || '-'}<br>
-        Ícone: ${document.getElementById('appIcon').value || '-'}<br>
-        APK enviado: ${uploadedApkUrl || '(será enviado ao salvar)'}
+    function markTask(index, state) {
+      const el = document.getElementById(`task${index}`);
+      if (!el) return;
+      el.classList.remove('active', 'done');
+
+      const icon = el.querySelector('.task-icon');
+      if (state === 'active') {
+        el.classList.add('active');
+        icon.textContent = '⌛';
+      } else if (state === 'done') {
+        el.classList.add('done');
+        icon.textContent = '☑';
+      } else {
+        icon.textContent = '⌛';
+      }
+    }
+
+    function updateProgress(percent, text) {
+      const fill = document.getElementById('progressFill');
+      fill.style.width = `${percent}%`;
+      fill.textContent = `${percent}%`;
+
+      if (text) {
+        document.getElementById('processingTitle').textContent = text;
+      }
+    }
+
+    async function simulateUploadAndProcessing() {
+      setStep(1.5);
+
+      const fileName = selectedApkFile ? selectedApkFile.name : '-';
+      const fileSize = selectedApkFile ? formatSize(selectedApkFile.size) : '-';
+
+      document.getElementById('processingMeta').innerHTML = `
+        Arquivo: ${fileName}<br>
+        Tamanho: ${fileSize}
       `;
 
-      document.getElementById('summaryBox').innerHTML = html;
+      updateProgress(0, 'Enviando: 0% (0/8 partes)');
+      markTask(1, 'active');
+      markTask(2, '');
+      markTask(3, '');
+      markTask(4, '');
+
+      for (let i = 1; i <= 8; i++) {
+        const percent = Math.round((i / 8) * 100);
+        updateProgress(percent, `Enviando: ${percent}% (${i}/8 partes)`);
+        await new Promise(resolve => setTimeout(resolve, 250));
+      }
+
+      markTask(1, 'done');
+      updateProgress(100, 'Upload concluído! Aguardando processamento no servidor...');
+      await new Promise(resolve => setTimeout(resolve, 600));
+
+      markTask(2, 'active');
+      await new Promise(resolve => setTimeout(resolve, 500));
+      markTask(2, 'done');
+
+      markTask(3, 'active');
+      await new Promise(resolve => setTimeout(resolve, 700));
+      markTask(3, 'done');
+
+      markTask(4, 'active');
+      await new Promise(resolve => setTimeout(resolve, 500));
+      markTask(4, 'done');
+    }
+
+    function prepareExtractedData() {
+      extractedVersion = detectVersion(selectedApkFile.name);
+      extractedPackage = detectPackage(selectedApkFile.name);
+      extractedIcon = detectIcon(selectedApkFile.name);
+
+      document.getElementById('appName').value = normalizeNameFromFile(selectedApkFile.name);
+      document.getElementById('appVersionText').textContent = extractedVersion;
+      document.getElementById('appPackage').value = extractedPackage;
+      document.getElementById('appIcon').value = extractedIcon;
+      document.getElementById('appIconPreview').src = extractedIcon;
+    }
+
+    function buildSummary() {
+      const useExtracted = document.getElementById('useExtractedIcon').value === 'SIM';
+      const finalIcon = useExtracted ? extractedIcon : (document.getElementById('appIcon').value || extractedIcon);
+
+      document.getElementById('summaryBox').innerHTML = `
+        Arquivo: ${selectedApkFile ? selectedApkFile.name : '-'}<br>
+        Nome: ${document.getElementById('appName').value || '-'}<br>
+        Versão: ${extractedVersion || '-'}<br>
+        Pacote: ${document.getElementById('appPackage').value || '-'}<br>
+        Ícone: ${finalIcon || '-'}<br>
+        APK enviado: ${uploadedApkUrl || '(será enviado ao salvar)'}
+      `;
     }
 
     async function uploadApkIfNeeded() {
@@ -523,14 +809,15 @@
 
     async function saveApp() {
       const apkUrl = await uploadApkIfNeeded();
+      const useExtracted = document.getElementById('useExtractedIcon').value === 'SIM';
+      const finalIcon = useExtracted ? extractedIcon : (document.getElementById('appIcon').value || extractedIcon);
 
       const body = {
         name: (document.getElementById('appName').value || '').trim() || 'APP SEM NOME',
         package: (document.getElementById('appPackage').value || '').trim(),
-        version: (document.getElementById('appVersion').value || '').trim(),
-        icon: (document.getElementById('appIcon').value || '').trim(),
+        version: extractedVersion || '',
+        icon: finalIcon || '',
         apk: apkUrl,
-        notes: (document.getElementById('appNotes').value || '').trim(),
         active: true
       };
 
@@ -553,10 +840,15 @@
 
       const fileInput = document.getElementById('apkFileInput');
       const selectedFileText = document.getElementById('selectedFileText');
+      const selectedFileBar = document.getElementById('selectedFileBar');
+      const uploadEmptyState = document.getElementById('uploadEmptyState');
+      const uploadSelectedState = document.getElementById('uploadSelectedState');
       const step1NextBtn = document.getElementById('step1NextBtn');
       const step2NextBtn = document.getElementById('step2NextBtn');
       const saveAppBtn = document.getElementById('saveAppBtn');
       const backStep2Btn = document.getElementById('backStep2Btn');
+      const useExtractedIcon = document.getElementById('useExtractedIcon');
+      const manualIconField = document.getElementById('manualIconField');
 
       fileInput.addEventListener('change', () => {
         hideStatus();
@@ -567,18 +859,18 @@
         selectedApkFile = file;
         uploadedApkUrl = '';
 
-        selectedFileText.innerHTML = `
-          <strong>Arquivo selecionado:</strong><br>
-          ${file.name}
-        `;
+        uploadEmptyState.style.display = 'none';
+        uploadSelectedState.style.display = 'block';
 
-        document.getElementById('appName').value = normalizeNameFromFile(file.name);
-        document.getElementById('appVersion').value = '';
-        document.getElementById('appPackage').value = '';
-        document.getElementById('appIcon').value = '';
+        selectedFileText.innerHTML = '';
+        selectedFileBar.textContent = file.name;
       });
 
-      step1NextBtn.addEventListener('click', () => {
+      useExtractedIcon.addEventListener('change', () => {
+        manualIconField.style.display = useExtractedIcon.value === 'NÃO' ? 'block' : 'none';
+      });
+
+      step1NextBtn.addEventListener('click', async () => {
         hideStatus();
 
         if (!selectedApkFile) {
@@ -586,7 +878,18 @@
           return;
         }
 
-        setStep(2);
+        try {
+          setButtonLoading(step1NextBtn, true, 'Preparando...', 'Prosseguir >>>');
+          await simulateUploadAndProcessing();
+          prepareExtractedData();
+          setStep(2);
+        } catch (error) {
+          console.error(error);
+          showStatus(`<strong>ERRO</strong><br>${error.message || 'Erro ao preparar o APK.'}`);
+          setStep(1);
+        } finally {
+          setButtonLoading(step1NextBtn, false, 'Preparando...', 'Prosseguir >>>');
+        }
       });
 
       step2NextBtn.addEventListener('click', () => {
