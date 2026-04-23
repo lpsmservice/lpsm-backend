@@ -6,6 +6,8 @@
   <title>LAUNCHER BOX - Meus Layouts</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
@@ -15,7 +17,7 @@
 
     .page {
       min-height: 100vh;
-      padding-bottom: 90px;
+      padding-bottom: 78px;
     }
 
     .topbar {
@@ -27,10 +29,9 @@
       position: sticky;
       top: 0;
       z-index: 50;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: .5px;
     }
 
     .menu-btn,
@@ -45,20 +46,19 @@
     }
 
     .menu-btn {
-      left: 18px;
+      left: 16px;
       font-size: 34px;
       line-height: 1;
     }
 
     .bell-btn {
-      right: 18px;
+      right: 16px;
       font-size: 28px;
-      color: #f8c441;
+      color: #f4c54f;
     }
 
     .hero {
       padding: 18px 18px 8px;
-      background: rgba(0,0,0,0.2);
     }
 
     .hero h1 {
@@ -69,140 +69,132 @@
 
     .hero p {
       margin: 0;
+      color: #dbe6f6;
       font-size: 16px;
-      color: #e8eef9;
     }
 
     .credits-card {
       margin: 18px;
-      padding: 16px 20px 20px;
+      padding: 14px 18px 18px;
       background: #0d2347;
       border-radius: 10px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
     }
 
-    .credits-label {
+    .credits-title {
       text-align: center;
-      font-size: 16px;
       font-weight: 700;
-      margin-bottom: 16px;
-      color: #fff;
+      margin-bottom: 14px;
     }
 
     .credits-grid {
       display: grid;
-      grid-template-columns: 1fr 1.4fr 1fr;
+      grid-template-columns: 1fr 1.5fr 1fr;
       gap: 18px;
       align-items: start;
     }
 
-    .credit-pill,
-    .credit-line {
+    .pill, .line {
       display: flex;
       align-items: center;
-      border-radius: 999px;
       overflow: hidden;
+      border-radius: 999px;
       background: #000;
       min-height: 42px;
-      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.45);
     }
 
-    .left-badge {
+    .left-blue {
       width: 42px;
-      height: 42px;
       min-width: 42px;
+      height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: #2f7cff;
-      color: #fff;
       font-weight: 700;
       font-size: 18px;
     }
 
-    .center-text {
+    .mid-text {
       flex: 1;
       padding: 0 14px;
       font-size: 15px;
       font-weight: 700;
-      color: #fff;
       white-space: nowrap;
     }
 
-    .right-value {
-      background: #41d763;
-      color: #fff;
+    .right-green {
       min-width: 42px;
       height: 42px;
       padding: 0 14px;
       display: flex;
       align-items: center;
       justify-content: center;
+      background: #40d563;
       font-size: 15px;
       font-weight: 800;
     }
 
-    .credits-middle {
+    .credits-mid {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
-    .action-btn {
+    .action-wrap {
+      margin: 0 0 18px;
+      padding: 0 0;
+    }
+
+    .action-inner {
+      margin: 0 0;
+    }
+
+    .big-btn {
       width: 100%;
-      height: 52px;
+      height: 50px;
       border: none;
       border-radius: 6px;
       background: #2f7cff;
       color: #fff;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
       cursor: pointer;
-      margin: 0 0 14px 0;
+      margin-bottom: 14px;
     }
 
-    .actions-wrap {
-      margin: 0 0 0;
-      padding: 0 0 0;
-    }
-
-    .actions-inner {
+    .buttons-area {
       margin: 0 18px;
     }
 
     .search-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 90px;
-      margin: 18px 18px 22px;
-      align-items: center;
+      gap: 80px;
+      margin: 20px 18px 18px;
     }
 
     .mini-btn {
       width: 86px;
-      height: 44px;
+      height: 42px;
+      justify-self: center;
       border: none;
       border-radius: 8px;
       background: #7f8aa4;
       color: #fff;
-      font-size: 14px;
       font-weight: 700;
+      font-size: 14px;
       cursor: pointer;
-      justify-self: center;
     }
 
-    .section-title {
-      margin: 0;
-      padding: 16px 18px;
-      font-size: 16px;
-      font-weight: 800;
-      border-top: 1px solid rgba(255,255,255,0.04);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      background: rgba(0,0,0,0.12);
+    .section-label {
+      padding: 14px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
     }
 
     .status-box {
-      margin: 14px 18px 0;
+      margin: 0 18px 14px;
       padding: 14px 16px;
       border-radius: 8px;
       display: none;
@@ -210,35 +202,23 @@
       font-size: 15px;
     }
 
-    .status-box.show {
-      display: block;
-    }
-
-    .status-box.error {
-      background: #f44336;
-      color: #fff;
-    }
-
-    .status-box.success {
-      background: #20b15a;
-      color: #fff;
-    }
-
-    .list-wrap {
-      margin-top: 0;
-    }
+    .status-box.show { display: block; }
+    .status-box.error { background: #f44336; }
+    .status-box.success { background: #20b15a; }
 
     .layout-row {
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(13,35,71,0.95);
-      border-top: 1px solid rgba(255,255,255,0.04);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
       padding: 16px 18px;
-      cursor: pointer;
       text-decoration: none;
       color: #fff;
+      background: rgba(13,35,71,0.95);
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .layout-row:last-child {
+      border-bottom: 1px solid rgba(255,255,255,0.04);
     }
 
     .layout-row:hover {
@@ -248,40 +228,35 @@
     .layout-thumb {
       width: 28px;
       height: 28px;
-      border-radius: 4px;
-      background: #10284a;
       object-fit: cover;
+      border-radius: 4px;
       flex-shrink: 0;
-      border: 1px solid rgba(255,255,255,0.06);
+      background: #223857;
     }
 
     .layout-name {
       flex: 1;
       font-size: 15px;
-      font-weight: 500;
-      color: #fff;
     }
 
     .layout-arrow {
-      color: #6d7f98;
-      font-size: 28px;
-      line-height: 1;
-      flex-shrink: 0;
+      font-size: 26px;
+      color: #6f83a1;
     }
 
-    .empty-state {
-      margin: 18px;
+    .empty-box {
+      margin: 0 18px;
       padding: 18px;
       background: rgba(13,35,71,0.95);
       border-radius: 8px;
-      color: #dce7fb;
+      color: #dbe6f6;
     }
 
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.72);
+      background: rgba(0,0,0,.72);
       z-index: 200;
       align-items: center;
       justify-content: center;
@@ -298,7 +273,6 @@
       background: #0d2347;
       border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.35);
       text-align: center;
     }
 
@@ -309,14 +283,13 @@
     .modal-title {
       font-size: 18px;
       font-weight: 700;
-      color: #fff;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .modal-text {
       color: #9fb1cb;
-      font-size: 16px;
       line-height: 1.6;
+      font-size: 16px;
     }
 
     .modal-actions button {
@@ -331,7 +304,7 @@
     }
 
     .modal-actions button:last-child {
-      color: #8c98aa;
+      color: #8d99ab;
     }
 
     .bottom-nav {
@@ -359,7 +332,6 @@
       .credits-grid {
         grid-template-columns: 1fr;
       }
-
       .search-row {
         gap: 18px;
       }
@@ -369,7 +341,7 @@
 <body>
   <div class="page">
     <div class="topbar">
-      <button class="menu-btn" onclick="toggleDrawer()">☰</button>
+      <button class="menu-btn">☰</button>
       LAUNCHER BOX
       <button class="bell-btn">🔔</button>
     </div>
@@ -380,50 +352,45 @@
     </div>
 
     <div class="credits-card">
-      <div class="credits-label">SEUS CRÉDITOS</div>
-
+      <div class="credits-title">SEUS CRÉDITOS</div>
       <div class="credits-grid">
-        <div>
-          <div class="credit-pill">
-            <div class="left-badge">›</div>
-            <div class="center-text">ANUAL:</div>
-            <div class="right-value" id="annualCreditsValue">1000</div>
+        <div class="pill">
+          <div class="left-blue">›</div>
+          <div class="mid-text">ANUAL:</div>
+          <div class="right-green" id="annualCreditsValue">1000</div>
+        </div>
+
+        <div class="credits-mid">
+          <div class="line">
+            <div class="left-blue">🗓</div>
+            <div class="mid-text">Validade dos créditos:</div>
+            <div class="right-green" id="creditsExpiryValue">15/11/2026 - 19:50</div>
+          </div>
+
+          <div class="line">
+            <div class="left-blue">🧩</div>
+            <div class="mid-text">Limite de layouts:</div>
+            <div class="right-green" id="layoutLimitValue">20</div>
+          </div>
+
+          <div class="line">
+            <div class="left-blue">💼</div>
+            <div class="mid-text">Limite de aplicativos:</div>
+            <div class="right-green" id="appsLimitValue">1000</div>
           </div>
         </div>
 
-        <div class="credits-middle">
-          <div class="credit-line">
-            <div class="left-badge">🗓</div>
-            <div class="center-text">Validade dos créditos:</div>
-            <div class="right-value" id="creditsExpiryValue">15/11/2026 - 19:50</div>
-          </div>
-
-          <div class="credit-line">
-            <div class="left-badge">🧩</div>
-            <div class="center-text">Limite de layouts:</div>
-            <div class="right-value" id="layoutLimitValue">20</div>
-          </div>
-
-          <div class="credit-line">
-            <div class="left-badge">💼</div>
-            <div class="center-text">Limite de aplicativos:</div>
-            <div class="right-value" id="appsLimitValue">1000</div>
-          </div>
-        </div>
-
-        <div>
-          <div class="credit-pill">
-            <div class="left-badge">›</div>
-            <div class="center-text">2 ANOS:</div>
-            <div class="right-value" id="twoYearsCreditsValue">0</div>
-          </div>
+        <div class="pill">
+          <div class="left-blue">›</div>
+          <div class="mid-text">2 ANOS:</div>
+          <div class="right-green" id="twoYearsCreditsValue">0</div>
         </div>
       </div>
     </div>
 
-    <div class="actions-inner">
-      <button class="action-btn" onclick="criarLayout()">ADD LAYOUT</button>
-      <button class="action-btn" onclick="copiarLayout()">COPIAR LAYOUT</button>
+    <div class="buttons-area">
+      <button class="big-btn" onclick="window.location.href='addlayout.html'">ADD LAYOUT</button>
+      <button class="big-btn" onclick="copiarLayout()">COPIAR LAYOUT</button>
     </div>
 
     <div class="search-row">
@@ -431,12 +398,12 @@
       <button class="mini-btn" onclick="buscarLayout()">BUSCAR</button>
     </div>
 
-    <div class="section-title">LAYOUTS MEUS:</div>
+    <div class="section-label">LAYOUTS MEUS:</div>
 
     <div id="statusBox" class="status-box"></div>
 
-    <div class="list-wrap" id="layoutsContainer">
-      <div class="empty-state">Carregando layouts...</div>
+    <div id="layoutsContainer">
+      <div class="empty-box">Carregando layouts...</div>
     </div>
   </div>
 
@@ -449,7 +416,6 @@
           visualizar seus layouts.
         </div>
       </div>
-
       <div class="modal-actions">
         <button onclick="ordenarLayouts('novos')">Mais novos</button>
         <button onclick="ordenarLayouts('antigos')">Mais antigos</button>
@@ -472,15 +438,6 @@
     let allLayouts = [];
     let currentOrder = 'novos';
 
-    function toggleDrawer() {
-      const drawer = document.getElementById('drawer');
-      const overlay = document.getElementById('drawerOverlay');
-      if (drawer && overlay) {
-        drawer.classList.add('open');
-        overlay.classList.add('show');
-      }
-    }
-
     function showStatus(message, type = 'error') {
       const box = document.getElementById('statusBox');
       box.className = `status-box show ${type}`;
@@ -493,26 +450,12 @@
       box.innerHTML = '';
     }
 
-    function fallbackThumb() {
-      return 'https://cdn-icons-png.flaticon.com/512/1829/1829586.png';
-    }
-
     function abrirModalExibir() {
       document.getElementById('modalExibir').classList.add('show');
     }
 
     function fecharModalExibir() {
       document.getElementById('modalExibir').classList.remove('show');
-    }
-
-    function ordenarLayouts(tipo) {
-      currentOrder = tipo;
-      renderLayouts();
-      fecharModalExibir();
-    }
-
-    function criarLayout() {
-      window.location.href = 'layout-editor.html';
     }
 
     function copiarLayout() {
@@ -522,10 +465,19 @@
     function buscarLayout() {
       const termo = prompt('Digite o nome do layout para buscar:');
       if (termo === null) return;
-
       const search = termo.trim().toLowerCase();
       const filtrados = allLayouts.filter(item => String(item.name || '').toLowerCase().includes(search));
       renderLayoutsList(filtrados);
+    }
+
+    function fallbackThumb() {
+      return 'https://cdn-icons-png.flaticon.com/512/1829/1829586.png';
+    }
+
+    function ordenarLayouts(tipo) {
+      currentOrder = tipo;
+      renderLayouts();
+      fecharModalExibir();
     }
 
     function renderLayouts() {
@@ -546,26 +498,25 @@
       const container = document.getElementById('layoutsContainer');
 
       if (!layouts.length) {
-        container.innerHTML = '<div class="empty-state">Nenhum layout encontrado.</div>';
+        container.innerHTML = '<div class="empty-box">Nenhum layout encontrado.</div>';
         return;
       }
 
       container.innerHTML = '';
 
-      layouts.forEach((layout) => {
-        const a = document.createElement('a');
-        a.className = 'layout-row';
-        a.href = `layout-editor.html?id=${encodeURIComponent(layout.id)}`;
+      layouts.forEach(layout => {
+        const row = document.createElement('a');
+        row.className = 'layout-row';
+        row.href = `layout-editor.html?id=${encodeURIComponent(layout.id)}`;
 
         const thumb = layout.background || layout.logo || fallbackThumb();
 
-        a.innerHTML = `
+        row.innerHTML = `
           <img class="layout-thumb" src="${thumb}" alt="layout" onerror="this.src='${fallbackThumb()}'">
           <div class="layout-name">${layout.name || 'Layout sem nome'}</div>
           <div class="layout-arrow">›</div>
         `;
-
-        container.appendChild(a);
+        container.appendChild(row);
       });
     }
 
@@ -588,7 +539,6 @@
 
     async function loadLayouts() {
       hideStatus();
-
       const res = await fetch(`${window.location.origin}/layouts`);
       const data = await res.json().catch(() => []);
 
@@ -612,9 +562,7 @@
       }
 
       document.getElementById('modalExibir').addEventListener('click', function (e) {
-        if (e.target.id === 'modalExibir') {
-          fecharModalExibir();
-        }
+        if (e.target.id === 'modalExibir') fecharModalExibir();
       });
     });
   </script>
