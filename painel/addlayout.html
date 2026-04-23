@@ -375,31 +375,23 @@
     }
 
     @media (max-width: 1200px) {
-      .cards-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
+      .cards-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
 
     @media (max-width: 900px) {
-      .cards-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .search-row {
-        gap: 18px;
-      }
+      .cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .search-row { gap: 18px; }
     }
 
     @media (max-width: 560px) {
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
+      .cards-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <div class="page">
     <div class="topbar">
-      <button class="back-btn" id="backBtn">‹</button>
+      <button class="back-btn" onclick="handleBack()">‹</button>
       Adicionar layout
     </div>
 
@@ -560,7 +552,7 @@
         </div>
       </div>
 
-      <button id="toStep2Btn" type="button" class="btn-primary">Prosseguir &gt;&gt;&gt;</button>
+      <button type="button" class="btn-primary" onclick="goStep2()">Prosseguir &gt;&gt;&gt;</button>
     </section>
 
     <!-- ETAPA 2 -->
@@ -575,7 +567,7 @@
         <div class="label">Escolher e/ou alterar logomarca</div>
       </div>
 
-      <div id="logoUploadBox" class="upload-box">
+      <div id="logoUploadBox" class="upload-box" onclick="document.getElementById('logoFileInput').click()">
         <div id="logoUploadEmpty">
           <div class="upload-placeholder">☁</div>
           <div class="upload-text">Clique para escolher</div>
@@ -583,11 +575,11 @@
         <img id="logoPreview" class="hidden" alt="logo preview" />
       </div>
 
-      <input id="logoFileInput" type="file" accept="image/*" class="hidden" />
+      <input id="logoFileInput" type="file" accept="image/*" class="hidden" onchange="handleLogoChange(event)" />
 
       <div id="logoFileName" class="selected-file hidden"></div>
 
-      <button id="toStep3Btn" type="button" class="btn-primary">Prosseguir &gt;&gt;&gt;</button>
+      <button type="button" class="btn-primary" onclick="goStep3()">Prosseguir &gt;&gt;&gt;</button>
     </section>
 
     <!-- ETAPA 3 -->
@@ -604,7 +596,7 @@
 
       <div id="backgroundsGrid" class="cards-grid"></div>
 
-      <button id="toStep4Btn" type="button" class="btn-primary">Prosseguir &gt;&gt;&gt;</button>
+      <button type="button" class="btn-primary" onclick="goStep4()">Prosseguir &gt;&gt;&gt;</button>
     </section>
 
     <!-- ETAPA 4 -->
@@ -613,17 +605,19 @@
         <div class="preview-title" id="confirmLayoutName"></div>
         <div class="preview-sub">Plano de fundo</div>
         <img id="confirmBackgroundImage" class="confirm-image" alt="plano de fundo" />
+
         <div id="confirmLogoWrap" class="hidden">
           <div class="preview-sub">Logomarca</div>
           <img id="confirmLogoImage" class="confirm-logo" alt="logomarca" />
         </div>
+
         <div class="confirm-details" id="confirmDetails"></div>
         <div style="margin-top:18px;">ATENÇÃO! Tenha certeza de que estão corretas as informações!</div>
         <div class="question">Os dados acima estão corretos ?</div>
       </div>
 
-      <button id="saveLayoutBtn" type="button" class="btn-success">SIM</button>
-      <button id="backToStep3Btn" type="button" class="btn-danger">NÃO</button>
+      <button type="button" class="btn-success" onclick="saveLayout()">SIM</button>
+      <button type="button" class="btn-danger" onclick="setStep(3)">NÃO</button>
     </section>
   </div>
 
@@ -670,13 +664,24 @@
       for (let i = 1; i <= 4; i++) {
         const indicator = document.getElementById(`step${i}Indicator`);
         indicator.classList.remove('active', 'done');
-
         if (i < step) indicator.classList.add('done');
         if (i === step) indicator.classList.add('active');
       }
 
       hideStatus();
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleBack() {
+      if (currentStep === 1) {
+        window.location.href = 'layouts.html';
+      } else if (currentStep === 2) {
+        setStep(1);
+      } else if (currentStep === 3) {
+        setStep(2);
+      } else {
+        setStep(3);
+      }
     }
 
     function getFormData() {
@@ -766,18 +771,8 @@
       }
     }
 
-    function restoreBackgroundFromSession() {
-      const raw = sessionStorage.getItem('novo_layout_background');
-      if (!raw) return;
-
-      try {
-        selectedBackground = JSON.parse(raw);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    function handleLogoFile(file) {
+    function handleLogoChange(event) {
+      const file = event.target.files && event.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
@@ -788,6 +783,17 @@
         updateLogoPreview(selectedLogoDataUrl, file.name);
       };
       reader.readAsDataURL(file);
+    }
+
+    function restoreBackgroundFromSession() {
+      const raw = sessionStorage.getItem('novo_layout_background');
+      if (!raw) return;
+
+      try {
+        selectedBackground = JSON.parse(raw);
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     async function loadBackgrounds() {
@@ -895,125 +901,94 @@
       `;
     }
 
-    async function saveLayout() {
+    function goStep2() {
       const form = getFormData();
-
-      if (!selectedBackground) {
-        throw new Error('Selecione um plano de fundo.');
-      }
-
-      const body = {
-        name: form.name,
-        logoPosition: form.logoPosition,
-        buttonsLocked: form.buttonsLocked,
-        unlockPassword: form.unlockPassword,
-        showAppsButton: form.showAppsButton,
-        iconsSize: form.iconsSize,
-        clockSize: form.clockSize,
-        expirationSize: form.expirationSize,
-        bannerPosition: form.bannerPosition,
-        clockPosition: form.clockPosition,
-        bannerSwapTime: form.bannerSwapTime,
-        autoUpdate: form.autoUpdate,
-        background: selectedBackground.image,
-        backgroundId: selectedBackground.id,
-        logo: selectedLogoDataUrl || '',
-        banners: [],
-        apps: [],
-        links: []
-      };
-
-      const res = await fetch(`${API_BASE}/layouts`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-
-      const data = await res.json().catch(() => ({}));
-
-      if (!res.ok || !data.ok) {
-        throw new Error(data.message || 'Erro ao salvar layout.');
-      }
-
-      sessionStorage.removeItem('novo_layout_step1');
-      sessionStorage.removeItem('novo_layout_logo_preview');
-      sessionStorage.removeItem('novo_layout_logo_name');
-      sessionStorage.removeItem('novo_layout_background');
-
-      showStatus('<strong>SUCESSO</strong><br>Layout criado com sucesso.', 'success');
-
-      setTimeout(() => {
-        window.location.href = 'layouts.html?e=2';
-      }, 900);
+      if (!validateStep1(form)) return;
+      saveStep1ToSession(form);
+      setStep(2);
     }
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      if (typeof authGuard === 'function') authGuard();
+    function goStep3() {
+      const form = getFormData();
+      saveStep1ToSession(form);
+      setStep(3);
+    }
 
+    function goStep4() {
+      if (!selectedBackground) {
+        showStatus('<strong>ERRO</strong><br>Selecione um plano de fundo para continuar.');
+        return;
+      }
+
+      fillConfirm();
+      setStep(4);
+    }
+
+    async function saveLayout() {
+      try {
+        const form = getFormData();
+
+        if (!selectedBackground) {
+          showStatus('<strong>ERRO</strong><br>Selecione um plano de fundo.');
+          return;
+        }
+
+        const body = {
+          name: form.name,
+          logoPosition: form.logoPosition,
+          buttonsLocked: form.buttonsLocked,
+          unlockPassword: form.unlockPassword,
+          showAppsButton: form.showAppsButton,
+          iconsSize: form.iconsSize,
+          clockSize: form.clockSize,
+          expirationSize: form.expirationSize,
+          bannerPosition: form.bannerPosition,
+          clockPosition: form.clockPosition,
+          bannerSwapTime: form.bannerSwapTime,
+          autoUpdate: form.autoUpdate,
+          background: selectedBackground.image,
+          backgroundId: selectedBackground.id,
+          logo: selectedLogoDataUrl || '',
+          banners: [],
+          apps: [],
+          links: []
+        };
+
+        const res = await fetch(`${API_BASE}/layouts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok || !data.ok) {
+          throw new Error(data.message || 'Erro ao salvar layout.');
+        }
+
+        sessionStorage.removeItem('novo_layout_step1');
+        sessionStorage.removeItem('novo_layout_logo_preview');
+        sessionStorage.removeItem('novo_layout_logo_name');
+        sessionStorage.removeItem('novo_layout_background');
+
+        showStatus('<strong>SUCESSO</strong><br>Layout criado com sucesso.', 'success');
+
+        setTimeout(() => {
+          window.location.href = 'layouts.html?e=2';
+        }, 900);
+      } catch (err) {
+        console.error(err);
+        showStatus(`<strong>ERRO</strong><br>${err.message || 'Erro ao criar layout.'}`);
+      }
+    }
+
+    window.addEventListener('load', async () => {
+      if (typeof authGuard === 'function') authGuard();
       restoreStep1FromSession();
       restoreLogoFromSession();
       restoreBackgroundFromSession();
       await loadBackgrounds();
       setStep(1);
-
-      document.getElementById('backBtn').addEventListener('click', () => {
-        if (currentStep === 1) {
-          window.location.href = 'layouts.html';
-        } else if (currentStep === 2) {
-          setStep(1);
-        } else if (currentStep === 3) {
-          setStep(2);
-        } else {
-          setStep(3);
-        }
-      });
-
-      document.getElementById('logoUploadBox').addEventListener('click', () => {
-        document.getElementById('logoFileInput').click();
-      });
-
-      document.getElementById('logoFileInput').addEventListener('change', (e) => {
-        const file = e.target.files && e.target.files[0];
-        handleLogoFile(file);
-      });
-
-      document.getElementById('toStep2Btn').addEventListener('click', () => {
-        const form = getFormData();
-
-        if (!validateStep1(form)) return;
-
-        saveStep1ToSession(form);
-        setStep(2);
-      });
-
-      document.getElementById('toStep3Btn').addEventListener('click', () => {
-        const form = getFormData();
-        saveStep1ToSession(form);
-        setStep(3);
-      });
-
-      document.getElementById('toStep4Btn').addEventListener('click', () => {
-        if (!selectedBackground) {
-          showStatus('<strong>ERRO</strong><br>Selecione um plano de fundo para continuar.');
-          return;
-        }
-
-        fillConfirm();
-        setStep(4);
-      });
-
-      document.getElementById('backToStep3Btn').addEventListener('click', () => {
-        setStep(3);
-      });
-
-      document.getElementById('saveLayoutBtn').addEventListener('click', async () => {
-        try {
-          await saveLayout();
-        } catch (err) {
-          console.error(err);
-          showStatus(`<strong>ERRO</strong><br>${err.message || 'Erro ao criar layout.'}`);
-        }
-      });
     });
   </script>
 </body>
