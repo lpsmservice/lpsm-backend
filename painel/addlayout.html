@@ -84,14 +84,6 @@
       color: #fff;
     }
 
-    .section-head {
-      text-align: center;
-      padding: 18px 18px 8px;
-      color: #fff;
-      font-size: 16px;
-      line-height: 1.8;
-    }
-
     .status-box {
       margin: 12px 18px 0;
       padding: 14px 16px;
@@ -113,6 +105,14 @@
       color: #fff;
       line-height: 1.8;
       font-size: 15px;
+    }
+
+    .section-head {
+      text-align: center;
+      padding: 18px 18px 8px;
+      color: #fff;
+      font-size: 16px;
+      line-height: 1.8;
     }
 
     .form-wrap {
@@ -266,7 +266,7 @@
       font-size: 15px;
     }
 
-    .bg-card .pick-btn {
+    .pick-btn {
       width: calc(100% - 16px);
       margin: 0 8px 10px;
       height: 34px;
@@ -308,6 +308,17 @@
       background: #0d1d36;
     }
 
+    .confirm-logo {
+      width: 140px;
+      max-height: 140px;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+      margin: 0 auto 14px;
+      background: #0d1d36;
+      padding: 6px;
+    }
+
     .confirm-details {
       text-align: center;
       line-height: 1.8;
@@ -324,8 +335,7 @@
 
     .btn-primary,
     .btn-success,
-    .btn-danger,
-    .btn-secondary {
+    .btn-danger {
       width: calc(100% - 36px);
       height: 52px;
       margin: 14px 18px 0;
@@ -340,7 +350,6 @@
     .btn-primary { background: #2f7cff; }
     .btn-success { background: #39c65a; }
     .btn-danger { background: #f44336; }
-    .btn-secondary { background: #7f8aa4; }
 
     .hidden { display: none !important; }
 
@@ -395,7 +404,7 @@
     </div>
 
     <div class="steps">
-      <div class="step" id="step1Indicator">
+      <div class="step active" id="step1Indicator">
         <div class="step-circle">1</div>
         <div>Dados</div>
       </div>
@@ -551,7 +560,7 @@
         </div>
       </div>
 
-      <button id="toStep2Btn" class="btn-primary">Prosseguir &gt;&gt;&gt;</button>
+      <button id="toStep2Btn" type="button" class="btn-primary">Prosseguir &gt;&gt;&gt;</button>
     </section>
 
     <!-- ETAPA 2 -->
@@ -573,10 +582,12 @@
         </div>
         <img id="logoPreview" class="hidden" alt="logo preview" />
       </div>
+
       <input id="logoFileInput" type="file" accept="image/*" class="hidden" />
+
       <div id="logoFileName" class="selected-file hidden"></div>
 
-      <button id="toStep3Btn" class="btn-primary">Prosseguir &gt;&gt;&gt;</button>
+      <button id="toStep3Btn" type="button" class="btn-primary">Prosseguir &gt;&gt;&gt;</button>
     </section>
 
     <!-- ETAPA 3 -->
@@ -587,13 +598,13 @@
       </div>
 
       <div class="search-row">
-        <button class="mini-btn" onclick="showStatus('<strong>AVISO</strong><br>Vamos ajustar o modo EXIBIR dos fundos depois.', 'success')">EXIBIR</button>
-        <button class="mini-btn" onclick="buscarBackground()">BUSCAR</button>
+        <button type="button" class="mini-btn" onclick="showStatus('<strong>AVISO</strong><br>Vamos ajustar o modo EXIBIR dos fundos depois.', 'success')">EXIBIR</button>
+        <button type="button" class="mini-btn" onclick="buscarBackground()">BUSCAR</button>
       </div>
 
       <div id="backgroundsGrid" class="cards-grid"></div>
 
-      <button id="toStep4Btn" class="btn-primary">Prosseguir &gt;&gt;&gt;</button>
+      <button id="toStep4Btn" type="button" class="btn-primary">Prosseguir &gt;&gt;&gt;</button>
     </section>
 
     <!-- ETAPA 4 -->
@@ -602,13 +613,17 @@
         <div class="preview-title" id="confirmLayoutName"></div>
         <div class="preview-sub">Plano de fundo</div>
         <img id="confirmBackgroundImage" class="confirm-image" alt="plano de fundo" />
+        <div id="confirmLogoWrap" class="hidden">
+          <div class="preview-sub">Logomarca</div>
+          <img id="confirmLogoImage" class="confirm-logo" alt="logomarca" />
+        </div>
         <div class="confirm-details" id="confirmDetails"></div>
         <div style="margin-top:18px;">ATENÇÃO! Tenha certeza de que estão corretas as informações!</div>
         <div class="question">Os dados acima estão corretos ?</div>
       </div>
 
-      <button id="saveLayoutBtn" class="btn-success">SIM</button>
-      <button id="backToStep3Btn" class="btn-danger">NÃO</button>
+      <button id="saveLayoutBtn" type="button" class="btn-success">SIM</button>
+      <button id="backToStep3Btn" type="button" class="btn-danger">NÃO</button>
     </section>
   </div>
 
@@ -625,7 +640,6 @@
     const API_BASE = window.location.origin;
 
     let currentStep = 1;
-    let selectedLogoFile = null;
     let selectedLogoDataUrl = '';
     let selectedBackground = null;
     let allBackgrounds = [];
@@ -654,16 +668,14 @@
       document.getElementById(`step${step}Section`).classList.remove('hidden');
 
       for (let i = 1; i <= 4; i++) {
-        const el = document.getElementById(`step${i}Indicator`);
-        el.classList.remove('active', 'done');
-        if (i < step) el.classList.add('done');
-        if (i === step) el.classList.add('active');
+        const indicator = document.getElementById(`step${i}Indicator`);
+        indicator.classList.remove('active', 'done');
+
+        if (i < step) indicator.classList.add('done');
+        if (i === step) indicator.classList.add('active');
       }
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function voltarTopo() {
+      hideStatus();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -689,11 +701,40 @@
         showStatus('<strong>ERRO</strong><br>Informe o nome do layout.');
         return false;
       }
+
       if (data.buttonsLocked && data.unlockPassword.length < 5) {
         showStatus('<strong>ERRO</strong><br>Informe uma senha de no mínimo 5 caracteres para desbloquear.');
         return false;
       }
+
       return true;
+    }
+
+    function saveStep1ToSession(data) {
+      sessionStorage.setItem('novo_layout_step1', JSON.stringify(data));
+    }
+
+    function restoreStep1FromSession() {
+      const raw = sessionStorage.getItem('novo_layout_step1');
+      if (!raw) return;
+
+      try {
+        const data = JSON.parse(raw);
+        document.getElementById('layoutName').value = data.name || '';
+        document.getElementById('logoPosition').value = data.logoPosition || 'ESQUERDA';
+        document.getElementById('buttonsLocked').value = data.buttonsLocked ? 'SIM' : 'NÃO';
+        document.getElementById('unlockPassword').value = data.unlockPassword || '';
+        document.getElementById('showApps').value = data.showAppsButton ? 'SIM' : 'NÃO';
+        document.getElementById('iconsSize').value = data.iconsSize || 'PADRÃO';
+        document.getElementById('clockSize').value = data.clockSize || 'PADRÃO';
+        document.getElementById('expirationSize').value = data.expirationSize || 'PADRÃO';
+        document.getElementById('bannerPosition').value = data.bannerPosition || 'ESQUERDA';
+        document.getElementById('clockPosition').value = data.clockPosition || 'ESQUERDA';
+        document.getElementById('bannerSwapTime').value = data.bannerSwapTime || '5 segundos';
+        document.getElementById('autoUpdate').value = data.autoUpdate ? 'SIM' : 'NÃO';
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     function updateLogoPreview(dataUrl, fileName = '') {
@@ -705,10 +746,8 @@
         preview.src = dataUrl;
         preview.classList.remove('hidden');
         empty.classList.add('hidden');
-        if (fileName) {
-          fileBox.textContent = fileName;
-          fileBox.classList.remove('hidden');
-        }
+        fileBox.textContent = fileName || 'Imagem selecionada';
+        fileBox.classList.remove('hidden');
       } else {
         preview.src = '';
         preview.classList.add('hidden');
@@ -718,22 +757,55 @@
       }
     }
 
-    function pickLogo() {
-      document.getElementById('logoFileInput').click();
+    function restoreLogoFromSession() {
+      const preview = sessionStorage.getItem('novo_layout_logo_preview') || '';
+      const name = sessionStorage.getItem('novo_layout_logo_name') || '';
+      if (preview) {
+        selectedLogoDataUrl = preview;
+        updateLogoPreview(preview, name);
+      }
     }
 
-    function pickLogoFile(file) {
+    function restoreBackgroundFromSession() {
+      const raw = sessionStorage.getItem('novo_layout_background');
+      if (!raw) return;
+
+      try {
+        selectedBackground = JSON.parse(raw);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function handleLogoFile(file) {
       if (!file) return;
 
       const reader = new FileReader();
-      reader.onload = function(e) {
-        selectedLogoFile = file;
+      reader.onload = function (e) {
         selectedLogoDataUrl = e.target.result;
-        updateLogoPreview(selectedLogoDataUrl, file.name);
         sessionStorage.setItem('novo_layout_logo_preview', selectedLogoDataUrl);
         sessionStorage.setItem('novo_layout_logo_name', file.name);
+        updateLogoPreview(selectedLogoDataUrl, file.name);
       };
       reader.readAsDataURL(file);
+    }
+
+    async function loadBackgrounds() {
+      try {
+        const res = await fetch(`${API_BASE}/backgrounds`);
+        const data = await res.json().catch(() => []);
+
+        if (res.ok && Array.isArray(data)) {
+          allBackgrounds = data;
+        } else {
+          allBackgrounds = [];
+        }
+      } catch (err) {
+        console.error(err);
+        allBackgrounds = [];
+      }
+
+      renderBackgrounds(allBackgrounds);
     }
 
     function renderBackgrounds(list) {
@@ -755,11 +827,13 @@
         const name = bg.name || bg.title || `Fundo ${bg.id || ''}`;
 
         const card = document.createElement('div');
-        card.className = 'bg-card' + (selectedBackground && String(selectedBackground.id) === String(bg.id) ? ' selected' : '');
+        const selected = selectedBackground && String(selectedBackground.id) === String(bg.id);
+        card.className = `bg-card${selected ? ' selected' : ''}`;
+
         card.innerHTML = `
           <img src="${imageUrl}" alt="${name}" onerror="this.src=''">
           <div class="bg-name">${name}</div>
-          <button class="pick-btn" type="button">Escolher</button>
+          <button type="button" class="pick-btn">Escolher</button>
         `;
 
         card.querySelector('.pick-btn').addEventListener('click', () => {
@@ -777,28 +851,15 @@
       });
     }
 
-    async function loadBackgrounds() {
-      try {
-        const res = await fetch(`${API_BASE}/backgrounds`);
-        const data = await res.json().catch(() => []);
-        if (res.ok && Array.isArray(data) && data.length) {
-          allBackgrounds = data;
-          renderBackgrounds(allBackgrounds);
-          return;
-        }
-      } catch (e) {
-        console.error(e);
-      }
-
-      allBackgrounds = [];
-      renderBackgrounds([]);
-    }
-
     function buscarBackground() {
       const termo = prompt('Digite o nome do plano de fundo:');
       if (termo === null) return;
+
       const t = termo.trim().toLowerCase();
-      const filtrados = allBackgrounds.filter(bg => String(bg.name || bg.title || '').toLowerCase().includes(t));
+      const filtrados = allBackgrounds.filter(bg =>
+        String(bg.name || bg.title || '').toLowerCase().includes(t)
+      );
+
       renderBackgrounds(filtrados);
     }
 
@@ -807,6 +868,17 @@
 
       document.getElementById('confirmLayoutName').textContent = `Nome do layout: ${form.name}`;
       document.getElementById('confirmBackgroundImage').src = selectedBackground ? selectedBackground.image : '';
+
+      const logoWrap = document.getElementById('confirmLogoWrap');
+      const logoImage = document.getElementById('confirmLogoImage');
+
+      if (selectedLogoDataUrl) {
+        logoImage.src = selectedLogoDataUrl;
+        logoWrap.classList.remove('hidden');
+      } else {
+        logoWrap.classList.add('hidden');
+      }
+
       document.getElementById('confirmDetails').innerHTML = `
         <div>${selectedLogoDataUrl ? 'Logomarca selecionada' : 'SEM logomarca por enquanto'}</div>
         <div>Localização da logomarca: ${form.logoPosition === 'ESQUERDA' ? 'À esquerda' : form.logoPosition === 'DIREITA' ? 'À direita' : 'Centralizada'}</div>
@@ -821,48 +893,6 @@
         <div>Tempo de troca dos banners: ${form.bannerSwapTime}</div>
         <div>Update automático da launcher ativado? ${form.autoUpdate ? 'SIM' : 'NÃO'}</div>
       `;
-    }
-
-    function restoreSavedStep1() {
-      const saved = sessionStorage.getItem('novo_layout_step1');
-      if (!saved) return;
-
-      try {
-        const data = JSON.parse(saved);
-        document.getElementById('layoutName').value = data.name || '';
-        document.getElementById('logoPosition').value = data.logoPosition || 'ESQUERDA';
-        document.getElementById('buttonsLocked').value = data.buttonsLocked ? 'SIM' : 'NÃO';
-        document.getElementById('unlockPassword').value = data.unlockPassword || '';
-        document.getElementById('showApps').value = data.showAppsButton ? 'SIM' : 'NÃO';
-        document.getElementById('iconsSize').value = data.iconsSize || 'PADRÃO';
-        document.getElementById('clockSize').value = data.clockSize || 'PADRÃO';
-        document.getElementById('expirationSize').value = data.expirationSize || 'PADRÃO';
-        document.getElementById('bannerPosition').value = data.bannerPosition || 'ESQUERDA';
-        document.getElementById('clockPosition').value = data.clockPosition || 'ESQUERDA';
-        document.getElementById('bannerSwapTime').value = data.bannerSwapTime || '5 segundos';
-        document.getElementById('autoUpdate').value = data.autoUpdate ? 'SIM' : 'NÃO';
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    function restoreSavedLogo() {
-      const preview = sessionStorage.getItem('novo_layout_logo_preview') || '';
-      const name = sessionStorage.getItem('novo_layout_logo_name') || '';
-      if (preview) {
-        selectedLogoDataUrl = preview;
-        updateLogoPreview(preview, name);
-      }
-    }
-
-    function restoreSavedBackground() {
-      const savedBg = sessionStorage.getItem('novo_layout_background');
-      if (!savedBg) return;
-      try {
-        selectedBackground = JSON.parse(savedBg);
-      } catch (e) {
-        console.error(e);
-      }
     }
 
     async function saveLayout() {
@@ -920,10 +950,11 @@
     document.addEventListener('DOMContentLoaded', async () => {
       if (typeof authGuard === 'function') authGuard();
 
-      restoreSavedStep1();
-      restoreSavedLogo();
-      restoreSavedBackground();
+      restoreStep1FromSession();
+      restoreLogoFromSession();
+      restoreBackgroundFromSession();
       await loadBackgrounds();
+      setStep(1);
 
       document.getElementById('backBtn').addEventListener('click', () => {
         if (currentStep === 1) {
@@ -937,34 +968,36 @@
         }
       });
 
-      document.getElementById('logoUploadBox').addEventListener('click', pickLogo);
+      document.getElementById('logoUploadBox').addEventListener('click', () => {
+        document.getElementById('logoFileInput').click();
+      });
 
       document.getElementById('logoFileInput').addEventListener('change', (e) => {
         const file = e.target.files && e.target.files[0];
-        pickLogoFile(file);
+        handleLogoFile(file);
       });
 
       document.getElementById('toStep2Btn').addEventListener('click', () => {
-        hideStatus();
         const form = getFormData();
 
         if (!validateStep1(form)) return;
 
-        sessionStorage.setItem('novo_layout_step1', JSON.stringify(form));
+        saveStep1ToSession(form);
         setStep(2);
       });
 
-      document.getElementById('toStep3Btn').addEventListener('click', async () => {
-        hideStatus();
+      document.getElementById('toStep3Btn').addEventListener('click', () => {
+        const form = getFormData();
+        saveStep1ToSession(form);
         setStep(3);
       });
 
       document.getElementById('toStep4Btn').addEventListener('click', () => {
-        hideStatus();
         if (!selectedBackground) {
           showStatus('<strong>ERRO</strong><br>Selecione um plano de fundo para continuar.');
           return;
         }
+
         fillConfirm();
         setStep(4);
       });
@@ -976,26 +1009,12 @@
       document.getElementById('saveLayoutBtn').addEventListener('click', async () => {
         try {
           await saveLayout();
-        } catch (e) {
-          console.error(e);
-          showStatus(`<strong>ERRO</strong><br>${e.message || 'Erro ao criar layout.'}`);
+        } catch (err) {
+          console.error(err);
+          showStatus(`<strong>ERRO</strong><br>${err.message || 'Erro ao criar layout.'}`);
         }
       });
-
-      setStep(1);
     });
-
-    function validateStep1(data) {
-      if (!data.name) {
-        showStatus('<strong>ERRO</strong><br>Informe o nome do layout.');
-        return false;
-      }
-      if (data.buttonsLocked && data.unlockPassword.length < 5) {
-        showStatus('<strong>ERRO</strong><br>Informe uma senha de no mínimo 5 caracteres para desbloquear.');
-        return false;
-      }
-      return true;
-    }
   </script>
 </body>
 </html>
