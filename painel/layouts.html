@@ -1,265 +1,622 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LAUNCHER BOX - Meus layouts</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LAUNCHER BOX - Meus Layouts</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(90deg, #02101e 0%, #052444 100%);
+      color: #fff;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    .topbar {
+      height: 58px;
+      background: #0d2347;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .menu-btn,
+    .bell-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .menu-btn {
+      left: 18px;
+      font-size: 34px;
+      line-height: 1;
+    }
+
+    .bell-btn {
+      right: 18px;
+      font-size: 28px;
+      color: #f8c441;
+    }
+
+    .hero {
+      padding: 18px 18px 8px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 16px;
+      color: #e8eef9;
+    }
+
+    .credits-card {
+      margin: 18px;
+      padding: 16px 20px 20px;
+      background: #0d2347;
+      border-radius: 10px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+    }
+
+    .credits-label {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+
+    .credits-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .credit-pill,
+    .credit-line {
+      display: flex;
+      align-items: center;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #000;
+      min-height: 42px;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.45);
+    }
+
+    .left-badge {
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #2f7cff;
+      color: #fff;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .center-text {
+      flex: 1;
+      padding: 0 14px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .right-value {
+      background: #41d763;
+      color: #fff;
+      min-width: 42px;
+      height: 42px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .credits-middle {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .action-btn {
+      width: 100%;
+      height: 52px;
+      border: none;
+      border-radius: 6px;
+      background: #2f7cff;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 0 0 14px 0;
+    }
+
+    .actions-wrap {
+      margin: 0 0 0;
+      padding: 0 0 0;
+    }
+
+    .actions-inner {
+      margin: 0 18px;
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 90px;
+      margin: 18px 18px 22px;
+      align-items: center;
+    }
+
+    .mini-btn {
+      width: 86px;
+      height: 44px;
+      border: none;
+      border-radius: 8px;
+      background: #7f8aa4;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      justify-self: center;
+    }
+
+    .section-title {
+      margin: 0;
+      padding: 16px 18px;
+      font-size: 16px;
+      font-weight: 800;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      background: rgba(0,0,0,0.12);
+    }
+
+    .status-box {
+      margin: 14px 18px 0;
+      padding: 14px 16px;
+      border-radius: 8px;
+      display: none;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .status-box.show {
+      display: block;
+    }
+
+    .status-box.error {
+      background: #f44336;
+      color: #fff;
+    }
+
+    .status-box.success {
+      background: #20b15a;
+      color: #fff;
+    }
+
+    .list-wrap {
+      margin-top: 0;
+    }
+
+    .layout-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(13,35,71,0.95);
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      padding: 16px 18px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .layout-row:hover {
+      background: rgba(18,42,78,0.98);
+    }
+
+    .layout-thumb {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      background: #10284a;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .layout-name {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .layout-arrow {
+      color: #6d7f98;
+      font-size: 28px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .empty-state {
+      margin: 18px;
+      padding: 18px;
+      background: rgba(13,35,71,0.95);
+      border-radius: 8px;
+      color: #dce7fb;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 320px;
+      background: #0d2347;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+      text-align: center;
+    }
+
+    .modal-top {
+      padding: 24px 18px 18px;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+
+    .modal-text {
+      color: #9fb1cb;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .modal-actions button {
+      width: 100%;
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: transparent;
+      color: #2f7cff;
+      font-size: 16px;
+      padding: 18px 12px;
+      cursor: pointer;
+    }
+
+    .modal-actions button:last-child {
+      color: #8c98aa;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 60px;
+      background: #0d2347;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      z-index: 60;
+    }
+
+    .bottom-nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    @media (max-width: 1100px) {
+      .credits-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .search-row {
+        gap: 18px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div id="drawerOverlay" class="drawer-overlay"></div>
-
-  <aside id="drawer" class="drawer">
-    <div class="drawer-profile">
-      <div class="drawer-profile-avatar">
-        <img
-          id="drawerProfileImage"
-          src="https://via.placeholder.com/56x56.png?text=IMG"
-          alt="Imagem"
-          onerror="this.style.display='none'; document.getElementById('drawerProfileFallback').style.display='flex';"
-        >
-        <div id="drawerProfileFallback" class="drawer-profile-fallback" style="display:none;">LP</div>
-      </div>
-
-      <div class="drawer-profile-info">
-        <div class="drawer-profile-name" id="drawerUserName">lpzovendas vacaria rs</div>
-        <div class="drawer-profile-phone" id="drawerUserPhone">📱 54997146384</div>
-      </div>
-
-      <button id="drawerClose" class="drawer-profile-close" aria-label="Fechar menu">×</button>
+  <div class="page">
+    <div class="topbar">
+      <button class="menu-btn" onclick="toggleDrawer()">☰</button>
+      LAUNCHER BOX
+      <button class="bell-btn">🔔</button>
     </div>
 
-    <div class="drawer-menu">
-      <a class="drawer-menu-row" href="launcher.html">
-        <div class="drawer-menu-left">
-          <div class="drawer-menu-icon">🧩</div>
-          <span>Gerenciar launcher</span>
-        </div>
-        <span class="drawer-menu-arrow">›</span>
-      </a>
-
-      <a class="drawer-menu-row" href="devices.html">
-        <div class="drawer-menu-left">
-          <div class="drawer-menu-icon">📁</div>
-          <span>Gerenciar clientes</span>
-        </div>
-        <span class="drawer-menu-arrow">›</span>
-      </a>
-
-      <a class="drawer-menu-row" href="resellers.html">
-        <div class="drawer-menu-left">
-          <div class="drawer-menu-icon">👥</div>
-          <span>Gerenciar revendas</span>
-        </div>
-        <span class="drawer-menu-arrow">›</span>
-      </a>
-
-      <a class="drawer-menu-row" href="notifications.html">
-        <div class="drawer-menu-left">
-          <div class="drawer-menu-icon">🔔</div>
-          <span>Notificações</span>
-        </div>
-        <span class="drawer-menu-arrow">›</span>
-      </a>
-
-      <div class="drawer-menu-row drawer-theme-row">
-        <div class="drawer-menu-left">
-          <div class="drawer-menu-icon">🌙</div>
-          <span>Tema escuro</span>
-        </div>
-
-        <label class="drawer-switch">
-          <input type="checkbox" id="themeToggle" checked>
-          <span class="drawer-switch-slider"></span>
-        </label>
-      </div>
-
-      <div class="drawer-section-label">Logs</div>
-
-      <a class="drawer-menu-row" href="logs.html">
-        <div class="drawer-menu-left">
-          <div class="drawer-menu-icon drawer-menu-icon-gray">📚</div>
-          <span>Logs gerais</span>
-        </div>
-        <span class="drawer-menu-arrow">›</span>
-      </a>
-
-      <a class="drawer-menu-row" href="creditos-recebidos.html">
-        <div class="drawer-menu-left">
-          <div class="drawer-menu-icon drawer-menu-icon-gray">🛰</div>
-          <span>Créditos recebidos</span>
-        </div>
-        <span class="drawer-menu-arrow">›</span>
-      </a>
-
-      <a class="drawer-menu-row" href="recargas-feitas.html">
-        <div class="drawer-menu-left">
-          <div class="drawer-menu-icon drawer-menu-icon-gray">🛰</div>
-          <span>Recargas feitas</span>
-        </div>
-        <span class="drawer-menu-arrow">›</span>
-      </a>
-
-      <div class="drawer-section-label">Configurações</div>
-
-      <a class="drawer-menu-row" href="configuracoes.html">
-        <div class="drawer-menu-left">
-          <div class="drawer-menu-icon drawer-menu-icon-dark">⚙</div>
-          <span>Configurações</span>
-        </div>
-        <span class="drawer-menu-arrow">›</span>
-      </a>
+    <div class="hero">
+      <h1>Meus Layouts</h1>
+      <p>Aqui você poderá gerenciar seus layouts existentes e/ou criar novos.</p>
     </div>
 
-    <div class="drawer-bottom-bar">
-      <a class="drawer-bottom-btn" href="perfil.html" aria-label="Perfil">◌</a>
-      <a class="drawer-bottom-btn" href="dashboard.html" aria-label="Camadas">◈</a>
-      <a class="drawer-bottom-btn" href="configuracoes.html" aria-label="Configurações">⚙</a>
-      <button class="drawer-bottom-btn" onclick="logout()" aria-label="Sair">⇥</button>
-    </div>
-  </aside>
+    <div class="credits-card">
+      <div class="credits-label">SEUS CRÉDITOS</div>
 
-  <header class="topbar">
-    <div class="topbar-left">
-      <button id="menuBtn" class="icon-btn" aria-label="Abrir menu">☰</button>
-    </div>
-
-    <div class="topbar-center-title">LAUNCHER BOX</div>
-
-    <div class="topbar-right">
-      <button class="icon-btn bell-btn" aria-label="Notificações">🔔</button>
-    </div>
-  </header>
-
-  <main class="page-dashboard">
-    <section class="credit-box-home" style="margin-top:0;">
-      <div class="credit-grid-home" style="padding-top:10px;">
-        <div class="credit-col-side">
-          <div class="mini-pill home-pill-left">
-            <span class="mini-pill-icon">›</span>
-            <span class="mini-pill-text">ANUAL:</span>
-            <span class="mini-pill-value" id="annualCreditsValue">1</span>
+      <div class="credits-grid">
+        <div>
+          <div class="credit-pill">
+            <div class="left-badge">›</div>
+            <div class="center-text">ANUAL:</div>
+            <div class="right-value" id="annualCreditsValue">1000</div>
           </div>
         </div>
 
-        <div class="credit-col-center">
-          <div class="long-pill">
-            <span class="long-pill-icon">📅</span>
-            <span class="long-pill-label">Validade dos créditos:</span>
-            <span class="long-pill-value" id="creditsValidity">15/11/2026 - 19:50</span>
+        <div class="credits-middle">
+          <div class="credit-line">
+            <div class="left-badge">🗓</div>
+            <div class="center-text">Validade dos créditos:</div>
+            <div class="right-value" id="creditsExpiryValue">15/11/2026 - 19:50</div>
           </div>
 
-          <div class="long-pill">
-            <span class="long-pill-icon">🧩</span>
-            <span class="long-pill-label">Limite de layouts:</span>
-            <span class="long-pill-value" id="layoutLimitValue">20</span>
+          <div class="credit-line">
+            <div class="left-badge">🧩</div>
+            <div class="center-text">Limite de layouts:</div>
+            <div class="right-value" id="layoutLimitValue">20</div>
           </div>
 
-          <div class="long-pill">
-            <span class="long-pill-icon">👜</span>
-            <span class="long-pill-label">Limite de aplicativos:</span>
-            <span class="long-pill-value" id="appsLimitValue">1</span>
+          <div class="credit-line">
+            <div class="left-badge">💼</div>
+            <div class="center-text">Limite de aplicativos:</div>
+            <div class="right-value" id="appsLimitValue">1000</div>
           </div>
         </div>
 
-        <div class="credit-col-side credit-col-side-right">
-          <div class="mini-pill home-pill-right">
-            <span class="mini-pill-icon">›</span>
-            <span class="mini-pill-text">2 ANOS:</span>
-            <span class="mini-pill-value" id="twoYearsCreditsValue">0</span>
+        <div>
+          <div class="credit-pill">
+            <div class="left-badge">›</div>
+            <div class="center-text">2 ANOS:</div>
+            <div class="right-value" id="twoYearsCreditsValue">0</div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="options-home" style="margin-top:24px;">
-      <div class="options-home-title">MEUS LAYOUTS</div>
+    <div class="actions-inner">
+      <button class="action-btn" onclick="criarLayout()">ADD LAYOUT</button>
+      <button class="action-btn" onclick="copiarLayout()">COPIAR LAYOUT</button>
+    </div>
 
-      <div class="options-home-list">
-        <a class="home-row" href="layout-editor.html">
-          <div class="home-row-left">
-            <span>Layout Principal</span>
-          </div>
-          <div class="launcher-count-wrap">
-            <span class="launcher-count-badge">1</span>
-            <span class="home-row-arrow">›</span>
-          </div>
-        </a>
+    <div class="search-row">
+      <button class="mini-btn" onclick="abrirModalExibir()">EXIBIR</button>
+      <button class="mini-btn" onclick="buscarLayout()">BUSCAR</button>
+    </div>
 
-        <a class="home-row" href="layout-editor.html">
-          <div class="home-row-left">
-            <span>Layout Cliente 01</span>
-          </div>
-          <div class="launcher-count-wrap">
-            <span class="launcher-count-badge">2</span>
-            <span class="home-row-arrow">›</span>
-          </div>
-        </a>
+    <div class="section-title">LAYOUTS MEUS:</div>
 
-        <a class="home-row" href="layout-editor.html">
-          <div class="home-row-left">
-            <span>Layout Cliente 02</span>
-          </div>
-          <div class="launcher-count-wrap">
-            <span class="launcher-count-badge">3</span>
-            <span class="home-row-arrow">›</span>
-          </div>
-        </a>
+    <div id="statusBox" class="status-box"></div>
 
-        <a class="home-row" href="layout-editor.html">
-          <div class="home-row-left">
-            <span>Layout Tema Azul</span>
-          </div>
-          <div class="launcher-count-wrap">
-            <span class="launcher-count-badge">4</span>
-            <span class="home-row-arrow">›</span>
-          </div>
-        </a>
+    <div class="list-wrap" id="layoutsContainer">
+      <div class="empty-state">Carregando layouts...</div>
+    </div>
+  </div>
 
-        <a class="home-row" href="layout-editor.html">
-          <div class="home-row-left">
-            <span>Layout Tema Escuro</span>
-          </div>
-          <div class="launcher-count-wrap">
-            <span class="launcher-count-badge">5</span>
-            <span class="home-row-arrow">›</span>
-          </div>
-        </a>
-
-        <a class="home-row" href="novo-layout.html">
-          <div class="home-row-left">
-            <span>+ Criar novo layout</span>
-          </div>
-          <div class="launcher-count-wrap">
-            <span class="home-row-arrow">›</span>
-          </div>
-        </a>
+  <div id="modalExibir" class="modal">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div class="modal-title">Modo de exibição</div>
+        <div class="modal-text">
+          Escolha abaixo como deseja<br>
+          visualizar seus layouts.
+        </div>
       </div>
-    </section>
-  </main>
 
-  <nav class="bottom-nav-home">
-    <a class="bottom-home-item" href="dashboard.html" aria-label="Início">
-      <span class="bottom-home-icon">⌂</span>
-    </a>
+      <div class="modal-actions">
+        <button onclick="ordenarLayouts('novos')">Mais novos</button>
+        <button onclick="ordenarLayouts('antigos')">Mais antigos</button>
+        <button onclick="ordenarLayouts('az')">Ordem Alfabética</button>
+        <button onclick="fecharModalExibir()">FECHAR</button>
+      </div>
+    </div>
+  </div>
 
-    <a class="bottom-home-item" href="https://wa.me/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-      <span class="bottom-home-icon">◔</span>
-    </a>
-
-    <a class="bottom-home-item" href="devices.html" aria-label="Clientes">
-      <span class="bottom-home-icon">▭</span>
-    </a>
-
-    <a class="bottom-home-item active" href="launcher.html" aria-label="Launcher">
-      <span class="bottom-home-icon">▦</span>
-    </a>
-
-    <a class="bottom-home-item" href="#top" aria-label="Subir">
-      <span class="bottom-home-icon">↑</span>
-    </a>
+  <nav class="bottom-nav">
+    <a href="dashboard.html">⌂</a>
+    <a href="https://wa.me/" target="_blank">◔</a>
+    <a href="devices.html">▭</a>
+    <a href="launcher.html">▦</a>
+    <a href="#top">↑</a>
   </nav>
 
   <script src="js/app.js"></script>
+  <script>
+    let allLayouts = [];
+    let currentOrder = 'novos';
+
+    function toggleDrawer() {
+      const drawer = document.getElementById('drawer');
+      const overlay = document.getElementById('drawerOverlay');
+      if (drawer && overlay) {
+        drawer.classList.add('open');
+        overlay.classList.add('show');
+      }
+    }
+
+    function showStatus(message, type = 'error') {
+      const box = document.getElementById('statusBox');
+      box.className = `status-box show ${type}`;
+      box.innerHTML = message;
+    }
+
+    function hideStatus() {
+      const box = document.getElementById('statusBox');
+      box.className = 'status-box';
+      box.innerHTML = '';
+    }
+
+    function fallbackThumb() {
+      return 'https://cdn-icons-png.flaticon.com/512/1829/1829586.png';
+    }
+
+    function abrirModalExibir() {
+      document.getElementById('modalExibir').classList.add('show');
+    }
+
+    function fecharModalExibir() {
+      document.getElementById('modalExibir').classList.remove('show');
+    }
+
+    function ordenarLayouts(tipo) {
+      currentOrder = tipo;
+      renderLayouts();
+      fecharModalExibir();
+    }
+
+    function criarLayout() {
+      window.location.href = 'layout-editor.html';
+    }
+
+    function copiarLayout() {
+      showStatus('<strong>AVISO</strong><br>Vamos ajustar a cópia de layout na próxima etapa.', 'success');
+    }
+
+    function buscarLayout() {
+      const termo = prompt('Digite o nome do layout para buscar:');
+      if (termo === null) return;
+
+      const search = termo.trim().toLowerCase();
+      const filtrados = allLayouts.filter(item => String(item.name || '').toLowerCase().includes(search));
+      renderLayoutsList(filtrados);
+    }
+
+    function renderLayouts() {
+      let arr = [...allLayouts];
+
+      if (currentOrder === 'az') {
+        arr.sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'pt-BR'));
+      } else if (currentOrder === 'antigos') {
+        arr.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
+      } else {
+        arr.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+      }
+
+      renderLayoutsList(arr);
+    }
+
+    function renderLayoutsList(layouts) {
+      const container = document.getElementById('layoutsContainer');
+
+      if (!layouts.length) {
+        container.innerHTML = '<div class="empty-state">Nenhum layout encontrado.</div>';
+        return;
+      }
+
+      container.innerHTML = '';
+
+      layouts.forEach((layout) => {
+        const a = document.createElement('a');
+        a.className = 'layout-row';
+        a.href = `layout-editor.html?id=${encodeURIComponent(layout.id)}`;
+
+        const thumb = layout.background || layout.logo || fallbackThumb();
+
+        a.innerHTML = `
+          <img class="layout-thumb" src="${thumb}" alt="layout" onerror="this.src='${fallbackThumb()}'">
+          <div class="layout-name">${layout.name || 'Layout sem nome'}</div>
+          <div class="layout-arrow">›</div>
+        `;
+
+        container.appendChild(a);
+      });
+    }
+
+    async function loadCredits() {
+      try {
+        const res = await fetch(`${window.location.origin}/dashboard`);
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data) return;
+
+        document.getElementById('annualCreditsValue').textContent = '1000';
+        document.getElementById('twoYearsCreditsValue').textContent = data.twoYearsCreditsInUse || '0';
+        document.getElementById('layoutLimitValue').textContent = '20';
+        document.getElementById('appsLimitValue').textContent = '1000';
+        document.getElementById('creditsExpiryValue').textContent =
+          (data.settings && data.settings.creditsExpireAt) ? data.settings.creditsExpireAt : '15/11/2026 - 19:50';
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadLayouts() {
+      hideStatus();
+
+      const res = await fetch(`${window.location.origin}/layouts`);
+      const data = await res.json().catch(() => []);
+
+      if (!res.ok || !Array.isArray(data)) {
+        throw new Error('Erro ao carregar layouts.');
+      }
+
+      allLayouts = data;
+      renderLayouts();
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (typeof authGuard === 'function') authGuard();
+
+      try {
+        await loadCredits();
+        await loadLayouts();
+      } catch (e) {
+        console.error(e);
+        showStatus(`<strong>ERRO</strong><br>${e.message || 'Erro ao abrir layouts.'}`);
+      }
+
+      document.getElementById('modalExibir').addEventListener('click', function (e) {
+        if (e.target.id === 'modalExibir') {
+          fecharModalExibir();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
