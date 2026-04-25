@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Fundos</title>
+</head>
+<body style="background:#0b1a2a;color:white;font-family:sans-serif">
+
+  <h1>Meus fundos</h1>
+
+  <button onclick="window.location.href='addfundos.html'">
+    + ADICIONAR FUNDO
+  </button>
+
+  <div id="lista"></div>
+
+  <script>
+    const API = window.location.origin;
+
+    async function load() {
+      const res = await fetch(API + '/fundos');
+      const data = await res.json();
+
+      const el = document.getElementById('lista');
+
+      if (!data.length) {
+        el.innerHTML = '<div>Nenhum fundo cadastrado</div>';
+        return;
+      }
+
+      el.innerHTML = data.map(item => `
+        <div style="margin:20px">
+          <img src="${item.image}" width="250">
+          <div>${item.name}</div>
+        </div>
+      `).join('');
+    }
+
+    load();
+  </script>
+
+</body>
+</html>
