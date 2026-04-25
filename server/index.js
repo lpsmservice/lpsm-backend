@@ -5,68 +5,69 @@ const multer = require('multer');
 
 const app = express();
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// ===============================
+// =====================
 // CONFIG UPLOAD
-// ===============================
+// =====================
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'server/public/uploads');
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, 'public/uploads'));
   },
-  filename: function (req, file, cb) {
-    const name = Date.now() + '-' + file.originalname;
-    cb(null, name);
+  filename: (req, file, cb) => {
+    const nome = Date.now() + '-' + file.originalname;
+    cb(null, nome);
   }
 });
 
 const upload = multer({ storage });
 
-// ===============================
-// SERVIR ARQUIVOS ESTÁTICOS
-// ===============================
-app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
-app.use('/painel', express.static(path.join(__dirname, '../panel')));
+// =====================
+// DATABASE
+// =====================
+const dbPath = path.join(__dirname, '../database/backgrounds.json');
 
-// ===============================
-// ROTA GET FUNDOS
-// ===============================
-app.get('/fundos', (req, res) => {
-  try {
-    const data = JSON.parse(fs.readFileSync('./database/backgrounds.json'));
-    res.json(data);
-  } catch (err) {
-    res.json([]);
-  }
+function readDB() {
+  if (!fs.existsSync(dbPath)) return [];
+  return JSON.parse(fs.readFileSync(dbPath));
+}
+
+function saveDB(data) {
+  fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
+}
+
+// =====================
+// ROTAS
+// =====================
+
+// LISTAR FUNDOS
+app.get('/backgrounds', (req, res) => {
+  const data = readDB();
+  res.json(data);
 });
 
-// ===============================
-// ROTA POST FUNDOS (UPLOAD)
-// ===============================
-app.post('/fundos', upload.single('image'), (req, res) => {
-  const file = req.file;
-  const { name } = req.body;
+// ADICIONAR FUNDO
+app.post('/backgrounds', upload.single('imagem'), (req, res) => {
+  const { nome } = req.body;
 
-  if (!file) {
-    return res.status(400).json({ erro: 'Sem imagem' });
+  if (!req.file) {
+    return res.status(400).json({ erro: 'Imagem obrigatória' });
   }
-
-  const dataPath = './database/backgrounds.json';
-  const data = JSON.parse(fs.readFileSync(dataPath));
 
   const novo = {
     id: Date.now(),
-    name: name || 'Sem nome',
-    image: `/uploads/${file.filename}`
+    nome,
+    imagem: '/uploads/' + req.file.filename
   };
 
+  const data = readDB();
   data.push(novo);
-
-  fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
+  saveDB(data);
 
   res.json({ ok: true });
 });
 
-// ===============================
-app.listen(10000, () => {
-  console.log('Servidor rodando na porta 10000');
+// =====================
+app.listen(3000, () => {
+  console.log('Servidor rodando na porta 3000');
 });

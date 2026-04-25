@@ -1,43 +1,38 @@
-<!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Fundos</title>
-</head>
-<body style="background:#0b1a2a;color:white;font-family:sans-serif">
+<body>
 
-  <h1>Meus fundos</h1>
+<h2>Fundos cadastrados</h2>
 
-  <button onclick="window.location.href='addfundos.html'">
-    + ADICIONAR FUNDO
-  </button>
+<button onclick="window.location.href='addfundos.html'">
+  + Adicionar Fundo
+</button>
 
-  <div id="lista"></div>
+<div id="lista"></div>
 
-  <script>
-    const API = window.location.origin;
+<script>
+const API = window.location.origin;
 
-    async function load() {
-      const res = await fetch(API + '/fundos');
-      const data = await res.json();
+async function load() {
+  const res = await fetch(API + '/backgrounds');
+  const data = await res.json();
 
-      const el = document.getElementById('lista');
+  const el = document.getElementById('lista');
 
-      if (!data.length) {
-        el.innerHTML = '<div>Nenhum fundo cadastrado</div>';
-        return;
-      }
+  if (!data.length) {
+    el.innerHTML = 'Nenhum fundo cadastrado';
+    return;
+  }
 
-      el.innerHTML = data.map(item => `
-        <div style="margin:20px">
-          <img src="${item.image}" width="250">
-          <div>${item.name}</div>
-        </div>
-      `).join('');
-    }
+  el.innerHTML = data.map(item => `
+    <div style="margin:10px">
+      <img src="${item.imagem}" width="200"><br>
+      ${item.nome}
+    </div>
+  `).join('');
+}
 
-    load();
-  </script>
+load();
+</script>
 
 </body>
 </html>

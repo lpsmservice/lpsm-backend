@@ -1,0 +1,40 @@
+[33m937d582[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m pasta uploads criada corretamente
+[33m4108e04[m corrige index backgrounds sem duplicar multer
+[33m4878508[m teste addlayout limpo funcionando
+[33m90740fa[m ajuste addlayout etapas logo e fundo
+[33m5603b9b[m update layout etapa 1
+[33m93bc775[m teste addlayout limpo funcionando
+[33mcb4fb40[m corrige addlayout com botoes inline
+[33mfc04185[m corrige prosseguir do addlayout
+[33mf1a2b24[m ajusta addlayout com logo fundo e conclusao
+[33ma220800[m corrige layouts e cria addlayout
+[33m902d67b[m ajusta pagina layouts e cria layout editor
+[33m2677339[m ajusta pagina layouts e cria layout editor
+[33m6fa4b61[m ajusta fluxo de icone manual no add apk
+[33md4b3029[m ajusta fluxo visual do apk automatico
+[33ma9c3a04[m corrige botoes da pagina apps
+[33m8c7fc00[m adiciona tela apk automatico funcional
+[33m2f82cd1[m corrige backend ativacao dispositivo
+[33m3c8f21c[m corrige backend ativacao dispositivo
+[33md6c699a[m corrige ativacao passo 3 e 4
+[33m20b8fba[m ajusta passo 3 e conclusao ativar dispositivo
+[33mdcb9252[m corrige validacao do codigo real da launcher
+[33mbda1627[m corrige validacao para aceitar so codigo real da launcher
+[33m4fc3c5c[m corrige ativacao real do dispositivo
+[33m97bf34a[m mensagem dispositivo ja registrado no adddispositivo
+[33m291505b[m corrige validacao adddispositivo por codigo launcher
+[33m72963be[m ajusta devices e adddispositivo
+[33m78e623b[m cria pagina meus layouts
+[33m294cd56[m corrige rota painel
+[33m5e0de27[m corrige rota painel server
+[33mb62e22b[m pagina gerenciar launcher estilo print
+[33m9d5265a[m menu lateral estilo print
+[33m96d4508[m dashboard mais fiel ao print original
+[33m8f75a3c[m refino dashboard igual print
+[33m79b889f[m ajuste painel launcherbox
+[33m923f392[m ajuste visual painel estilo launcherbox
+[33me507720[m corrigindo login painel
+[33m78eb3db[m login painel status dispositivos upload apps
+[33ma54cf98[m restaurando rotas do backend
+[33me5451c4[m corrigindo server como pasta normal
+[33m2a46636[m projeto completo com painel

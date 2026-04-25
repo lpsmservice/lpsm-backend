@@ -1,37 +1,31 @@
-<!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Adicionar Fundo</title>
-</head>
-<body style="background:#0b1a2a;color:white;font-family:sans-serif">
+<body>
 
-  <h1>Adicionar fundo</h1>
+<h2>Adicionar Fundo</h2>
 
-  <form id="form">
-    <input type="text" name="name" placeholder="Nome do fundo"><br><br>
-    <input type="file" name="image"><br><br>
+<form id="form">
+  <input type="text" name="nome" placeholder="Nome do fundo" required><br><br>
+  <input type="file" name="imagem" required><br><br>
+  <button type="submit">Salvar</button>
+</form>
 
-    <button type="submit">Enviar</button>
-  </form>
+<script>
+const API = window.location.origin;
 
-  <script>
-    const API = window.location.origin;
+document.getElementById('form').onsubmit = async (e) => {
+  e.preventDefault();
 
-    document.getElementById('form').addEventListener('submit', async (e) => {
-      e.preventDefault();
+  const formData = new FormData(e.target);
 
-      const formData = new FormData(e.target);
+  const res = await fetch(API + '/backgrounds', {
+    method: 'POST',
+    body: formData
+  });
 
-      await fetch(API + '/fundos', {
-        method: 'POST',
-        body: formData
-      });
-
-      alert('Fundo enviado!');
-      window.location.href = 'fundos.html';
-    });
-  </script>
+  alert('Fundo salvo!');
+  window.location.href = 'fundos.html';
+};
+</script>
 
 </body>
 </html>
