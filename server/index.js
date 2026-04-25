@@ -16,6 +16,7 @@ app.use('/painel', express.static(path.join(__dirname, '..', 'painel')));
 app.use('/downloads', express.static(path.join(__dirname, 'public')));
 
 const uploadDir = path.join(__dirname, 'public', 'uploads');
+
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -30,6 +31,38 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
+const backgroundsFile = path.join(__dirname, '..', 'database', 'backgrounds.json');
+
+function ensureBackgroundsFile() {
+  const dir = path.dirname(backgroundsFile);
+
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
+  if (!fs.existsSync(backgroundsFile)) {
+    fs.writeFileSync(backgroundsFile, JSON.stringify([], null, 2), 'utf8');
+  }
+}
+
+function getBackgrounds() {
+  ensureBackgroundsFile();
+
+  try {
+    const raw = fs.readFileSync(backgroundsFile, 'utf8').trim();
+    if (!raw) return [];
+    const data = JSON.parse(raw);
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveBackgrounds(data) {
+  ensureBackgroundsFile();
+  fs.writeFileSync(backgroundsFile, JSON.stringify(Array.isArray(data) ? data : [], null, 2), 'utf8');
+}
 
 function uid() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
@@ -47,12 +80,6 @@ function generateCode(size = 6) {
 function addHours(date, hours) {
   const d = new Date(date);
   d.setHours(d.getHours() + hours);
-  return d.toISOString();
-}
-
-function addYears(date, years) {
-  const d = new Date(date);
-  d.setFullYear(d.getFullYear() + years);
   return d.toISOString();
 }
 
@@ -91,6 +118,7 @@ function normalizeLayout(layout = {}) {
     id: layout.id || uid(),
     name: layout.name || 'Novo layout',
     background: layout.background || '',
+    backgroundId: layout.backgroundId || null,
     logo: layout.logo || '',
     logoPosition: layout.logoPosition || 'left',
     buttonsLocked: !!layout.buttonsLocked,
@@ -152,6 +180,7 @@ function getDashboardStats() {
   const layouts = db.getLayouts();
   const apps = db.getApps();
   const resellers = db.getResellers();
+  const backgrounds = getBackgrounds();
 
   return {
     totalDevices: devices.length,
@@ -160,6 +189,7 @@ function getDashboardStats() {
     totalLayouts: layouts.length,
     totalApps: apps.length,
     totalResellers: resellers.length,
+    totalBackgrounds: backgrounds.length,
     annualCreditsInUse: devices.reduce((acc, d) => acc + Number(d.creditsAnnual || 0), 0),
     twoYearsCreditsInUse: devices.reduce((acc, d) => acc + Number(d.creditsTwoYears || 0), 0)
   };
@@ -179,7 +209,8 @@ app.post('/login', (req, res) => {
         ok: true,
         user: {
           email: settings.email,
-          companyName: settings.companyName || 'LPSM BOX'
+          companyName: settings.companyName || 'LPSM BOX',
+          phone: settings.whatsapp || ''
         }
       });
     }
@@ -226,6 +257,104 @@ app.post('/upload/image', upload.single('file'), (req, res) => {
   } catch (error) {
     console.error('POST /upload/image', error);
     return res.status(500).json({ ok: false, message: 'Erro no upload da imagem' });
+  }
+});
+
+app.get('/backgrounds', (req, res) => {
+  try {
+    res.json(getBackgrounds());
+  } catch (error) {
+    console.error('GET /backgrounds', error);
+    res.status(500).json({ ok: false, message: 'Erro ao carregar planos de fundo' });
+  }
+});
+
+app.post('/backgrounds', upload.single('image'), (req, res) => {
+  try {
+    const { name } = req.body || {};
+
+    if (!req.file) {
+      return res.status(400).json({
+        ok: false,
+        message: 'Imagem obrigatória'
+      });
+    }
+
+    const backgrounds = getBackgrounds();
+
+    const item = {
+      id: uid(),
+      name: name || 'Sem nome',
+      image: `/downloads/uploads/${req.file.filename}`,
+      createdAt: new Date().toISOString()
+    };
+
+    backgrounds.push(item);
+    saveBackgrounds(backgrounds);
+
+    return res.json({
+      ok: true,
+      background: item
+    });
+  } catch (error) {
+    console.error('POST /backgrounds', error);
+    return res.status(500).json({
+      ok: false,
+      message: 'Erro ao salvar plano de fundo'
+    });
+  }
+});
+
+app.put('/backgrounds/:id', (req, res) => {
+  try {
+    const backgrounds = getBackgrounds();
+    const index = backgrounds.findIndex(bg => String(bg.id) === String(req.params.id));
+
+    if (index === -1) {
+      return res.status(404).json({ ok: false, message: 'Plano de fundo não encontrado' });
+    }
+
+    backgrounds[index] = {
+      ...backgrounds[index],
+      ...req.body,
+      id: backgrounds[index].id,
+      image: req.body.image || backgrounds[index].image,
+      updatedAt: new Date().toISOString()
+    };
+
+    saveBackgrounds(backgrounds);
+
+    return res.json({
+      ok: true,
+      background: backgrounds[index]
+    });
+  } catch (error) {
+    console.error('PUT /backgrounds/:id', error);
+    return res.status(500).json({ ok: false, message: 'Erro ao atualizar plano de fundo' });
+  }
+});
+
+app.delete('/backgrounds/:id', (req, res) => {
+  try {
+    const backgrounds = getBackgrounds();
+    const selected = backgrounds.find(bg => String(bg.id) === String(req.params.id));
+    const next = backgrounds.filter(bg => String(bg.id) !== String(req.params.id));
+
+    saveBackgrounds(next);
+
+    if (selected && selected.image) {
+      const fileName = selected.image.split('/').pop();
+      const filePath = path.join(uploadDir, fileName);
+
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('DELETE /backgrounds/:id', error);
+    res.status(500).json({ ok: false, message: 'Erro ao excluir plano de fundo' });
   }
 });
 
@@ -647,11 +776,9 @@ app.get('/launcher/device/:code', (req, res) => {
 
       devices.push(device);
       db.saveDevices(devices);
-    } else {
-      if (!checkOnly) {
-        device.lastSeen = new Date().toISOString();
-        db.saveDevices(devices);
-      }
+    } else if (!checkOnly) {
+      device.lastSeen = new Date().toISOString();
+      db.saveDevices(devices);
     }
 
     const layouts = db.getLayouts();
@@ -690,65 +817,4 @@ app.get('/launcher/download', (req, res) => {
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log('Servidor rodando na porta:', PORT);
-});
-const multer = require('multer');
-
-const UPLOAD_DIR = path.join(__dirname, 'uploads', 'backgrounds');
-
-if (!fs.existsSync(UPLOAD_DIR)) {
-  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, UPLOAD_DIR);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const name = Date.now() + '-' + Math.random().toString(36).substring(2) + ext;
-    cb(null, name);
-  }
-});
-
-const upload = multer({ storage });
-
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// =========================
-// BACKGROUNDS
-// =========================
-
-app.get('/backgrounds', (req, res) => {
-  const data = db.readJson(path.join(__dirname, '../database/backgrounds.json'), []);
-  res.json(data);
-});
-
-app.post('/backgrounds', upload.single('image'), (req, res) => {
-  try {
-    const { name } = req.body;
-
-    if (!req.file) {
-      return res.status(400).json({ ok: false, message: 'Imagem obrigatória' });
-    }
-
-    const fileUrl = '/uploads/backgrounds/' + req.file.filename;
-
-    const filePath = path.join(__dirname, '../database/backgrounds.json');
-    const list = db.readJson(filePath, []);
-
-    const item = {
-      id: Date.now(),
-      name: name || 'Sem nome',
-      image: fileUrl,
-      createdAt: new Date().toISOString()
-    };
-
-    list.push(item);
-    db.writeJson(filePath, list);
-
-    res.json({ ok: true });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ ok: false });
-  }
 });
