@@ -150,7 +150,7 @@
     }
 
     .big-action-btn {
-      width: 100%;
+      width: calc(100% - 0px);
       height: 52px;
       border: none;
       border-radius: 6px;
@@ -163,6 +163,7 @@
     }
 
     .apps-actions {
+      padding: 0 0 0;
       margin: 0 18px;
     }
 
@@ -249,10 +250,6 @@
       flex-shrink: 0;
     }
 
-    .app-row.open + .app-details {
-      display: block;
-    }
-
     .app-details {
       display: none;
       padding: 0 18px 18px 100px;
@@ -260,6 +257,10 @@
       color: #dce7fb;
       line-height: 1.8;
       font-size: 14px;
+    }
+
+    .app-row.open + .app-details {
+      display: block;
     }
 
     .app-details-actions {
@@ -382,9 +383,9 @@
     </div>
 
     <div class="apps-actions">
-      <button class="big-action-btn" onclick="window.location.href='addapk.html'">ADD APK AUTOMÁTICO</button>
-      <button class="big-action-btn" onclick="window.location.href='addapkmanual.html'">ADD APK MANUAL</button>
-      <button class="big-action-btn" onclick="window.location.href='addpacote.html'">ADD PACOTE</button>
+      <button class="big-action-btn" onclick="alert('Depois ajustamos esta parte')">ADD APK AUTOMÁTICO</button>
+      <button class="big-action-btn" onclick="alert('Depois ajustamos esta parte')">ADD APK MANUAL</button>
+      <button class="big-action-btn" onclick="alert('Depois ajustamos esta parte')">ADD PACOTE</button>
     </div>
 
     <div class="apps-search-row">

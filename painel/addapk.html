@@ -109,21 +109,10 @@
       font-size: 15px;
     }
 
-    .apk-warning strong,
-    .apk-tip strong {
+    .apk-warning strong {
       display: block;
       font-size: 16px;
       margin-bottom: 4px;
-    }
-
-    .apk-tip {
-      background: #5f2bd2;
-      color: #fff;
-      margin: 16px 18px 0;
-      border-radius: 8px;
-      padding: 14px 16px;
-      line-height: 1.8;
-      font-size: 15px;
     }
 
     .apk-upload-box {
@@ -139,7 +128,6 @@
       cursor: pointer;
       padding: 24px;
       transition: 0.2s ease;
-      overflow: hidden;
     }
 
     .apk-upload-box:hover {
@@ -148,8 +136,7 @@
     }
 
     .apk-upload-inner {
-      width: 100%;
-      max-width: 650px;
+      max-width: 520px;
     }
 
     .apk-upload-icon {
@@ -172,41 +159,13 @@
       word-break: break-word;
     }
 
-    .apk-file-success {
-      width: 42px;
-      height: 42px;
-      border-radius: 999px;
-      background: #41d763;
-      color: #fff;
-      margin: 0 auto 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      font-weight: 700;
-    }
-
-    .apk-file-bar {
-      margin-top: 16px;
-      background: #1c2e49;
-      height: 50px;
-      border-radius: 0 0 8px 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #b8c8de;
-      padding: 0 18px;
-      font-size: 15px;
-    }
-
     .apk-hidden-input {
       display: none;
     }
 
     .apk-btn-primary,
     .apk-btn-success,
-    .apk-btn-danger,
-    .apk-btn-secondary {
+    .apk-btn-danger {
       width: calc(100% - 36px);
       margin: 14px 18px 0;
       height: 52px;
@@ -230,10 +189,6 @@
       background: #f44336;
     }
 
-    .apk-btn-secondary {
-      background: #7f8aa4;
-    }
-
     .apk-form-wrap {
       margin: 18px;
       background: rgba(13,35,71,0.96);
@@ -254,7 +209,7 @@
     }
 
     .apk-input,
-    .apk-select {
+    .apk-textarea {
       width: 100%;
       border: none;
       border-radius: 8px;
@@ -262,7 +217,23 @@
       color: #fff;
       font-size: 15px;
       padding: 0 14px;
+    }
+
+    .apk-input {
       height: 46px;
+    }
+
+    .apk-textarea {
+      min-height: 82px;
+      padding-top: 12px;
+      resize: vertical;
+    }
+
+    .apk-help {
+      color: #b8c8de;
+      font-size: 14px;
+      line-height: 1.7;
+      margin-top: 8px;
     }
 
     .apk-status {
@@ -301,158 +272,6 @@
     .apk-loading {
       opacity: 0.7;
       pointer-events: none;
-    }
-
-    .progress-wrap {
-      margin: 14px 18px 0;
-      color: #b8c8de;
-      text-align: center;
-      font-size: 15px;
-      line-height: 1.8;
-    }
-
-    .progress-line {
-      height: 32px;
-      border-radius: 10px;
-      background: #d7dce3;
-      overflow: hidden;
-      margin: 10px 0 14px;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: #2f7cff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: 700;
-      transition: width 0.25s ease;
-    }
-
-    .apk-file-meta {
-      margin-top: 10px;
-      color: #b8c8de;
-      line-height: 1.8;
-      font-size: 15px;
-      text-align: left;
-    }
-
-    .task-list {
-      margin-top: 12px;
-      text-align: left;
-    }
-
-    .task-item {
-      background: #dfe6e1;
-      color: #60707f;
-      border-radius: 6px;
-      padding: 12px 14px;
-      margin-bottom: 10px;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .task-icon {
-      width: 20px;
-      text-align: center;
-      font-size: 18px;
-    }
-
-    .icon-preview-wrap {
-      margin-top: 10px;
-      color: #dce7fb;
-      line-height: 1.8;
-    }
-
-    .icon-preview-img {
-      width: 78px;
-      height: 78px;
-      border-radius: 8px;
-      object-fit: cover;
-      background: #173154;
-      display: block;
-      margin-top: 8px;
-    }
-
-    .manual-icon-box {
-      margin: 18px;
-      min-height: 236px;
-      border-radius: 8px;
-      background: rgba(13,35,71,0.96);
-      border: 1px solid rgba(255,255,255,0.06);
-      text-align: center;
-      cursor: pointer;
-      overflow: hidden;
-    }
-
-    .manual-icon-empty {
-      min-height: 236px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      color: #9fb1cb;
-      padding: 24px;
-    }
-
-    .manual-icon-empty .icon {
-      font-size: 60px;
-      line-height: 1;
-      margin-bottom: 12px;
-      color: #6f88a8;
-    }
-
-    .manual-icon-preview-wrap {
-      display: none;
-    }
-
-    .manual-icon-preview-wrap.show {
-      display: block;
-    }
-
-    .manual-icon-preview-img {
-      width: 100%;
-      max-height: 320px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .manual-icon-preview-name {
-      background: #1c2e49;
-      color: #b8c8de;
-      padding: 14px;
-      font-size: 15px;
-      text-align: center;
-    }
-
-    .summary-big-icon {
-      width: 100%;
-      max-width: 690px;
-      max-height: 460px;
-      object-fit: cover;
-      border-radius: 8px;
-      display: block;
-      margin: 12px auto 0;
-      background: #173154;
-    }
-
-    .summary-question {
-      text-align: center;
-      color: #b8c8de;
-      margin-top: 24px;
-      font-size: 16px;
-    }
-
-    .summary-warning {
-      text-align: center;
-      color: #fff;
-      margin-top: 18px;
-      font-size: 15px;
-      line-height: 1.8;
     }
 
     .bottom-nav-home {
@@ -514,21 +333,14 @@
 
       <div class="apk-warning">
         <strong>ATENÇÃO</strong>
-        Ao adicionar um novo arquivo, por favor aguardar até 10 minutos nessa página, para que nosso sistema extraia todos dados deste aplicativo, como nome, icone, versão dentre outras informações.
+        Ao adicionar um novo arquivo, por favor aguardar até 10 minutos nessa página, para que nosso sistema extraia todos dados deste aplicativo, como nome, ícone, versão dentre outras informações.
       </div>
 
-      <label class="apk-upload-box" for="apkFileInput" id="uploadBox">
-        <div class="apk-upload-inner" id="uploadInner">
-          <div id="uploadEmptyState">
-            <div class="apk-upload-icon">☁</div>
-            <div class="apk-upload-title">Clique para escolher o apk</div>
-          </div>
-
-          <div id="uploadSelectedState" style="display:none;">
-            <div class="apk-file-success">✓</div>
-            <div class="apk-selected-file" id="selectedFileText"></div>
-            <div class="apk-file-bar" id="selectedFileBar"></div>
-          </div>
+      <label class="apk-upload-box" for="apkFileInput">
+        <div class="apk-upload-inner">
+          <div class="apk-upload-icon">☁</div>
+          <div class="apk-upload-title">Clique para escolher o apk</div>
+          <div class="apk-selected-file" id="selectedFileText"></div>
         </div>
       </label>
 
@@ -541,34 +353,12 @@
       <button id="step1NextBtn" class="apk-btn-primary">Prosseguir &gt;&gt;&gt;</button>
     </section>
 
-    <!-- PASSO PROCESSANDO -->
-    <section id="stepProcessing" class="apk-section">
-      <div class="progress-wrap">
-        <div id="processingTitle">Enviando: 0% (0/8 partes)</div>
-
-        <div class="progress-line">
-          <div class="progress-fill" id="progressFill">0%</div>
-        </div>
-
-        <div class="apk-file-meta" id="processingMeta"></div>
-
-        <div class="task-list">
-          <div class="task-item" id="task1"><span class="task-icon">⌛</span> <span>Fazendo upload do arquivo</span></div>
-          <div class="task-item" id="task2"><span class="task-icon">⌛</span> <span>Validando arquivo APK</span></div>
-          <div class="task-item" id="task3"><span class="task-icon">⌛</span> <span>Analisando estrutura e extraindo dados</span></div>
-          <div class="task-item" id="task4"><span class="task-icon">⌛</span> <span>Processando ícone do aplicativo</span></div>
-        </div>
-      </div>
-
-      <button class="apk-btn-primary apk-loading" style="margin-top:18px;" disabled>Processando...</button>
-    </section>
-
     <!-- PASSO 2 -->
     <section id="step2" class="apk-section">
-      <div class="apk-tip">
-        <strong>DICA</strong>
-        O nosso sistema irá extrair os dados do arquivo do aplicativo adicionado por você.<br>
-        No entanto você poderá modificar se quiser o nome que deseja exibir na launcher e o icone do aplicativo.
+      <div class="apk-card">
+        <div class="apk-center-text">
+          Confira e complete os dados do aplicativo.
+        </div>
       </div>
 
       <div class="apk-form-wrap">
@@ -577,74 +367,42 @@
           <input id="appName" class="apk-input" type="text" />
         </div>
 
-        <div style="margin-bottom:10px; color:#dce7fb;">Versão: <span id="appVersionText">-</span></div>
-
-        <div class="icon-preview-wrap">
-          Ícone do app:
-          <img id="appIconPreview" class="icon-preview-img" alt="Ícone do aplicativo" />
+        <div class="apk-field">
+          <label class="apk-label">Pacote do aplicativo</label>
+          <input id="appPackage" class="apk-input" type="text" placeholder="Ex: com.app.exemplo" />
+          <div class="apk-help">Se não souber o pacote, pode deixar em branco por enquanto.</div>
         </div>
 
-        <div style="margin-top:18px; color:#9fb1cb;">
-          OBS: Ícone extraído do arquivo do aplicativo
+        <div class="apk-field">
+          <label class="apk-label">Versão</label>
+          <input id="appVersion" class="apk-input" type="text" placeholder="Ex: 1.0.0" />
         </div>
 
-        <div class="apk-field" style="margin-top:10px;">
-          <label class="apk-label">Deseja usar este ícone?</label>
-          <select id="useExtractedIcon" class="apk-select">
-            <option>SIM</option>
-            <option>Adicionar manual</option>
-          </select>
+        <div class="apk-field">
+          <label class="apk-label">URL do ícone</label>
+          <input id="appIcon" class="apk-input" type="text" placeholder="Opcional" />
         </div>
 
-        <input id="appPackage" type="hidden" />
+        <div class="apk-field">
+          <label class="apk-label">Observações</label>
+          <textarea id="appNotes" class="apk-textarea" placeholder="Observações sobre o aplicativo"></textarea>
+        </div>
       </div>
 
       <button id="step2NextBtn" class="apk-btn-primary">Prosseguir &gt;&gt;&gt;</button>
     </section>
 
-    <!-- PASSO 2B - ICONE MANUAL -->
-    <section id="step2ManualIcon" class="apk-section">
-      <div class="apk-warning">
-        <strong>ATENÇÃO</strong>
-        Escolha uma imagem para ser o ícone do aplicativo que será exibido na launcher.
-      </div>
-
-      <div style="margin:18px 18px 0; color:#dce7fb; font-size:15px;">
-        Escolha um ícone novo para o aplicativo
-      </div>
-
-      <label class="manual-icon-box" for="manualIconInput">
-        <div class="manual-icon-empty" id="manualIconEmpty">
-          <div class="icon">☁</div>
-          <div>Clique para escolher o ícone</div>
-        </div>
-
-        <div class="manual-icon-preview-wrap" id="manualIconPreviewWrap">
-          <img id="manualIconPreviewImg" class="manual-icon-preview-img" alt="Ícone manual" />
-          <div class="manual-icon-preview-name" id="manualIconPreviewName"></div>
-        </div>
-      </label>
-
-      <input id="manualIconInput" class="apk-hidden-input" type="file" accept="image/*" />
-
-      <button id="step2ManualNextBtn" class="apk-btn-primary">Prosseguir &gt;&gt;&gt;</button>
-      <button id="step2ManualBackBtn" class="apk-btn-secondary">&lt;&lt;&lt; Retornar</button>
-    </section>
-
     <!-- PASSO 3 -->
     <section id="step3" class="apk-section">
+      <div class="apk-warning" style="margin-top:18px;">
+        <strong>ATENÇÃO</strong>
+        Revise os dados antes de salvar o aplicativo.
+      </div>
+
       <div class="apk-summary-box" id="summaryBox"></div>
 
-      <div class="summary-warning">
-        ATENÇÃO! Tenha certeza de que estão corretas as informações!
-      </div>
-
-      <div class="summary-question">
-        Os dados acima estão corretos ?
-      </div>
-
-      <button id="saveAppBtn" class="apk-btn-success">SIM</button>
-      <button id="backStep2Btn" class="apk-btn-danger">NÃO</button>
+      <button id="saveAppBtn" class="apk-btn-success">SALVAR APLICATIVO</button>
+      <button id="backStep2Btn" class="apk-btn-danger">VOLTAR</button>
     </section>
   </div>
 
@@ -661,21 +419,10 @@
     let currentStep = 1;
     let selectedApkFile = null;
     let uploadedApkUrl = '';
-    let extractedVersion = '';
-    let extractedPackage = '';
-    let extractedIcon = '';
-    let manualIconFile = null;
-    let manualIconPreviewUrl = '';
-    let uploadedManualIconUrl = '';
 
     function goBackPage() {
       if (currentStep === 1) {
         window.location.href = 'apps.html';
-        return;
-      }
-
-      if (currentStep === 1.5) {
-        setStep(1);
         return;
       }
 
@@ -684,17 +431,8 @@
         return;
       }
 
-      if (currentStep === 2.5) {
-        setStep(2);
-        return;
-      }
-
       if (currentStep === 3) {
-        if (document.getElementById('useExtractedIcon').value === 'Adicionar manual') {
-          setStep(2.5);
-        } else {
-          setStep(2);
-        }
+        setStep(2);
       }
     }
 
@@ -715,99 +453,38 @@
       currentStep = step;
 
       document.getElementById('step1').classList.toggle('show', step === 1);
-      document.getElementById('stepProcessing').classList.toggle('show', step === 1.5);
       document.getElementById('step2').classList.toggle('show', step === 2);
-      document.getElementById('step2ManualIcon').classList.toggle('show', step === 2.5);
       document.getElementById('step3').classList.toggle('show', step === 3);
 
-      const head1 = document.getElementById('headStep1');
-      const head2 = document.getElementById('headStep2');
-      const head3 = document.getElementById('headStep3');
+      for (let i = 1; i <= 3; i++) {
+        const head = document.getElementById(`headStep${i}`);
+        head.classList.remove('active', 'done');
 
-      head1.classList.remove('active', 'done');
-      head2.classList.remove('active', 'done');
-      head3.classList.remove('active', 'done');
-
-      if (step === 1 || step === 1.5) {
-        head1.classList.add(step === 1 ? 'active' : 'done');
-        if (step === 1.5) head2.classList.add('active');
-      } else if (step === 2 || step === 2.5) {
-        head1.classList.add('done');
-        head2.classList.add('active');
-      } else if (step === 3) {
-        head1.classList.add('done');
-        head2.classList.add('done');
-        head3.classList.add('active');
+        if (i === step) {
+          head.classList.add('active');
+        } else if (i < step) {
+          head.classList.add('done');
+        }
       }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function normalizeNameFromFile(fileName) {
-      const clean = String(fileName || '')
+      const base = String(fileName || '')
         .replace(/\.apk$/i, '')
         .replace(/[_\-]+/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
 
-      if (!clean) return 'APP SEM NOME';
-
-      let name = clean
-        .replace(/^\d+\s*/g, '')
-        .replace(/\b(apk|mod|premium|v\d+(\.\d+)*)\b/gi, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-
-      if (!name) name = clean;
-
-      return name.toUpperCase();
-    }
-
-    function detectVersion(fileName) {
-      const text = String(fileName || '');
-      const match = text.match(/(\d+(?:\.\d+)+)/);
-      if (match) return match[1];
-      const shortMatch = text.match(/(?:^|[_\-\s])(\d{1,3})(?:[_\-\s]|$)/);
-      if (shortMatch) return shortMatch[1];
-      return '1.0';
-    }
-
-    function detectPackage(fileName) {
-      const base = normalizeNameFromFile(fileName)
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '.')
-        .replace(/^\.+|\.+$/g, '');
-
-      return `com.lpsm.${base || 'app'}`;
-    }
-
-    function detectIcon(fileName) {
-      const n = String(fileName || '').toLowerCase();
-
-      if (n.includes('youtube')) {
-        return 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png';
-      }
-
-      if (n.includes('bluetooth')) {
-        return 'https://upload.wikimedia.org/wikipedia/commons/2/2a/Bluetooth_logo.svg';
-      }
-
-      if (n.includes('facilita')) {
-        return 'https://dummyimage.com/128x128/000000/ffffff&text=facilita';
-      }
-
-      return 'https://cdn-icons-png.flaticon.com/512/565/565547.png';
-    }
-
-    function formatSize(bytes) {
-      if (!bytes || isNaN(bytes)) return '-';
-      const mb = bytes / (1024 * 1024);
-      return `${mb.toFixed(2)} MB`;
+      return base || 'APP SEM NOME';
     }
 
     function setButtonLoading(button, loading, loadingText, normalText) {
       if (!button) return;
+
       if (loading) {
+        button.dataset.originalText = normalText;
         button.textContent = loadingText;
         button.classList.add('apk-loading');
         button.disabled = true;
@@ -818,97 +495,17 @@
       }
     }
 
-    function markTask(index, state) {
-      const el = document.getElementById(`task${index}`);
-      if (!el) return;
-      const icon = el.querySelector('.task-icon');
-
-      if (state === 'done') {
-        icon.textContent = '☑';
-      } else {
-        icon.textContent = '⌛';
-      }
-    }
-
-    function updateProgress(percent, text) {
-      const fill = document.getElementById('progressFill');
-      fill.style.width = `${percent}%`;
-      fill.textContent = `${percent}%`;
-
-      if (text) {
-        document.getElementById('processingTitle').textContent = text;
-      }
-    }
-
-    async function simulateUploadAndProcessing() {
-      setStep(1.5);
-
-      const fileName = selectedApkFile ? selectedApkFile.name : '-';
-      const fileSize = selectedApkFile ? formatSize(selectedApkFile.size) : '-';
-
-      document.getElementById('processingMeta').innerHTML = `
-        Arquivo: ${fileName}<br>
-        Tamanho: ${fileSize}
-      `;
-
-      updateProgress(0, 'Enviando: 0% (0/8 partes)');
-      markTask(1, '');
-      markTask(2, '');
-      markTask(3, '');
-      markTask(4, '');
-
-      for (let i = 1; i <= 8; i++) {
-        const percent = Math.round((i / 8) * 100);
-        updateProgress(percent, `Enviando: ${percent}% (${i}/8 partes)`);
-        await new Promise(resolve => setTimeout(resolve, 220));
-      }
-
-      markTask(1, 'done');
-      updateProgress(100, 'Upload concluído! Aguardando processamento no servidor...');
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      markTask(2, 'done');
-      await new Promise(resolve => setTimeout(resolve, 380));
-
-      markTask(3, 'done');
-      await new Promise(resolve => setTimeout(resolve, 450));
-
-      markTask(4, 'done');
-      await new Promise(resolve => setTimeout(resolve, 350));
-    }
-
-    function prepareExtractedData() {
-      extractedVersion = detectVersion(selectedApkFile.name);
-      extractedPackage = detectPackage(selectedApkFile.name);
-      extractedIcon = detectIcon(selectedApkFile.name);
-
-      document.getElementById('appName').value = normalizeNameFromFile(selectedApkFile.name);
-      document.getElementById('appVersionText').textContent = extractedVersion;
-      document.getElementById('appPackage').value = extractedPackage;
-      document.getElementById('appIconPreview').src = extractedIcon;
-      document.getElementById('appIconPreview').onerror = () => {
-        document.getElementById('appIconPreview').src = 'https://cdn-icons-png.flaticon.com/512/565/565547.png';
-      };
-    }
-
-    function getFinalIcon() {
-      const mode = document.getElementById('useExtractedIcon').value;
-      if (mode === 'Adicionar manual') {
-        return manualIconPreviewUrl || extractedIcon;
-      }
-      return extractedIcon;
-    }
-
     function buildSummary() {
-      const finalIcon = getFinalIcon();
-
-      document.getElementById('summaryBox').innerHTML = `
-        <div style="font-size:18px;font-weight:700;margin-bottom:20px;">Verifique se as informações estão corretas!</div>
-        Nome do aplicativo: ${document.getElementById('appName').value || '-'}<br>
-        Versão: ${extractedVersion || '-'}<br>
-        Ícone do aplicativo:<br>
-        <img class="summary-big-icon" src="${finalIcon}" alt="Ícone final" onerror="this.src='https://cdn-icons-png.flaticon.com/512/565/565547.png'">
+      const html = `
+        Arquivo: ${selectedApkFile ? selectedApkFile.name : '-'}<br>
+        Nome: ${document.getElementById('appName').value || '-'}<br>
+        Pacote: ${document.getElementById('appPackage').value || '-'}<br>
+        Versão: ${document.getElementById('appVersion').value || '-'}<br>
+        Ícone: ${document.getElementById('appIcon').value || '-'}<br>
+        APK enviado: ${uploadedApkUrl || '(será enviado ao salvar)'}
       `;
+
+      document.getElementById('summaryBox').innerHTML = html;
     }
 
     async function uploadApkIfNeeded() {
@@ -924,33 +521,16 @@
       return uploadedApkUrl;
     }
 
-    async function uploadManualIconIfNeeded() {
-      if (!manualIconFile) return '';
-      if (uploadedManualIconUrl) return uploadedManualIconUrl;
-
-      const data = await uploadFile('/upload/image', manualIconFile);
-      if (!data || !data.ok || !data.url) {
-        throw new Error('Erro ao enviar ícone manual');
-      }
-
-      uploadedManualIconUrl = data.url;
-      return uploadedManualIconUrl;
-    }
-
     async function saveApp() {
       const apkUrl = await uploadApkIfNeeded();
-      let finalIcon = extractedIcon;
-
-      if (document.getElementById('useExtractedIcon').value === 'Adicionar manual') {
-        finalIcon = await uploadManualIconIfNeeded();
-      }
 
       const body = {
         name: (document.getElementById('appName').value || '').trim() || 'APP SEM NOME',
         package: (document.getElementById('appPackage').value || '').trim(),
-        version: extractedVersion || '',
-        icon: finalIcon || '',
+        version: (document.getElementById('appVersion').value || '').trim(),
+        icon: (document.getElementById('appIcon').value || '').trim(),
         apk: apkUrl,
+        notes: (document.getElementById('appNotes').value || '').trim(),
         active: true
       };
 
@@ -972,22 +552,11 @@
       if (typeof authGuard === 'function') authGuard();
 
       const fileInput = document.getElementById('apkFileInput');
-      const manualIconInput = document.getElementById('manualIconInput');
       const selectedFileText = document.getElementById('selectedFileText');
-      const selectedFileBar = document.getElementById('selectedFileBar');
-      const uploadEmptyState = document.getElementById('uploadEmptyState');
-      const uploadSelectedState = document.getElementById('uploadSelectedState');
       const step1NextBtn = document.getElementById('step1NextBtn');
       const step2NextBtn = document.getElementById('step2NextBtn');
-      const step2ManualNextBtn = document.getElementById('step2ManualNextBtn');
-      const step2ManualBackBtn = document.getElementById('step2ManualBackBtn');
       const saveAppBtn = document.getElementById('saveAppBtn');
       const backStep2Btn = document.getElementById('backStep2Btn');
-      const useExtractedIcon = document.getElementById('useExtractedIcon');
-      const manualIconEmpty = document.getElementById('manualIconEmpty');
-      const manualIconPreviewWrap = document.getElementById('manualIconPreviewWrap');
-      const manualIconPreviewImg = document.getElementById('manualIconPreviewImg');
-      const manualIconPreviewName = document.getElementById('manualIconPreviewName');
 
       fileInput.addEventListener('change', () => {
         hideStatus();
@@ -998,45 +567,18 @@
         selectedApkFile = file;
         uploadedApkUrl = '';
 
-        uploadEmptyState.style.display = 'none';
-        uploadSelectedState.style.display = 'block';
+        selectedFileText.innerHTML = `
+          <strong>Arquivo selecionado:</strong><br>
+          ${file.name}
+        `;
 
-        selectedFileText.innerHTML = '';
-        selectedFileBar.textContent = file.name;
+        document.getElementById('appName').value = normalizeNameFromFile(file.name);
+        document.getElementById('appVersion').value = '';
+        document.getElementById('appPackage').value = '';
+        document.getElementById('appIcon').value = '';
       });
 
-      manualIconInput.addEventListener('change', () => {
-        hideStatus();
-
-        const file = manualIconInput.files && manualIconInput.files[0];
-        if (!file) return;
-
-        if (file.size > 1024 * 1024) {
-          manualIconInput.value = '';
-          manualIconFile = null;
-          manualIconPreviewUrl = '';
-          uploadedManualIconUrl = '';
-          manualIconEmpty.style.display = 'flex';
-          manualIconPreviewWrap.classList.remove('show');
-          showStatus('<strong>ERRO</strong><br>Tamanho máximo permitido para a imagem do ícone é de 1MB!', 'error');
-          return;
-        }
-
-        manualIconFile = file;
-        uploadedManualIconUrl = '';
-
-        if (manualIconPreviewUrl) {
-          URL.revokeObjectURL(manualIconPreviewUrl);
-        }
-
-        manualIconPreviewUrl = URL.createObjectURL(file);
-        manualIconPreviewImg.src = manualIconPreviewUrl;
-        manualIconPreviewName.textContent = file.name;
-        manualIconEmpty.style.display = 'none';
-        manualIconPreviewWrap.classList.add('show');
-      });
-
-      step1NextBtn.addEventListener('click', async () => {
+      step1NextBtn.addEventListener('click', () => {
         hideStatus();
 
         if (!selectedApkFile) {
@@ -1044,18 +586,7 @@
           return;
         }
 
-        try {
-          setButtonLoading(step1NextBtn, true, 'Preparando...', 'Prosseguir >>>');
-          await simulateUploadAndProcessing();
-          prepareExtractedData();
-          setStep(2);
-        } catch (error) {
-          console.error(error);
-          showStatus(`<strong>ERRO</strong><br>${error.message || 'Erro ao preparar o APK.'}`);
-          setStep(1);
-        } finally {
-          setButtonLoading(step1NextBtn, false, 'Preparando...', 'Prosseguir >>>');
-        }
+        setStep(2);
       });
 
       step2NextBtn.addEventListener('click', () => {
@@ -1067,45 +598,18 @@
           return;
         }
 
-        if (useExtractedIcon.value === 'Adicionar manual') {
-          setStep(2.5);
-          return;
-        }
-
-        buildSummary();
-        setStep(3);
-      });
-
-      step2ManualBackBtn.addEventListener('click', () => {
-        hideStatus();
-        setStep(2);
-      });
-
-      step2ManualNextBtn.addEventListener('click', () => {
-        hideStatus();
-
-        if (!manualIconFile || !manualIconPreviewUrl) {
-          showStatus('<strong>ERRO</strong><br>Escolha uma imagem para usar como ícone do aplicativo.', 'error');
-          return;
-        }
-
         buildSummary();
         setStep(3);
       });
 
       backStep2Btn.addEventListener('click', () => {
         hideStatus();
-
-        if (useExtractedIcon.value === 'Adicionar manual') {
-          setStep(2.5);
-        } else {
-          setStep(2);
-        }
+        setStep(2);
       });
 
       saveAppBtn.addEventListener('click', async () => {
         hideStatus();
-        setButtonLoading(saveAppBtn, true, 'SALVANDO...', 'SIM');
+        setButtonLoading(saveAppBtn, true, 'SALVANDO...', 'SALVAR APLICATIVO');
 
         try {
           await saveApp();
@@ -1118,7 +622,7 @@
           console.error(error);
           showStatus(`<strong>ERRO</strong><br>${error.message || 'Erro ao salvar aplicativo.'}`, 'error');
         } finally {
-          setButtonLoading(saveAppBtn, false, 'SALVANDO...', 'SIM');
+          setButtonLoading(saveAppBtn, false, 'SALVANDO...', 'SALVAR APLICATIVO');
         }
       });
     });

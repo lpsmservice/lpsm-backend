@@ -50,6 +50,12 @@ function addHours(date, hours) {
   return d.toISOString();
 }
 
+function addYears(date, years) {
+  const d = new Date(date);
+  d.setFullYear(d.getFullYear() + years);
+  return d.toISOString();
+}
+
 function parseBooleanLike(value, fallback = false) {
   if (typeof value === 'boolean') return value;
   if (typeof value === 'string') {
