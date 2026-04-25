@@ -1,511 +1,228 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Adicionar layout</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(90deg, #02101e 0%, #052444 100%);
-      color: #fff;
-    }
-    .topbar {
-      height: 60px;
-      background: #2f7cff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: sticky;
-      top: 0;
-      font-size: 18px;
-      font-weight: bold;
-    }
-    .back {
-      position: absolute;
-      left: 15px;
-      font-size: 30px;
-      background: transparent;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-    }
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      background: #10213f;
-      padding: 14px 8px;
-      text-align: center;
-      font-size: 13px;
-    }
-    .step .circle {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: #243754;
-      color: #9ab0d0;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
-    .step.active .circle,
-    .step.done .circle {
-      background: #2f7cff;
-      color: #fff;
-    }
-    .section {
-      padding: 20px;
-    }
-    .hidden {
-      display: none;
-    }
-    .label {
-      display: block;
-      margin: 14px 0 8px;
-      color: #c8d5e8;
-    }
-    .input, .select {
-      width: 100%;
-      height: 48px;
-      border: none;
-      border-radius: 6px;
-      background: #1d2f4c;
-      color: #fff;
-      padding: 0 14px;
-      font-size: 16px;
-    }
-    .help {
-      margin-top: 6px;
-      color: #8ea5c3;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    .btn {
-      width: 100%;
-      height: 52px;
-      margin-top: 20px;
-      background: #2f7cff;
-      border: none;
-      border-radius: 6px;
-      color: #fff;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .status {
-      margin: 15px 20px 0;
-      padding: 14px;
-      border-radius: 8px;
-      display: none;
-    }
-    .status.error {
-      display: block;
-      background: #f44336;
-    }
-    .status.success {
-      display: block;
-      background: #22b35d;
-    }
-    .upload-box {
-      margin-top: 16px;
-      min-height: 230px;
-      border-radius: 8px;
-      background: #132744;
-      border: 1px solid rgba(255,255,255,.06);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      cursor: pointer;
-      overflow: hidden;
-    }
-    .upload-box img {
-      max-width: 100%;
-      max-height: 220px;
-      object-fit: contain;
-    }
-    .hint {
-      background: #5a2fd3;
-      margin: 16px 20px 0;
-      padding: 14px;
-      border-radius: 8px;
-      line-height: 1.8;
-    }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      padding: 0 20px 20px;
-    }
-    .card {
-      background: #132744;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 2px solid transparent;
-    }
-    .card.selected {
-      border-color: #2f7cff;
-    }
-    .card img {
-      width: 100%;
-      height: 170px;
-      object-fit: cover;
-      display: block;
-    }
-    .card-name {
-      text-align: center;
-      padding: 12px;
-    }
-    .card button {
-      width: calc(100% - 16px);
-      margin: 0 8px 10px;
-      height: 36px;
-      border: none;
-      border-radius: 6px;
-      background: #2f7cff;
-      color: #fff;
-      cursor: pointer;
-    }
-    .confirm {
-      text-align: center;
-      padding: 20px;
-      line-height: 1.9;
-    }
-    .confirm img {
-      max-width: 100%;
-      max-height: 360px;
-      border-radius: 8px;
-      margin: 12px auto;
-      display: block;
-      object-fit: contain;
-      background: #132744;
-    }
-    .btn-green {
-      width: calc(100% - 40px);
-      margin: 10px 20px 0;
-      height: 54px;
-      border: none;
-      border-radius: 6px;
-      background: #39c65a;
-      color: #fff;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .btn-red {
-      width: calc(100% - 40px);
-      margin: 10px 20px 20px;
-      height: 54px;
-      border: none;
-      border-radius: 6px;
-      background: #f44336;
-      color: #fff;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    @media (max-width: 900px) {
-      .cards { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adicionar layout</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(90deg, #02101e 0%, #052444 100%);
+  color: #fff;
+}
+
+.topbar {
+  height: 60px;
+  background: #2f7cff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.back {
+  position: absolute;
+  left: 15px;
+  font-size: 30px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #10213f;
+  padding: 14px 8px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.step .circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #243754;
+  color: #9ab0d0;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.step.active .circle {
+  background: #2f7cff;
+  color: #fff;
+}
+
+.section {
+  padding: 20px;
+}
+
+.label {
+  display: block;
+  margin: 14px 0 8px;
+  color: #c8d5e8;
+}
+
+.input, .select {
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: 6px;
+  background: #1d2f4c;
+  color: #fff;
+  padding: 0 14px;
+  font-size: 16px;
+}
+
+.help {
+  margin-top: 6px;
+  color: #8ea5c3;
+  font-size: 13px;
+}
+
+.btn {
+  width: 100%;
+  height: 52px;
+  margin-top: 20px;
+  background: #2f7cff;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+</style>
 </head>
+
 <body>
-  <div class="topbar">
-    <button class="back" onclick="voltar()">‹</button>
-    Adicionar layout
-  </div>
 
-  <div class="steps">
-    <div class="step active" id="s1"><div class="circle">1</div><div>Dados</div></div>
-    <div class="step" id="s2"><div class="circle">2</div><div>Logomarca</div></div>
-    <div class="step" id="s3"><div class="circle">3</div><div>Plano de fundo</div></div>
-    <div class="step" id="s4"><div class="circle">✓</div><div>Conclusão</div></div>
-  </div>
+<div class="topbar">
+  <button class="back" onclick="history.back()">‹</button>
+  Adicionar layout
+</div>
 
-  <div id="status" class="status"></div>
+<div class="steps">
+  <div class="step active"><div class="circle">1</div><div>Dados</div></div>
+  <div class="step"><div class="circle">2</div><div>Logomarca</div></div>
+  <div class="step"><div class="circle">3</div><div>Plano de fundo</div></div>
+  <div class="step"><div class="circle">✓</div><div>Conclusão</div></div>
+</div>
 
-  <section id="step1" class="section">
-    <div style="text-align:center; padding:10px 0 20px;">Configure os dados iniciais do layout.</div>
+<section class="section">
 
-    <label class="label">Nome do layout</label>
-    <input id="layoutName" class="input" type="text" />
+  <label class="label">Nome do layout</label>
+  <input id="layoutName" class="input" type="text">
 
-    <label class="label">Localização do logo</label>
-    <select id="logoPosition" class="select">
-      <option value="ESQUERDA">ESQUERDA</option>
-      <option value="CENTRO">CENTRO</option>
-      <option value="DIREITA">DIREITA</option>
-    </select>
+  <label class="label">Localização do logo</label>
+  <select id="logoPosition" class="select">
+    <option>ESQUERDA</option>
+    <option>CENTRO</option>
+    <option>DIREITA</option>
+  </select>
 
-    <label class="label">Botões bloqueados</label>
-    <select id="buttonsLocked" class="select">
-      <option value="NÃO">NÃO</option>
-      <option value="SIM">SIM</option>
-    </select>
-    <div class="help">Use esta opção apenas se desejar bloquear os botões de acesso a configurações e aplicativos.</div>
+  <label class="label">Botões bloqueados</label>
+  <select id="buttonsLocked" class="select">
+    <option>NÃO</option>
+    <option>SIM</option>
+  </select>
+  <div class="help">Use esta opção apenas se desejar bloquear os botões.</div>
 
-    <label class="label">Senha para desbloquear</label>
-    <input id="unlockPassword" class="input" type="text" />
-    <div class="help">Mínimo 5 caracteres.</div>
+  <label class="label">Senha para desbloquear</label>
+  <input id="unlockPassword" class="input" type="text">
+  <div class="help">Mínimo 5 caracteres.</div>
 
-    <label class="label">Exibir APPS</label>
-    <select id="showApps" class="select">
-      <option value="SIM">SIM</option>
-      <option value="NÃO">NÃO</option>
-    </select>
+  <label class="label">Exibir APPS</label>
+  <select id="showApps" class="select">
+    <option>SIM</option>
+    <option>NÃO</option>
+  </select>
 
-    <button class="btn" type="button" onclick="goStep2()">Prosseguir >>></button>
-  </section>
+  <!-- NOVAS CONFIGS (IGUAL PRINT) -->
 
-  <section id="step2" class="section hidden">
-    <div class="hint">
-      <strong>DICA</strong><br>
-      Caso queira deixar a launcher sem logomarca, basta clicar em prosseguir sem adicionar nenhuma imagem.
-    </div>
+  <label class="label">Tamanho dos ícones</label>
+  <select id="iconSize" class="select">
+    <option>PADRÃO</option>
+    <option>GRANDE</option>
+    <option>PEQUENO</option>
+  </select>
 
-    <div style="margin-top:18px;">Escolher e/ou alterar logomarca</div>
+  <label class="label">Tamanho da data e hora</label>
+  <select id="clockSize" class="select">
+    <option>PADRÃO</option>
+    <option>GRANDE</option>
+    <option>PEQUENO</option>
+  </select>
 
-    <div class="upload-box" onclick="document.getElementById('logoFile').click()">
-      <div id="logoEmpty">Clique para escolher</div>
-      <img id="logoPreview" class="hidden" alt="logo">
-    </div>
+  <label class="label">Tamanho data de expiração</label>
+  <select id="expireSize" class="select">
+    <option>PADRÃO</option>
+    <option>GRANDE</option>
+    <option>PEQUENO</option>
+  </select>
 
-    <input id="logoFile" type="file" accept="image/*" class="hidden" onchange="trocarLogo(event)" />
+  <label class="label">Posição dos banners</label>
+  <select id="bannerPosition" class="select">
+    <option>ESQUERDA</option>
+    <option>DIREITA</option>
+  </select>
 
-    <button class="btn" type="button" onclick="goStep3()">Prosseguir >>></button>
-  </section>
+  <label class="label">Posição da data e hora</label>
+  <select id="datePosition" class="select">
+    <option>ESQUERDA</option>
+    <option>DIREITA</option>
+  </select>
 
-  <section id="step3" class="section hidden">
-    <div style="font-size:18px; font-weight:bold; margin-bottom:8px;">Escolha o plano de fundo que deseja</div>
-    <div style="color:#97aeca; margin-bottom:18px;">Escolha um plano de fundo já salvo.</div>
+  <label class="label">Tempo de troca dos banners</label>
+  <select id="bannerInterval" class="select">
+    <option value="5">5 segundos</option>
+    <option value="10">10 segundos</option>
+    <option value="15">15 segundos</option>
+  </select>
 
-    <div class="cards" id="bgGrid"></div>
+  <label class="label">Ativar update automático?</label>
+  <select id="autoUpdate" class="select">
+    <option>NÃO</option>
+    <option>SIM</option>
+  </select>
 
-    <button class="btn" type="button" onclick="goStep4()">Prosseguir >>></button>
-  </section>
+  <button class="btn" onclick="goStep2()">Prosseguir >>></button>
 
-  <section id="step4" class="section hidden">
-    <div class="confirm">
-      <div id="confirmName" style="font-size:22px; font-weight:bold;"></div>
-      <div style="margin-top:10px;">Plano de fundo</div>
-      <img id="confirmBg" alt="fundo">
+</section>
 
-      <div id="logoConfirmWrap" class="hidden">
-        <div>Logomarca</div>
-        <img id="confirmLogo" alt="logo">
-      </div>
+<script>
+function goStep2() {
+  const data = {
+    name: document.getElementById('layoutName').value,
+    logoPosition: document.getElementById('logoPosition').value,
+    buttonsLocked: document.getElementById('buttonsLocked').value,
+    unlockPassword: document.getElementById('unlockPassword').value,
+    showApps: document.getElementById('showApps').value,
 
-      <div id="confirmText"></div>
-      <div style="margin-top:18px;">Os dados acima estão corretos?</div>
-    </div>
+    iconSize: document.getElementById('iconSize').value,
+    clockSize: document.getElementById('clockSize').value,
+    expireSize: document.getElementById('expireSize').value,
+    bannerPosition: document.getElementById('bannerPosition').value,
+    datePosition: document.getElementById('datePosition').value,
+    bannerInterval: document.getElementById('bannerInterval').value,
+    autoUpdate: document.getElementById('autoUpdate').value
+  };
 
-    <button class="btn-green" type="button" onclick="salvarLayout()">SIM</button>
-    <button class="btn-red" type="button" onclick="setStep(3)">NÃO</button>
-  </section>
+  localStorage.setItem('layout_step1', JSON.stringify(data));
 
-  <script>
-    const API_BASE = window.location.origin;
-    let currentStep = 1;
-    let selectedLogoDataUrl = '';
-    let selectedBackground = null;
-    let allBackgrounds = [];
+  window.location.href = 'addlayout-step2.html'; // próxima etapa
+}
+</script>
 
-    function showStatus(msg, type = 'error') {
-      const box = document.getElementById('status');
-      box.className = 'status ' + type;
-      box.innerHTML = msg;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function hideStatus() {
-      const box = document.getElementById('status');
-      box.className = 'status';
-      box.innerHTML = '';
-    }
-
-    function setStep(step) {
-      currentStep = step;
-      document.getElementById('step1').classList.add('hidden');
-      document.getElementById('step2').classList.add('hidden');
-      document.getElementById('step3').classList.add('hidden');
-      document.getElementById('step4').classList.add('hidden');
-      document.getElementById('step' + step).classList.remove('hidden');
-
-      for (let i = 1; i <= 4; i++) {
-        const el = document.getElementById('s' + i);
-        el.classList.remove('active', 'done');
-        if (i < step) el.classList.add('done');
-        if (i === step) el.classList.add('active');
-      }
-      hideStatus();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function voltar() {
-      if (currentStep === 1) {
-        window.location.href = 'layouts.html';
-      } else {
-        setStep(currentStep - 1);
-      }
-    }
-
-    function getFormData() {
-      return {
-        name: document.getElementById('layoutName').value.trim(),
-        logoPosition: document.getElementById('logoPosition').value,
-        buttonsLocked: document.getElementById('buttonsLocked').value === 'SIM',
-        unlockPassword: document.getElementById('unlockPassword').value.trim(),
-        showAppsButton: document.getElementById('showApps').value === 'SIM'
-      };
-    }
-
-    function goStep2() {
-      const data = getFormData();
-      if (!data.name) {
-        showStatus('<strong>ERRO</strong><br>Informe o nome do layout.');
-        return;
-      }
-      if (data.buttonsLocked && data.unlockPassword.length < 5) {
-        showStatus('<strong>ERRO</strong><br>Informe senha com no mínimo 5 caracteres.');
-        return;
-      }
-      setStep(2);
-    }
-
-    function goStep3() {
-      setStep(3);
-    }
-
-    function goStep4() {
-      if (!selectedBackground) {
-        showStatus('<strong>ERRO</strong><br>Selecione um plano de fundo.');
-        return;
-      }
-
-      const form = getFormData();
-      document.getElementById('confirmName').textContent = 'Nome do layout: ' + form.name;
-      document.getElementById('confirmBg').src = selectedBackground.image;
-      document.getElementById('confirmText').innerHTML = `
-        <div>${selectedLogoDataUrl ? 'Logomarca selecionada' : 'Sem logomarca por enquanto'}</div>
-        <div>Localização do logo: ${form.logoPosition}</div>
-        <div>Botões bloqueados: ${form.buttonsLocked ? 'SIM' : 'NÃO'}</div>
-        <div>${form.unlockPassword ? 'Senha definida' : 'Sem senha de desbloqueio'}</div>
-        <div>Exibir APPS: ${form.showAppsButton ? 'SIM' : 'NÃO'}</div>
-      `;
-
-      if (selectedLogoDataUrl) {
-        document.getElementById('confirmLogo').src = selectedLogoDataUrl;
-        document.getElementById('logoConfirmWrap').classList.remove('hidden');
-      } else {
-        document.getElementById('logoConfirmWrap').classList.add('hidden');
-      }
-
-      setStep(4);
-    }
-
-    function trocarLogo(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        selectedLogoDataUrl = e.target.result;
-        document.getElementById('logoPreview').src = selectedLogoDataUrl;
-        document.getElementById('logoPreview').classList.remove('hidden');
-        document.getElementById('logoEmpty').classList.add('hidden');
-      };
-      reader.readAsDataURL(file);
-    }
-
-    async function carregarFundos() {
-      try {
-        const res = await fetch(API_BASE + '/backgrounds');
-        const data = await res.json().catch(() => []);
-        allBackgrounds = Array.isArray(data) ? data : [];
-      } catch (e) {
-        allBackgrounds = [];
-      }
-
-      const grid = document.getElementById('bgGrid');
-
-      if (!allBackgrounds.length) {
-        grid.innerHTML = '<div style="grid-column:1/-1;background:#132744;padding:16px;border-radius:8px;">Nenhum plano de fundo encontrado.</div>';
-        return;
-      }
-
-      grid.innerHTML = '';
-      allBackgrounds.forEach(bg => {
-        const card = document.createElement('div');
-        card.className = 'card';
-
-        const imageUrl = bg.image || bg.url || bg.fileUrl || bg.src || '';
-        const name = bg.name || bg.title || ('Fundo ' + (bg.id || ''));
-
-        card.innerHTML = `
-          <img src="${imageUrl}" alt="${name}">
-          <div class="card-name">${name}</div>
-          <button type="button">Escolher</button>
-        `;
-
-        card.querySelector('button').onclick = function() {
-          selectedBackground = {
-            id: bg.id,
-            name: name,
-            image: imageUrl
-          };
-          document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
-          card.classList.add('selected');
-          showStatus('<strong>SUCESSO</strong><br>Plano de fundo selecionado.', 'success');
-        };
-
-        grid.appendChild(card);
-      });
-    }
-
-    async function salvarLayout() {
-      try {
-        const form = getFormData();
-
-        const body = {
-          name: form.name,
-          logoPosition: form.logoPosition,
-          buttonsLocked: form.buttonsLocked,
-          unlockPassword: form.unlockPassword,
-          showAppsButton: form.showAppsButton,
-          background: selectedBackground ? selectedBackground.image : '',
-          backgroundId: selectedBackground ? selectedBackground.id : null,
-          logo: selectedLogoDataUrl || '',
-          banners: [],
-          apps: [],
-          links: []
-        };
-
-        const res = await fetch(API_BASE + '/layouts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-        });
-
-        const data = await res.json().catch(() => ({}));
-
-        if (!res.ok || !data.ok) {
-          throw new Error(data.message || 'Erro ao salvar layout.');
-        }
-
-        showStatus('<strong>SUCESSO</strong><br>Layout criado com sucesso.', 'success');
-        setTimeout(() => {
-          window.location.href = 'layouts.html?e=2';
-        }, 900);
-      } catch (err) {
-        showStatus('<strong>ERRO</strong><br>' + (err.message || 'Erro ao salvar layout.'));
-      }
-    }
-
-    window.onload = async function() {
-      setStep(1);
-      await carregarFundos();
-    };
-  </script>
 </body>
 </html>
