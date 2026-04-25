@@ -691,3 +691,64 @@ app.get('/launcher/download', (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log('Servidor rodando na porta:', PORT);
 });
+const multer = require('multer');
+
+const UPLOAD_DIR = path.join(__dirname, 'uploads', 'backgrounds');
+
+if (!fs.existsSync(UPLOAD_DIR)) {
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, UPLOAD_DIR);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const name = Date.now() + '-' + Math.random().toString(36).substring(2) + ext;
+    cb(null, name);
+  }
+});
+
+const upload = multer({ storage });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// =========================
+// BACKGROUNDS
+// =========================
+
+app.get('/backgrounds', (req, res) => {
+  const data = db.readJson(path.join(__dirname, '../database/backgrounds.json'), []);
+  res.json(data);
+});
+
+app.post('/backgrounds', upload.single('image'), (req, res) => {
+  try {
+    const { name } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ ok: false, message: 'Imagem obrigatória' });
+    }
+
+    const fileUrl = '/uploads/backgrounds/' + req.file.filename;
+
+    const filePath = path.join(__dirname, '../database/backgrounds.json');
+    const list = db.readJson(filePath, []);
+
+    const item = {
+      id: Date.now(),
+      name: name || 'Sem nome',
+      image: fileUrl,
+      createdAt: new Date().toISOString()
+    };
+
+    list.push(item);
+    db.writeJson(filePath, list);
+
+    res.json({ ok: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ ok: false });
+  }
+});
