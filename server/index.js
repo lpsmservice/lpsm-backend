@@ -19,7 +19,7 @@ app.use('/painel', express.static(path.join(__dirname, '..', 'painel')));
 app.use('/downloads', express.static(path.join(__dirname, 'public')));
 
 // =====================
-// UPLOAD CONFIG
+// UPLOAD
 // =====================
 const uploadDir = path.join(__dirname, 'public', 'uploads');
 
@@ -39,14 +39,14 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // =====================
-// FUNÇÃO ID
+// ID
 // =====================
 function uid() {
   return Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
 }
 
 // =====================
-// CRIAR FUNDOS PADRÃO
+// FUNDOS PADRÃO
 // =====================
 function criarFundosPadrao() {
   const fundos = db.getBackgrounds();
@@ -60,19 +60,18 @@ function criarFundosPadrao() {
   ];
 
   db.saveBackgrounds(padrao);
-  console.log('Fundos padrão criados');
 }
 
 // =====================
-// ROTAS FUNDOS
+// ===== FUNDOS =====
 // =====================
 
 // LISTAR
 app.get('/backgrounds', (req, res) => {
   try {
     res.json(db.getBackgrounds());
-  } catch {
-    res.status(500).json({ erro: 'Erro ao buscar fundos' });
+  } catch (e) {
+    res.status(500).json({ ok: false });
   }
 });
 
@@ -90,24 +89,36 @@ app.post('/backgrounds', upload.single('imagem'), (req, res) => {
     fundos.push(novo);
     db.saveBackgrounds(fundos);
 
-    res.json({ ok: true, fundo: novo });
+    res.json({ ok: true });
 
   } catch (e) {
     console.log(e);
-    res.status(500).json({ erro: 'Erro ao salvar fundo' });
+    res.status(500).json({ ok: false });
   }
 });
 
 // =====================
-// 🔥 SALVAR LAYOUT (CORREÇÃO)
+// ===== LAYOUTS =====
 // =====================
+
+// LISTAR
+app.get('/layouts', (req, res) => {
+  try {
+    res.json(db.getLayouts());
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ ok: false });
+  }
+});
+
+// SALVAR
 app.post('/layouts', (req, res) => {
   try {
     const layouts = db.getLayouts();
 
     const novo = {
       id: uid(),
-      name: req.body.name,
+      name: req.body.name || 'Layout',
       logo: req.body.logo || '',
       background: req.body.background || '',
       createdAt: new Date().toISOString()
@@ -116,11 +127,11 @@ app.post('/layouts', (req, res) => {
     layouts.push(novo);
     db.saveLayouts(layouts);
 
-    res.json({ ok: true, layout: novo });
+    res.json({ ok: true });
 
   } catch (e) {
     console.log(e);
-    res.status(500).json({ erro: 'Erro ao salvar layout' });
+    res.status(500).json({ ok: false });
   }
 });
 
@@ -139,9 +150,9 @@ app.post('/login', (req, res) => {
 });
 
 // =====================
-// INICIAR
+// START
 // =====================
 app.listen(PORT, () => {
-  console.log('Servidor rodando na porta', PORT);
+  console.log('Rodando na porta', PORT);
   criarFundosPadrao();
 });
