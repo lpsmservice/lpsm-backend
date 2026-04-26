@@ -7,6 +7,7 @@ const FILES = {
   apps: path.join(DB_DIR, 'apps.json'),
   devices: path.join(DB_DIR, 'devices.json'),
   layouts: path.join(DB_DIR, 'layouts.json'),
+  backgrounds: path.join(DB_DIR, 'backgrounds.json'),
   resellers: path.join(DB_DIR, 'resellers.json'),
   settings: path.join(DB_DIR, 'settings.json')
 };
@@ -75,6 +76,14 @@ function saveLayouts(data) {
   writeJson(FILES.layouts, Array.isArray(data) ? data : []);
 }
 
+function getBackgrounds() {
+  return readJson(FILES.backgrounds, []);
+}
+
+function saveBackgrounds(data) {
+  writeJson(FILES.backgrounds, Array.isArray(data) ? data : []);
+}
+
 function getResellers() {
   return readJson(FILES.resellers, []);
 }
@@ -112,6 +121,8 @@ module.exports = {
   saveDevices,
   getLayouts,
   saveLayouts,
+  getBackgrounds,
+  saveBackgrounds,
   getResellers,
   saveResellers,
   getSettings,
