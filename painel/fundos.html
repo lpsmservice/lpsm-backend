@@ -1,14 +1,77 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Fundos</title>
+
+<style>
+body {
+  background: #0b1c2c;
+  color: white;
+  font-family: Arial;
+  margin: 0;
+}
+
+.top {
+  background: #1f6feb;
+  padding: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.container {
+  padding: 20px;
+}
+
+.btn {
+  background: #2f81f7;
+  border: none;
+  padding: 12px;
+  color: white;
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: #0f2740;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.nome {
+  margin-top: 10px;
+}
+</style>
+
+</head>
+
 <body>
 
-<h2>Fundos cadastrados</h2>
+<div class="top">LAUNCHER BOX</div>
 
-<button onclick="window.location.href='addfundos.html'">
-  + Adicionar Fundo
+<div class="container">
+
+<button class="btn" onclick="window.location.href='addfundos.html'">
++ ADICIONAR FUNDO
 </button>
 
-<div id="lista"></div>
+<div id="lista" class="grid"></div>
+
+</div>
 
 <script>
 const API = "https://lpsm-backend.onrender.com";
@@ -26,14 +89,13 @@ async function load() {
     }
 
     el.innerHTML = data.map(item => `
-      <div style="margin:10px">
-        <img src="${item.imagem}" width="200"><br>
-        ${item.nome}
+      <div class="card">
+        <img src="${item.imagem}">
+        <div class="nome">${item.nome}</div>
       </div>
     `).join('');
 
   } catch (err) {
-    console.log(err);
     document.getElementById('lista').innerHTML = 'Erro ao carregar';
   }
 }
