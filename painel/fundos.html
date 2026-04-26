@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="pt-BR">
 <body>
 
@@ -10,25 +11,31 @@
 <div id="lista"></div>
 
 <script>
-const API = window.location.origin;
+const API = "https://lpsm-backend.onrender.com";
 
 async function load() {
-  const res = await fetch(API + '/backgrounds');
-  const data = await res.json();
+  try {
+    const res = await fetch(API + '/backgrounds');
+    const data = await res.json();
 
-  const el = document.getElementById('lista');
+    const el = document.getElementById('lista');
 
-  if (!data.length) {
-    el.innerHTML = 'Nenhum fundo cadastrado';
-    return;
+    if (!data.length) {
+      el.innerHTML = 'Nenhum fundo cadastrado';
+      return;
+    }
+
+    el.innerHTML = data.map(item => `
+      <div style="margin:10px">
+        <img src="${item.imagem}" width="200"><br>
+        ${item.nome}
+      </div>
+    `).join('');
+
+  } catch (err) {
+    console.log(err);
+    document.getElementById('lista').innerHTML = 'Erro ao carregar';
   }
-
-  el.innerHTML = data.map(item => `
-    <div style="margin:10px">
-      <img src="${item.imagem}" width="200"><br>
-      ${item.nome}
-    </div>
-  `).join('');
 }
 
 load();
