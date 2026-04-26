@@ -8,38 +8,12 @@ const db = require('./database');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// =====================
-// MIDDLEWARE
-// =====================
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// =====================
-// STATIC
-// =====================
 app.use('/painel', express.static(path.join(__dirname, '..', 'painel')));
 app.use('/downloads', express.static(path.join(__dirname, 'public')));
-
-// =====================
-// UPLOAD
-// =====================
-const uploadDir = path.join(__dirname, 'public', 'uploads');
-
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (_, __, cb) => cb(null, uploadDir),
-  filename: (_, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const name = Date.now() + '-' + Math.random().toString(36).substring(2, 8);
-    cb(null, name + ext);
-  }
-});
-
-const upload = multer({ storage });
 
 // =====================
 // HELPERS
@@ -53,134 +27,82 @@ function fileUrl(req, filename) {
 }
 
 // =====================
-// FUNDOS PADRÃO
+// DEVICES DATABASE (simples)
 // =====================
-function criarFundosPadrao() {
-  const fundos = db.getBackgrounds();
+function getDevices() {
+  try {
+    return db.getDevices();
+  } catch {
+    return [];
+  }
+}
 
-  if (fundos.length > 0) return;
-
-  const padrao = [
-    {
-      id: uid(),
-      nome: 'Fundo Azul',
-      imagem: 'https://picsum.photos/800/400?1',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: uid(),
-      nome: 'Fundo Tech',
-      imagem: 'https://picsum.photos/800/400?2',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: uid(),
-      nome: 'Fundo Claro',
-      imagem: 'https://picsum.photos/800/400?3',
-      createdAt: new Date().toISOString()
-    }
-  ];
-
-  db.saveBackgrounds(padrao);
+function saveDevices(data) {
+  db.saveDevices(data);
 }
 
 // =====================
-// LOGIN
+// VALIDAR DEVICE
 // =====================
-app.post('/login', (req, res) => {
-  const settings = db.getSettings();
-  const { email, password } = req.body;
+app.get('/launcher/device/:code', (req, res) => {
+  const code = req.params.code;
 
-  if (email === settings.email && password === settings.masterPassword) {
-    return res.json({ ok: true });
-  }
+  const devices = getDevices();
 
-  res.status(401).json({ ok: false, message: 'Login inválido' });
-});
+  let device = devices.find(d => d.code === code);
 
-// =====================
-// APPS
-// =====================
-app.get('/apps', (req, res) => {
-  try {
-    res.json(db.getApps());
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({ ok: false });
-  }
-});
-
-app.post('/apps', (req, res) => {
-  try {
-    const apps = db.getApps();
-
-    const novo = {
+  // se não existir, cria automático
+  if (!device) {
+    device = {
       id: uid(),
-      name: req.body.name || 'APP',
-      package: req.body.package || '',
-      apk: req.body.apk || '',
-      icon: req.body.icon || '',
-      autoInstall: req.body.autoInstall || false,
+      code,
+      active: false,
       createdAt: new Date().toISOString()
     };
 
-    apps.push(novo);
-    db.saveApps(apps);
-
-    res.json({ ok: true });
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({ ok: false });
+    devices.push(device);
+    saveDevices(devices);
   }
-});
 
-app.post('/upload/apk', upload.single('file'), (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ ok: false });
-    }
-
-    const url = fileUrl(req, req.file.filename);
-
-    res.json({ ok: true, url });
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({ ok: false });
-  }
+  res.json({
+    ok: true,
+    device
+  });
 });
 
 // =====================
-// FUNDOS
+// ATIVAR DEVICE
 // =====================
-app.get('/backgrounds', (req, res) => {
+app.post('/devices/:id/complete-activation', (req, res) => {
   try {
-    criarFundosPadrao();
-    res.json(db.getBackgrounds());
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({ ok: false });
-  }
-});
+    const devices = getDevices();
 
-app.post('/backgrounds', upload.single('imagem'), (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ ok: false });
+    const index = devices.findIndex(d => d.id === req.params.id);
+
+    if (index === -1) {
+      return res.status(404).json({ ok: false, message: 'Dispositivo não encontrado' });
     }
 
-    const fundos = db.getBackgrounds();
-
-    const novo = {
-      id: uid(),
-      nome: req.body.nome || 'Sem nome',
-      imagem: fileUrl(req, req.file.filename),
-      createdAt: new Date().toISOString()
+    devices[index] = {
+      ...devices[index],
+      active: true,
+      client: {
+        name: req.body.name,
+        phone: req.body.phone,
+        notes: req.body.notes,
+        plan: req.body.planName,
+        expiresAt: req.body.expiresAt
+      },
+      layoutId: req.body.layoutId
     };
 
-    fundos.push(novo);
-    db.saveBackgrounds(fundos);
+    saveDevices(devices);
 
-    res.json({ ok: true });
+    res.json({
+      ok: true,
+      device: devices[index]
+    });
+
   } catch (e) {
     console.log(e);
     res.status(500).json({ ok: false });
@@ -191,40 +113,28 @@ app.post('/backgrounds', upload.single('imagem'), (req, res) => {
 // LAYOUTS
 // =====================
 app.get('/layouts', (req, res) => {
-  try {
-    res.json(db.getLayouts());
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({ ok: false });
-  }
+  res.json(db.getLayouts());
 });
 
 app.post('/layouts', (req, res) => {
-  try {
-    const layouts = db.getLayouts();
+  const layouts = db.getLayouts();
 
-    const novo = {
-      id: uid(),
-      name: req.body.name,
-      logo: req.body.logo,
-      background: req.body.background,
-      createdAt: new Date().toISOString()
-    };
+  const novo = {
+    id: uid(),
+    name: req.body.name,
+    background: req.body.background,
+    createdAt: new Date().toISOString()
+  };
 
-    layouts.push(novo);
-    db.saveLayouts(layouts);
+  layouts.push(novo);
+  db.saveLayouts(layouts);
 
-    res.json({ ok: true });
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({ ok: false });
-  }
+  res.json({ ok: true });
 });
 
 // =====================
 // START
 // =====================
 app.listen(PORT, () => {
-  criarFundosPadrao();
-  console.log('Rodando na porta:', PORT);
+  console.log('Servidor rodando:', PORT);
 });
