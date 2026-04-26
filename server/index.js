@@ -40,9 +40,36 @@ function fileUrl(req, filename) {
   return `${req.protocol}://${req.get('host')}/downloads/uploads/${filename}`;
 }
 
-// =====================
+function criarFundosPadrao() {
+  const fundos = db.getBackgrounds();
+
+  if (fundos.length > 0) return;
+
+  const padrao = [
+    {
+      id: uid(),
+      nome: 'Fundo Azul',
+      imagem: 'https://picsum.photos/800/400?1',
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: uid(),
+      nome: 'Fundo Tech',
+      imagem: 'https://picsum.photos/800/400?2',
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: uid(),
+      nome: 'Fundo Claro',
+      imagem: 'https://picsum.photos/800/400?3',
+      createdAt: new Date().toISOString()
+    }
+  ];
+
+  db.saveBackgrounds(padrao);
+}
+
 // LOGIN
-// =====================
 app.post('/login', (req, res) => {
   const settings = db.getSettings();
   const { email, password } = req.body;
@@ -54,9 +81,7 @@ app.post('/login', (req, res) => {
   res.status(401).json({ ok: false, message: 'Login inválido' });
 });
 
-// =====================
 // APPS
-// =====================
 app.get('/apps', (req, res) => {
   try {
     res.json(db.getApps());
@@ -97,7 +122,6 @@ app.delete('/apps/:id', (req, res) => {
   try {
     const apps = db.getApps();
     const filtrados = apps.filter(app => app.id !== req.params.id);
-
     db.saveApps(filtrados);
 
     res.json({ ok: true });
@@ -123,11 +147,10 @@ app.post('/upload/apk', upload.single('file'), (req, res) => {
   }
 });
 
-// =====================
-// FUNDOS
-// =====================
+// PLANOS DE FUNDO
 app.get('/backgrounds', (req, res) => {
   try {
+    criarFundosPadrao();
     res.json(db.getBackgrounds());
   } catch (e) {
     console.log(e);
@@ -160,9 +183,7 @@ app.post('/backgrounds', upload.single('imagem'), (req, res) => {
   }
 });
 
-// =====================
 // LAYOUTS
-// =====================
 app.get('/layouts', (req, res) => {
   try {
     res.json(db.getLayouts());
@@ -209,9 +230,7 @@ app.post('/layouts', (req, res) => {
   }
 });
 
-// =====================
-// START
-// =====================
 app.listen(PORT, () => {
+  criarFundosPadrao();
   console.log('Servidor rodando na porta:', PORT);
 });
