@@ -2,190 +2,538 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Adicionar Dispositivo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adicionar dispositivo</title>
 
 <style>
-body {
-  background:#0b1b2b;
-  color:#fff;
-  font-family:Arial;
-  margin:0;
+* {
+  box-sizing: border-box;
 }
 
-.container {
-  padding:20px;
+body {
+  margin: 0;
+  background: linear-gradient(90deg, #00111f, #062744);
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  padding-bottom: 70px;
+}
+
+.topbar {
+  height: 72px;
+  background: #287df3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.back {
+  position: absolute;
+  left: 22px;
+  font-size: 42px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.steps {
+  height: 90px;
+  background: #0d2347;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.step {
+  color: #6f8199;
+  font-size: 13px;
+}
+
+.step .circle {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto 8px;
+  border-radius: 50%;
+  background: #233852;
+  color: #8ea0b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.step.active {
+  color: #fff;
+}
+
+.step.active .circle {
+  background: #2d7ef7;
+  color: #fff;
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+.info-center {
+  text-align: center;
+  padding: 32px 20px;
+  font-size: 18px;
+}
+
+.alert {
+  margin: 28px 14px 22px;
+  padding: 18px 22px;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.alert.red {
+  background: #f44336;
+}
+
+.alert.orange {
+  background: #ff9800;
+}
+
+.alert strong {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.form-area {
+  padding: 24px 20px;
+  background: #0d2347;
+  border-top: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+label {
+  display: block;
+  color: #aebbd0;
+  margin: 0 0 8px;
+  font-size: 16px;
 }
 
 input, select {
-  width:100%;
-  padding:12px;
-  margin-bottom:10px;
-  border-radius:6px;
-  border:none;
+  width: 100%;
+  min-height: 56px;
+  border: none;
+  outline: none;
+  border-radius: 7px;
+  background: #1b304d;
+  color: #fff;
+  font-size: 18px;
+  padding: 0 18px;
+  margin-bottom: 22px;
 }
 
-button {
-  width:100%;
-  padding:14px;
-  background:#2d7ef7;
-  border:none;
-  color:#fff;
-  border-radius:8px;
-  cursor:pointer;
-  margin-top:10px;
+input::placeholder {
+  color: #9dadc4;
+}
+
+.help {
+  color: #dce7fb;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: -12px 0 24px;
+}
+
+.btn {
+  width: calc(100% - 28px);
+  margin: 24px 14px;
+  min-height: 62px;
+  border: none;
+  border-radius: 6px;
+  background: #287df3;
+  color: #fff;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn.gray {
+  background: #6f8199;
+}
+
+.btn.green {
+  background: #35c85a;
+}
+
+.summary {
+  max-width: 900px;
+  margin: 30px auto;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 68px;
+  background: #0d2347;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.bottom-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 32px;
+}
+
+@media (max-width: 700px) {
+  .topbar {
+    font-size: 18px;
+  }
+
+  .btn {
+    font-size: 18px;
+  }
+
+  input, select {
+    font-size: 16px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<header class="topbar">
+  <a class="back" href="devices.html">‹</a>
+  Adicionar dispositivo
+</header>
+
+<div class="steps">
+  <div class="step active" id="stepLabel1">
+    <div class="circle">1</div>
+    ID dispositivo
+  </div>
+
+  <div class="step" id="stepLabel2">
+    <div class="circle">2</div>
+    Config. Cliente
+  </div>
+
+  <div class="step" id="stepLabel3">
+    <div class="circle">3</div>
+    Config. Dispositivo
+  </div>
+
+  <div class="step" id="stepLabel4">
+    <div class="circle">✓</div>
+    Conclusão
+  </div>
+</div>
 
 <!-- ETAPA 1 -->
-<div id="step1">
-  <h2>ID do dispositivo</h2>
+<section id="step1" class="section active">
 
-  <input id="code" placeholder="Código do dispositivo">
+  <div id="statusBox"></div>
 
-  <button onclick="proximo1()">Prosseguir >>></button>
-</div>
+  <div class="info-center">
+    <div>Procure pelo ID do dispositivo.</div>
+    <br>
+    <strong>ATENÇÃO no ID não existe a letra O, portanto sempre que aparece O será o número ZERO!</strong>
+  </div>
+
+  <div class="form-area">
+    <label>ID do dispositivo</label>
+    <input id="code" type="text" placeholder="Ex: 647375">
+  </div>
+
+  <button class="btn" onclick="proximo1()">Prosseguir &gt;&gt;&gt;</button>
+</section>
 
 <!-- ETAPA 2 -->
-<div id="step2" style="display:none;">
-  <h2>Configuração Cliente</h2>
+<section id="step2" class="section">
 
-  <input id="name" placeholder="Nome do cliente">
-  <input id="phone" placeholder="Telefone">
-  <input id="planName" placeholder="Plano">
-  <input id="expiresAt" placeholder="Data expiração">
+  <div class="form-area">
+    <label>Nome do cliente</label>
+    <input id="name" type="text" placeholder="Nome do cliente">
 
-  <button onclick="proximo2()">Prosseguir >>></button>
-</div>
+    <label>Telefone / WhatsApp</label>
+    <input id="phone" type="text" placeholder="Telefone">
+
+    <label>Nome do plano</label>
+    <input id="planName" type="text" placeholder="Ex: Anual">
+
+    <label>Data de expiração</label>
+    <input id="expiresAt" type="datetime-local">
+
+    <label>Bloquear aplicativos após vencer?</label>
+    <select id="blockOnExpire">
+      <option value="NÃO">NÃO</option>
+      <option value="SIM">SIM</option>
+    </select>
+
+    <div class="help">
+      Ao habilitar esta opção, TODOS aplicativos da tela inicial da launcher serão bloqueados após vencer a validade.
+      <br><br>
+      Irá aparecer uma mensagem com o plano do cliente, preço, seu whatsapp e pix para que ele possa pagar.
+    </div>
+
+    <label>Ativar bloqueio caso a data e hora estiverem erradas?</label>
+    <select id="forceBlockWrongTime">
+      <option value="SIM">SIM</option>
+      <option value="NÃO">NÃO</option>
+    </select>
+
+    <div class="help">
+      Ao habilitar esta opção, o sistema irá bloquear os aplicativos após vencer usando os dados do nosso servidor bem como a data e hora do aparelho.
+    </div>
+  </div>
+
+  <button class="btn" onclick="proximo2()">Prosseguir</button>
+</section>
 
 <!-- ETAPA 3 -->
-<div id="step3" style="display:none;">
-  <h2>Configuração Dispositivo</h2>
+<section id="step3" class="section">
 
-  <label>Layout da launcher</label>
-  <select id="layoutSelect">
-    <option>Carregando...</option>
-  </select>
+  <div class="info-center">
+    <strong>Escolha um layout para a launcher e se deseja ou não bloquear o wifi.</strong>
+  </div>
 
-  <label>Permitir acesso data/hora?</label>
-  <select id="allowDate">
-    <option value="NÃO">NÃO</option>
-    <option value="SIM">SIM</option>
-  </select>
+  <div class="form-area">
+    <label>Layout da launcher</label>
+    <select id="layoutSelect">
+      <option value="">Carregando layouts...</option>
+    </select>
 
-  <button onclick="proximo3()">Prosseguir >>></button>
-</div>
+    <label>Permitir acesso às configurações de data e hora?</label>
+    <select id="allowDateSettings">
+      <option value="NÃO">NÃO</option>
+      <option value="SIM">SIM</option>
+    </select>
+
+    <div class="help">
+      Se deixar marcado NÃO, o relógio exibido na tela inicial da launcher não terá a opção de clicar para abrir as configurações de data e hora.
+      <br><br>
+      Esta configuração é semelhante a de wifi acima, pois se você trabalha com locação/comodato de aparelhos é ideal verificar antes.
+      <br><br>
+      ATENÇÃO: esta função só irá funcionar para quem está com a launcher atualizada na versão 1.2 ou posterior!
+    </div>
+  </div>
+
+  <button class="btn" onclick="proximo3()">Prosseguir &gt;&gt;&gt;</button>
+</section>
 
 <!-- ETAPA 4 -->
-<div id="step4" style="display:none;">
-  <h2>Conclusão</h2>
+<section id="step4" class="section">
 
-  <button onclick="salvar()">ATIVAR DISPOSITIVO</button>
-</div>
+  <div class="summary" id="summaryBox"></div>
 
-</div>
+  <button class="btn green" onclick="salvar()">SIM</button>
+  <button class="btn" style="background:#f52b1d;" onclick="voltarEtapa3()">NÃO</button>
+</section>
+
+<nav class="bottom-nav">
+  <a href="dashboard.html">⌂</a>
+  <a href="https://wa.me/" target="_blank">◔</a>
+  <a href="devices.html">▭</a>
+  <a href="launcher.html">▦</a>
+  <a href="#">↑</a>
+</nav>
 
 <script>
-
 const API = window.location.origin;
 
 let deviceId = null;
+let deviceCode = '';
+let layoutsCache = [];
 
-// ================= STEP 1
+function setStep(n) {
+  document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById('stepLabel' + i).classList.toggle('active', i === n);
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showStatus(type, title, message) {
+  const box = document.getElementById('statusBox');
+  const color = type === 'error' ? 'red' : 'orange';
+
+  box.innerHTML = `
+    <div class="alert ${color}">
+      <strong>${title}</strong>
+      ${message}
+    </div>
+  `;
+}
+
 async function proximo1() {
-  const code = document.getElementById('code').value;
+  const codeInput = document.getElementById('code');
+  const code = codeInput.value.trim().toUpperCase();
 
   if (!code) {
-    alert('Digite o código');
+    showStatus('error', 'ERRO', 'Digite o ID do dispositivo.');
     return;
   }
 
-  const res = await fetch(API + '/launcher/device/' + code);
-  const data = await res.json();
-
-  deviceId = data.device.id;
-
-  document.getElementById('step1').style.display = 'none';
-  document.getElementById('step2').style.display = 'block';
-}
-
-// ================= STEP 2
-function proximo2() {
-  document.getElementById('step2').style.display = 'none';
-  document.getElementById('step3').style.display = 'block';
-
-  carregarLayouts();
-}
-
-// ================= CARREGAR LAYOUTS
-async function carregarLayouts() {
   try {
-    const res = await fetch(API + '/layouts');
+    const res = await fetch(API + '/launcher/device/' + encodeURIComponent(code) + '?checkOnly=1', {
+      cache: 'no-store'
+    });
+
     const data = await res.json();
 
-    const select = document.getElementById('layoutSelect');
-
-    if (!data.length) {
-      select.innerHTML = '<option>Nenhum layout encontrado</option>';
+    if (!res.ok || !data.device) {
+      showStatus('error', 'ERRO', data.message || 'Código inválido ou ainda não registrado pela launcher.');
       return;
     }
 
+    deviceId = data.device.id;
+    deviceCode = code;
+
+    setStep(2);
+
+  } catch (e) {
+    console.error(e);
+    showStatus('error', 'ERRO', 'Erro ao consultar dispositivo.');
+  }
+}
+
+async function carregarLayouts() {
+  const select = document.getElementById('layoutSelect');
+  select.innerHTML = '<option value="">Carregando layouts...</option>';
+
+  try {
+    const res = await fetch(API + '/layouts', { cache: 'no-store' });
+    const data = await res.json();
+
+    if (!res.ok || !Array.isArray(data) || data.length === 0) {
+      select.innerHTML = '<option value="">Nenhum layout encontrado</option>';
+      return;
+    }
+
+    layoutsCache = data;
+
     select.innerHTML = `
-      <option value="">Selecione um layout</option>
-      ${data.map(l => `<option value="${l.id}">${l.name}</option>`).join('')}
+      <option value="">Escolha um layout</option>
+      ${data.map(layout => `
+        <option value="${layout.id}">${layout.name || 'Layout sem nome'}</option>
+      `).join('')}
     `;
 
   } catch (e) {
-    console.log(e);
-    document.getElementById('layoutSelect').innerHTML = '<option>Erro</option>';
+    console.error(e);
+    select.innerHTML = '<option value="">Erro ao carregar layouts</option>';
   }
 }
 
-// ================= STEP 3
-function proximo3() {
-  const layout = document.getElementById('layoutSelect').value;
+function proximo2() {
+  const name = document.getElementById('name').value.trim();
 
-  if (!layout) {
-    alert('Escolha um layout');
+  if (!name) {
+    alert('Informe o nome do cliente.');
     return;
   }
 
-  document.getElementById('step3').style.display = 'none';
-  document.getElementById('step4').style.display = 'block';
+  setStep(3);
+  carregarLayouts();
 }
 
-// ================= SALVAR
+function proximo3() {
+  const layoutId = document.getElementById('layoutSelect').value;
+
+  if (!layoutId) {
+    alert('Escolha um layout para continuar.');
+    return;
+  }
+
+  const selectedLayout = layoutsCache.find(l => l.id === layoutId);
+
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const planName = document.getElementById('planName').value.trim();
+  const expiresAt = document.getElementById('expiresAt').value;
+  const blockOnExpire = document.getElementById('blockOnExpire').value;
+  const forceBlockWrongTime = document.getElementById('forceBlockWrongTime').value;
+  const allowDateSettings = document.getElementById('allowDateSettings').value;
+
+  document.getElementById('summaryBox').innerHTML = `
+    <h2>Verifique se as informações estão corretas!</h2>
+    <br>
+    <strong>ID do dispositivo:</strong> ${deviceCode}<br>
+    <strong>Cliente:</strong> ${name}<br>
+    <strong>Telefone:</strong> ${phone || 'Não informado'}<br>
+    <strong>Plano:</strong> ${planName || 'Não informado'}<br>
+    <strong>Validade:</strong> ${expiresAt || 'Não informado'}<br>
+    <strong>Layout:</strong> ${selectedLayout ? selectedLayout.name : 'Não informado'}<br>
+    <strong>Bloquear após vencer:</strong> ${blockOnExpire}<br>
+    <strong>Bloquear data/hora errada:</strong> ${forceBlockWrongTime}<br>
+    <strong>Permitir configurações de data/hora:</strong> ${allowDateSettings}
+    <br><br>
+    <strong>ATENÇÃO! Tenha certeza de que estão corretas as informações!</strong>
+    <br><br>
+    Os dados acima estão corretos?
+  `;
+
+  setStep(4);
+}
+
+function voltarEtapa3() {
+  setStep(3);
+}
+
 async function salvar() {
+  if (!deviceId) {
+    alert('Dispositivo não identificado.');
+    return;
+  }
 
   const body = {
-    name: document.getElementById('name').value,
-    phone: document.getElementById('phone').value,
-    planName: document.getElementById('planName').value,
+    name: document.getElementById('name').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    planName: document.getElementById('planName').value.trim(),
     expiresAt: document.getElementById('expiresAt').value,
+    blockOnExpire: document.getElementById('blockOnExpire').value,
+    forceBlockWrongTime: document.getElementById('forceBlockWrongTime').value,
+    allowDateSettings: document.getElementById('allowDateSettings').value,
     layoutId: document.getElementById('layoutSelect').value
   };
 
-  const res = await fetch(API + '/devices/' + deviceId + '/complete-activation', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify(body)
-  });
+  try {
+    const res = await fetch(API + '/devices/' + deviceId + '/complete-activation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (!data.ok) {
-    alert('Erro ao ativar');
-    return;
+    if (!res.ok || !data.ok) {
+      alert(data.message || 'Erro ao ativar dispositivo.');
+      return;
+    }
+
+    alert('Dispositivo ativado com sucesso!');
+    window.location.href = 'devices.html';
+
+  } catch (e) {
+    console.error(e);
+    alert('Erro ao ativar dispositivo.');
   }
-
-  alert('Dispositivo ativado!');
-  window.location.href = 'devices.html';
 }
-
 </script>
 
 </body>
