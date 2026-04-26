@@ -46,7 +46,7 @@ function uid() {
 }
 
 // =====================
-// CRIAR FUNDOS PADRÃO (1x)
+// CRIAR FUNDOS PADRÃO
 // =====================
 function criarFundosPadrao() {
   const fundos = db.getBackgrounds();
@@ -54,21 +54,9 @@ function criarFundosPadrao() {
   if (fundos.length) return;
 
   const padrao = [
-    {
-      id: uid(),
-      nome: 'Fundo Azul',
-      imagem: 'https://picsum.photos/800/400?1'
-    },
-    {
-      id: uid(),
-      nome: 'Fundo Tech',
-      imagem: 'https://picsum.photos/800/400?2'
-    },
-    {
-      id: uid(),
-      nome: 'Fundo Claro',
-      imagem: 'https://picsum.photos/800/400?3'
-    }
+    { id: uid(), nome: 'Fundo Azul', imagem: 'https://picsum.photos/800/400?1' },
+    { id: uid(), nome: 'Fundo Tech', imagem: 'https://picsum.photos/800/400?2' },
+    { id: uid(), nome: 'Fundo Claro', imagem: 'https://picsum.photos/800/400?3' }
   ];
 
   db.saveBackgrounds(padrao);
@@ -79,17 +67,16 @@ function criarFundosPadrao() {
 // ROTAS FUNDOS
 // =====================
 
-// LISTAR FUNDOS
+// LISTAR
 app.get('/backgrounds', (req, res) => {
   try {
-    const fundos = db.getBackgrounds();
-    res.json(fundos);
-  } catch (e) {
+    res.json(db.getBackgrounds());
+  } catch {
     res.status(500).json({ erro: 'Erro ao buscar fundos' });
   }
 });
 
-// ADICIONAR FUNDO
+// ADICIONAR
 app.post('/backgrounds', upload.single('imagem'), (req, res) => {
   try {
     const fundos = db.getBackgrounds();
@@ -112,7 +99,33 @@ app.post('/backgrounds', upload.single('imagem'), (req, res) => {
 });
 
 // =====================
-// LOGIN (mantido)
+// 🔥 SALVAR LAYOUT (CORREÇÃO)
+// =====================
+app.post('/layouts', (req, res) => {
+  try {
+    const layouts = db.getLayouts();
+
+    const novo = {
+      id: uid(),
+      name: req.body.name,
+      logo: req.body.logo || '',
+      background: req.body.background || '',
+      createdAt: new Date().toISOString()
+    };
+
+    layouts.push(novo);
+    db.saveLayouts(layouts);
+
+    res.json({ ok: true, layout: novo });
+
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ erro: 'Erro ao salvar layout' });
+  }
+});
+
+// =====================
+// LOGIN
 // =====================
 app.post('/login', (req, res) => {
   const settings = db.getSettings();
@@ -130,6 +143,5 @@ app.post('/login', (req, res) => {
 // =====================
 app.listen(PORT, () => {
   console.log('Servidor rodando na porta', PORT);
-
-  criarFundosPadrao(); // 👈 cria automático
+  criarFundosPadrao();
 });
