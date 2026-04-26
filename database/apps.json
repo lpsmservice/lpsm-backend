@@ -3,7 +3,7 @@
     "id": "mo365bl8q5czv0",
     "name": "barbe",
     "package": "",
-    "apk": "http://localhost:3000/downloads/uploads/1776446110618-563393337.apk",
+    "apk": "https://lpsm-backend.onrender.com"
     "icon": "",
     "autoInstall": false,
     "createdAt": "2026-04-17T17:15:10.700Z"
