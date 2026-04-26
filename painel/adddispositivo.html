@@ -1,793 +1,192 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LAUNCHER BOX - Adicionar dispositivo</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <style>
-    .wizard-page {
-      padding-bottom: 92px;
-    }
+<meta charset="UTF-8">
+<title>Adicionar Dispositivo</title>
 
-    .wizard-topbar {
-      height: 58px;
-      background: #2f7cff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      font-size: 18px;
-      font-weight: 700;
-      color: #fff;
-    }
+<style>
+body {
+  background:#0b1b2b;
+  color:#fff;
+  font-family:Arial;
+  margin:0;
+}
 
-    .wizard-back {
-      position: absolute;
-      left: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 34px;
-      cursor: pointer;
-      line-height: 1;
-    }
+.container {
+  padding:20px;
+}
 
-    .wizard-steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      padding: 14px 8px 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      background: #0d1f3b;
-    }
+input, select {
+  width:100%;
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:6px;
+  border:none;
+}
 
-    .wizard-step {
-      text-align: center;
-      color: #6d7f98;
-      font-size: 13px;
-    }
-
-    .wizard-step-circle {
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      background: #213552;
-      color: #9fb1cb;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .wizard-step.active {
-      color: #ffffff;
-    }
-
-    .wizard-step.active .wizard-step-circle,
-    .wizard-step.done .wizard-step-circle {
-      background: #2f7cff;
-      color: #fff;
-    }
-
-    .wizard-error,
-    .wizard-success {
-      padding: 14px 18px;
-      margin: 14px 10px 0;
-      border-radius: 10px;
-      display: none;
-      line-height: 1.6;
-      color: #fff;
-    }
-
-    .wizard-error {
-      background: #f44336;
-    }
-
-    .wizard-success {
-      background: #20b15a;
-    }
-
-    .wizard-error.show,
-    .wizard-success.show {
-      display: block;
-    }
-
-    .wizard-card {
-      background: #0b2042;
-      margin-top: 16px;
-      padding: 18px;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .wizard-center-text {
-      text-align: center;
-      line-height: 1.8;
-      font-size: 16px;
-    }
-
-    .wizard-tip {
-      background: #5f2bd2;
-      color: #fff;
-      padding: 14px 18px;
-      margin: 16px 10px 0;
-      border-radius: 10px;
-      line-height: 1.6;
-    }
-
-    .wizard-form-wrap {
-      margin-top: 18px;
-      background: #0b2042;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      padding: 18px;
-    }
-
-    .wizard-field {
-      margin-bottom: 16px;
-    }
-
-    .wizard-label {
-      display: block;
-      font-size: 15px;
-      margin-bottom: 8px;
-      color: #dbe8fb;
-    }
-
-    .wizard-input,
-    .wizard-select,
-    .wizard-textarea {
-      width: 100%;
-      border: none;
-      border-radius: 8px;
-      background: #1c2e49;
-      color: #fff;
-      padding: 0 14px;
-      font-size: 15px;
-    }
-
-    .wizard-input,
-    .wizard-select {
-      height: 46px;
-    }
-
-    .wizard-textarea {
-      min-height: 70px;
-      padding-top: 12px;
-      resize: vertical;
-    }
-
-    .wizard-help {
-      color: #ffffff;
-      line-height: 1.75;
-      font-size: 15px;
-      margin-top: 8px;
-    }
-
-    .wizard-primary-btn,
-    .wizard-danger-btn,
-    .wizard-green-btn {
-      width: calc(100% - 20px);
-      margin: 22px 10px 0;
-      height: 50px;
-      border: none;
-      border-radius: 6px;
-      color: #fff;
-      font-size: 18px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .wizard-primary-btn {
-      background: #2f7cff;
-    }
-
-    .wizard-green-btn {
-      background: #39c65a;
-    }
-
-    .wizard-danger-btn {
-      background: #f44336;
-    }
-
-    .wizard-hidden {
-      display: none;
-    }
-
-    .wizard-loading {
-      opacity: 0.7;
-      pointer-events: none;
-    }
-
-    .step3-title {
-      text-align: center;
-      font-size: 17px;
-      line-height: 1.7;
-      margin-bottom: 18px;
-      color: #fff;
-    }
-
-    .summary-alert {
-      background: #ff9800;
-      color: #fff;
-      border-radius: 8px;
-      padding: 14px 20px;
-      text-align: center;
-      line-height: 1.9;
-      margin: 14px 10px 0;
-    }
-
-    .summary-alert strong {
-      display: block;
-      font-size: 17px;
-      margin-bottom: 6px;
-    }
-
-    .summary-box {
-      text-align: center;
-      color: #fff;
-      line-height: 1.9;
-      padding: 18px 10px 4px;
-      font-size: 15px;
-    }
-
-    .summary-warning {
-      text-align: center;
-      color: #fff;
-      margin-top: 18px;
-      font-size: 15px;
-      line-height: 1.8;
-    }
-
-    .summary-question {
-      text-align: center;
-      color: #b7c8de;
-      margin-top: 18px;
-      font-size: 16px;
-    }
-  </style>
+button {
+  width:100%;
+  padding:14px;
+  background:#2d7ef7;
+  border:none;
+  color:#fff;
+  border-radius:8px;
+  cursor:pointer;
+  margin-top:10px;
+}
+</style>
 </head>
+
 <body>
-  <div class="wizard-topbar">
-    <button class="wizard-back" onclick="goBackWizard()">‹</button>
-    Adicionar dispositivo
-  </div>
 
-  <div class="wizard-steps">
-    <div class="wizard-step active" id="stepHead1">
-      <div class="wizard-step-circle">1</div>
-      <div>ID dispositivo</div>
-    </div>
+<div class="container">
 
-    <div class="wizard-step" id="stepHead2">
-      <div class="wizard-step-circle">2</div>
-      <div>Config. Cliente</div>
-    </div>
+<!-- ETAPA 1 -->
+<div id="step1">
+  <h2>ID do dispositivo</h2>
 
-    <div class="wizard-step" id="stepHead3">
-      <div class="wizard-step-circle">3</div>
-      <div>Config. Dispositivo</div>
-    </div>
+  <input id="code" placeholder="Código do dispositivo">
 
-    <div class="wizard-step" id="stepHead4">
-      <div class="wizard-step-circle">✓</div>
-      <div>Conclusão</div>
-    </div>
-  </div>
+  <button onclick="proximo1()">Prosseguir >>></button>
+</div>
 
-  <main class="page-dashboard wizard-page">
-    <div class="wizard-error" id="wizardError"></div>
-    <div class="wizard-success" id="wizardSuccess"></div>
+<!-- ETAPA 2 -->
+<div id="step2" style="display:none;">
+  <h2>Configuração Cliente</h2>
 
-    <section id="step1">
-      <div class="wizard-card">
-        <div class="wizard-center-text">
-          Procure pelo ID do dispositivo.<br />
-          <strong>ATENÇÃO no ID não existe a letra O, portanto sempre que aparece O será o número ZERO!</strong>
-        </div>
-      </div>
+  <input id="name" placeholder="Nome do cliente">
+  <input id="phone" placeholder="Telefone">
+  <input id="planName" placeholder="Plano">
+  <input id="expiresAt" placeholder="Data expiração">
 
-      <div class="wizard-form-wrap">
-        <div class="wizard-field">
-          <label class="wizard-label">ID do dispositivo</label>
-          <input id="deviceCodeInput" class="wizard-input" type="text" placeholder="Informe o ID" />
-        </div>
-      </div>
+  <button onclick="proximo2()">Prosseguir >>></button>
+</div>
 
-      <button class="wizard-primary-btn" id="step1NextBtn">Prosseguir &gt;&gt;&gt;</button>
-    </section>
+<!-- ETAPA 3 -->
+<div id="step3" style="display:none;">
+  <h2>Configuração Dispositivo</h2>
 
-    <section id="step2" class="wizard-hidden">
-      <div class="wizard-tip">
-        <strong>DICA</strong><br />
-        Quanto mais informações completar, melhor ficará para poder gerenciar seu cliente depois.<br />
-        Você poderá editar posteriormente estes dados.
-      </div>
+  <label>Layout da launcher</label>
+  <select id="layoutSelect">
+    <option>Carregando...</option>
+  </select>
 
-      <div class="wizard-card">
-        <div class="wizard-center-text">
-          Informe abaixo os dados do cliente que irá usar a launcher.<br />
-          <span style="color:#b5c3d8;">ATENÇÃO: apenas o nome é obrigatório, os demais dados são opcionais.</span><br />
-          <span style="color:#b5c3d8;">No entanto recomendamos que os preencher para poder gerenciar a conta de seu cliente futuramente.</span>
-        </div>
-      </div>
+  <label>Permitir acesso data/hora?</label>
+  <select id="allowDate">
+    <option value="NÃO">NÃO</option>
+    <option value="SIM">SIM</option>
+  </select>
 
-      <div class="wizard-form-wrap">
-        <div class="wizard-field">
-          <label class="wizard-label">Nome do cliente</label>
-          <input id="clientName" class="wizard-input" type="text" />
-        </div>
+  <button onclick="proximo3()">Prosseguir >>></button>
+</div>
 
-        <div class="wizard-field">
-          <label class="wizard-label">Telefone Whatsapp</label>
-          <input id="clientPhone" class="wizard-input" type="text" />
-        </div>
+<!-- ETAPA 4 -->
+<div id="step4" style="display:none;">
+  <h2>Conclusão</h2>
 
-        <div class="wizard-field">
-          <label class="wizard-label">Observações <span style="font-size:12px;color:#8ea0bb;">(80 caracteres restantes)</span></label>
-          <textarea id="clientObs" class="wizard-textarea" placeholder="Observações sobre o cliente (máx. 80 caracteres)"></textarea>
-        </div>
+  <button onclick="salvar()">ATIVAR DISPOSITIVO</button>
+</div>
 
-        <div class="wizard-field">
-          <label class="wizard-label">Plano</label>
-          <select id="clientPlan" class="wizard-select">
-            <option>PLANO(com desconto) R$45.00 mensal</option>
-            <option>PLANO normal R$50.00 mensal</option>
-            <option>Teste grátis</option>
-          </select>
-        </div>
+</div>
 
-        <div class="wizard-field">
-          <label class="wizard-label">Data vencimento deste cliente</label>
-          <input id="clientExpireDate" class="wizard-input" type="date" />
-        </div>
+<script>
 
-        <div class="wizard-field">
-          <label class="wizard-label">Bloquear aplicativos após vencer?</label>
-          <select id="clientBlockOnExpire" class="wizard-select">
-            <option>NÃO</option>
-            <option>SIM</option>
-          </select>
+const API = window.location.origin;
 
-          <div class="wizard-help">
-            Ao habilitar esta opção, TODOS aplicativos da tela inicial da launcher serão bloqueados após vencer a validade.<br />
-            Irá então aparecer uma mensagem com o plano do cliente e preço (caso você tenha configurado um plano), seu whatsapp e seu pix para que ele possa pagar.<br />
-            Para aparecer todos estes dados citados, favor deixar tudo configurado!<br /><br />
-            ATENÇÃO: Ao habilitar esta função até mesmo os aplicativos gratuitos como por exemplo YOUTUBE serão bloqueados se estiverem na tela inicial da launcher.
-          </div>
-        </div>
+let deviceId = null;
 
-        <div class="wizard-field">
-          <label class="wizard-label">Ativar bloqueio caso a data e hora estiverem erradas?</label>
-          <select id="clientForceBlock" class="wizard-select">
-            <option>SIM</option>
-            <option>NÃO</option>
-          </select>
+// ================= STEP 1
+async function proximo1() {
+  const code = document.getElementById('code').value;
 
-          <div class="wizard-help">
-            Ao habilitar esta opção, o sistema irá bloquear os aplicativos após vencer usando os dados de nosso servidor bem como a data e hora do aparelho.<br />
-            ATENÇÃO: Na maioria dos aparelhos o ideal é deixar esta opção ativa.
-          </div>
-        </div>
-      </div>
+  if (!code) {
+    alert('Digite o código');
+    return;
+  }
 
-      <button class="wizard-primary-btn" id="step2NextBtn">Prosseguir</button>
-    </section>
+  const res = await fetch(API + '/launcher/device/' + code);
+  const data = await res.json();
 
-    <section id="step3" class="wizard-hidden">
-      <div class="wizard-card">
-        <div class="step3-title">
-          Escolha um layout para a launcher e se deseja ou não bloquear o wifi.
-        </div>
-      </div>
+  deviceId = data.device.id;
 
-      <div class="wizard-form-wrap">
-        <div class="wizard-field">
-          <label class="wizard-label">Layout da launcher</label>
-          <select id="deviceLayoutId" class="wizard-select"></select>
-        </div>
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step2').style.display = 'block';
+}
 
-        <div class="wizard-field">
-          <label class="wizard-label">Bloquear o botão Wifi com senha?</label>
-          <select id="deviceWifiLocked" class="wizard-select">
-            <option>NÃO</option>
-            <option>SIM</option>
-          </select>
-        </div>
+// ================= STEP 2
+function proximo2() {
+  document.getElementById('step2').style.display = 'none';
+  document.getElementById('step3').style.display = 'block';
 
-        <div class="wizard-field">
-          <label class="wizard-label">Ativar botão do Bluetooth?</label>
-          <select id="deviceBluetoothEnabled" class="wizard-select">
-            <option>SIM</option>
-            <option>NÃO</option>
-          </select>
-        </div>
+  carregarLayouts();
+}
 
-        <div class="wizard-field">
-          <label class="wizard-label">Bloquear o botão Bluetooth com senha?</label>
-          <select id="deviceBluetoothLocked" class="wizard-select">
-            <option>NÃO</option>
-            <option>SIM</option>
-          </select>
-        </div>
+// ================= CARREGAR LAYOUTS
+async function carregarLayouts() {
+  try {
+    const res = await fetch(API + '/layouts');
+    const data = await res.json();
 
-        <div class="wizard-field">
-          <label class="wizard-label">Permitir acesso as configurações de data e hora?</label>
-          <select id="deviceAllowDateTime" class="wizard-select">
-            <option>NÃO</option>
-            <option>SIM</option>
-          </select>
+    const select = document.getElementById('layoutSelect');
 
-          <div class="wizard-help">
-            Se deixar marcado NÃO, o relógio exibido na tela inicial da launcher não terá a opção de clicar para abrir as configurações de data e hora.<br /><br />
-            Esta configuração é semelhante a de wifi acima.<br /><br />
-            Você poderá editar isto posteriormente, na dúvida deixe em NÃO e faça um teste.<br /><br />
-            ATENÇÃO: esta função só irá funcionar para quem está com a launcher atualizada na versão 1.2 ou posterior!
-          </div>
-        </div>
-      </div>
-
-      <button class="wizard-primary-btn" id="step3NextBtn">Prosseguir &gt;&gt;&gt;</button>
-    </section>
-
-    <section id="step4" class="wizard-hidden">
-      <div class="summary-alert">
-        <strong>ATENÇÃO</strong>
-        Como se trata de uma nova ativação, será adicionado como TESTE de 24 HORAS<br />
-        Neste período instale a launcher, os aplicativos, e faça um teste em TODOS.<br />
-        Verifique também se a launcher está inicializando ao ligar o dispositivo, bem como se o desempenho esta ok.<br />
-        Estando tudo certo basta adicionar um crédito para este cliente.<br />
-        Se encontrar algum erro no funcionamento NÃO ATIVE este dispositivo.
-      </div>
-
-      <div class="summary-box" id="summaryBox"></div>
-
-      <div class="summary-warning">
-        ATENÇÃO! Tenha certeza de que estão corretas as informações!
-      </div>
-
-      <div class="summary-question">
-        Os dados acima estão corretos ?
-      </div>
-
-      <button class="wizard-green-btn" id="step4ConfirmBtn">SIM</button>
-      <button class="wizard-danger-btn" id="step4BackBtn">NÃO</button>
-    </section>
-  </main>
-
-  <nav class="bottom-nav-home">
-    <a class="bottom-home-item" href="dashboard.html" aria-label="Início">
-      <span class="bottom-home-icon">⌂</span>
-    </a>
-
-    <a class="bottom-home-item" href="https://wa.me/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-      <span class="bottom-home-icon">◔</span>
-    </a>
-
-    <a class="bottom-home-item active" href="devices.html" aria-label="Clientes">
-      <span class="bottom-home-icon">▭</span>
-    </a>
-
-    <a class="bottom-home-item" href="launcher.html" aria-label="Launcher">
-      <span class="bottom-home-icon">▦</span>
-    </a>
-
-    <a class="bottom-home-item" href="#top" aria-label="Subir">
-      <span class="bottom-home-icon">↑</span>
-    </a>
-  </nav>
-
-  <script src="js/app.js"></script>
-  <script>
-    let matchedDevice = null;
-    let currentStep = 1;
-    let loadedLayouts = [];
-
-    function showError(message) {
-      const box = document.getElementById('wizardError');
-      box.innerHTML = `<strong>ERRO</strong><br>${message}`;
-      box.classList.add('show');
-      document.getElementById('wizardSuccess').classList.remove('show');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!data.length) {
+      select.innerHTML = '<option>Nenhum layout encontrado</option>';
+      return;
     }
 
-    function showSuccess(message) {
-      const box = document.getElementById('wizardSuccess');
-      box.innerHTML = `<strong>SUCESSO</strong><br>${message}`;
-      box.classList.add('show');
-      document.getElementById('wizardError').classList.remove('show');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    select.innerHTML = `
+      <option value="">Selecione um layout</option>
+      ${data.map(l => `<option value="${l.id}">${l.name}</option>`).join('')}
+    `;
 
-    function hideMessages() {
-      document.getElementById('wizardError').classList.remove('show');
-      document.getElementById('wizardSuccess').classList.remove('show');
-    }
+  } catch (e) {
+    console.log(e);
+    document.getElementById('layoutSelect').innerHTML = '<option>Erro</option>';
+  }
+}
 
-    function setLoading(buttonId, loading, textLoading, textNormal) {
-      const btn = document.getElementById(buttonId);
-      if (!btn) return;
+// ================= STEP 3
+function proximo3() {
+  const layout = document.getElementById('layoutSelect').value;
 
-      if (loading) {
-        btn.textContent = textLoading;
-        btn.classList.add('wizard-loading');
-        btn.disabled = true;
-      } else {
-        btn.textContent = textNormal;
-        btn.classList.remove('wizard-loading');
-        btn.disabled = false;
-      }
-    }
+  if (!layout) {
+    alert('Escolha um layout');
+    return;
+  }
 
-    function setStep(stepNumber) {
-      currentStep = stepNumber;
+  document.getElementById('step3').style.display = 'none';
+  document.getElementById('step4').style.display = 'block';
+}
 
-      ['step1', 'step2', 'step3', 'step4'].forEach((id, index) => {
-        document.getElementById(id).classList.toggle('wizard-hidden', index + 1 !== stepNumber);
-      });
+// ================= SALVAR
+async function salvar() {
 
-      for (let i = 1; i <= 4; i++) {
-        const head = document.getElementById(`stepHead${i}`);
-        head.classList.remove('active', 'done');
-        if (i === stepNumber) {
-          head.classList.add('active');
-        } else if (i < stepNumber) {
-          head.classList.add('done');
-        }
-      }
+  const body = {
+    name: document.getElementById('name').value,
+    phone: document.getElementById('phone').value,
+    planName: document.getElementById('planName').value,
+    expiresAt: document.getElementById('expiresAt').value,
+    layoutId: document.getElementById('layoutSelect').value
+  };
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  const res = await fetch(API + '/devices/' + deviceId + '/complete-activation', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(body)
+  });
 
-    function goBackWizard() {
-      if (currentStep === 1) {
-        window.location.href = 'devices.html';
-        return;
-      }
-      if (currentStep === 2) {
-        setStep(1);
-        return;
-      }
-      if (currentStep === 3) {
-        setStep(2);
-        return;
-      }
-      if (currentStep === 4) {
-        setStep(3);
-      }
-    }
+  const data = await res.json();
 
-    async function validateCode(code) {
-      const normalized = (code || '').trim().toUpperCase();
-      const res = await fetch(`${window.location.origin}/launcher/device/${encodeURIComponent(normalized)}?checkOnly=1`);
-      const data = await res.json().catch(() => ({}));
+  if (!data.ok) {
+    alert('Erro ao ativar');
+    return;
+  }
 
-      if (res.status === 404) {
-        return { status: 'not_found', device: null };
-      }
+  alert('Dispositivo ativado!');
+  window.location.href = 'devices.html';
+}
 
-      if (!res.ok || !data || !data.ok || !data.device) {
-        throw new Error(data.message || 'Erro ao verificar o dispositivo');
-      }
+</script>
 
-      if (data.device.active) {
-        return { status: 'active', device: data.device };
-      }
-
-      return { status: 'pending', device: data.device };
-    }
-
-    async function loadLayouts() {
-      const res = await fetch(`${window.location.origin}/layouts`);
-      const data = await res.json();
-
-      if (!res.ok || !Array.isArray(data)) {
-        throw new Error('Erro ao carregar layouts');
-      }
-
-      loadedLayouts = data;
-      const select = document.getElementById('deviceLayoutId');
-      select.innerHTML = '';
-
-      if (!data.length) {
-        const option = document.createElement('option');
-        option.value = '';
-        option.textContent = 'Nenhum layout cadastrado';
-        select.appendChild(option);
-        return;
-      }
-
-      data.forEach(layout => {
-        const option = document.createElement('option');
-        option.value = layout.id;
-        option.textContent = layout.name || 'Layout sem nome';
-        select.appendChild(option);
-      });
-    }
-
-    function getLayoutNameById(id) {
-      const found = loadedLayouts.find(item => item.id === id);
-      return found ? found.name : '-';
-    }
-
-    function buildSummary() {
-      const code = matchedDevice?.code || '-';
-      const name = (document.getElementById('clientName').value || '').trim() || '-';
-      const plan = (document.getElementById('clientPlan').value || '').trim() || '-';
-      const expires = (document.getElementById('clientExpireDate').value || '').trim() || '-';
-      const blockOnExpire = document.getElementById('clientBlockOnExpire').value;
-      const forceBlock = document.getElementById('clientForceBlock').value;
-      const layoutId = document.getElementById('deviceLayoutId').value;
-      const layoutName = getLayoutNameById(layoutId);
-      const wifiLocked = document.getElementById('deviceWifiLocked').value;
-      const bluetoothEnabled = document.getElementById('deviceBluetoothEnabled').value;
-      const bluetoothLocked = document.getElementById('deviceBluetoothLocked').value;
-      const allowDateTime = document.getElementById('deviceAllowDateTime').value;
-
-      document.getElementById('summaryBox').innerHTML = `
-        Código do dispositivo: ${code}<br />
-        Nome do cliente: ${name}<br />
-        Plano: ${plan}<br />
-        Validade: ${expires ? `${expires} - 23:59:59` : '-'}<br />
-        Bloquear aplicativos após vencer? ${blockOnExpire}<br />
-        Ativar bloqueio caso data e hora estiverem erradas? ${forceBlock}<br />
-        Layout da launcher: ${layoutName}<br />
-        Bloquear o botão Wifi com senha? ${wifiLocked}<br />
-        Ativar botão do Bluetooth? ${bluetoothEnabled}<br />
-        Bloquear o botão Bluetooth com senha? ${bluetoothLocked}<br />
-        Permitir acesso as configurações de data e hora? ${allowDateTime}
-      `;
-    }
-
-    async function activateDevice() {
-      const clientName = (document.getElementById('clientName').value || '').trim();
-      const clientPhone = (document.getElementById('clientPhone').value || '').trim();
-      const clientObs = (document.getElementById('clientObs').value || '').trim();
-      const clientPlan = (document.getElementById('clientPlan').value || '').trim();
-      const clientExpireDate = (document.getElementById('clientExpireDate').value || '').trim();
-      const blockOnExpire = (document.getElementById('clientBlockOnExpire').value || '').trim();
-      const forceBlockWrongTime = (document.getElementById('clientForceBlock').value || '').trim();
-      const layoutId = (document.getElementById('deviceLayoutId').value || '').trim();
-
-      if (!clientName) {
-        throw new Error('Informe o nome do cliente para prosseguir.');
-      }
-
-      if (!matchedDevice || !matchedDevice.id) {
-        throw new Error('Dispositivo não identificado corretamente.');
-      }
-
-      if (!layoutId) {
-        throw new Error('Escolha um layout para continuar.');
-      }
-
-      const body = {
-        name: clientName,
-        phone: clientPhone,
-        notes: clientObs,
-        planName: clientPlan,
-        expiresAt: clientExpireDate ? `${clientExpireDate}T23:59:59` : null,
-        blockOnExpire,
-        forceBlockWrongTime,
-        layoutId,
-        type: 'annual'
-      };
-
-      const res = await fetch(`${window.location.origin}/devices/${matchedDevice.id}/complete-activation`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-
-      const data = await res.json().catch(() => ({}));
-
-      if (!res.ok || !data.ok) {
-        throw new Error(data.message || 'Erro ao ativar dispositivo');
-      }
-
-      matchedDevice = data.device;
-      return data.device;
-    }
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      authGuard();
-      if (typeof bindThemeToggle === 'function') bindThemeToggle();
-
-      const today = new Date();
-      today.setDate(today.getDate() + 3);
-      document.getElementById('clientExpireDate').value = today.toISOString().slice(0, 10);
-
-      try {
-        await loadLayouts();
-      } catch (error) {
-        console.error(error);
-      }
-
-      document.getElementById('step1NextBtn').addEventListener('click', async () => {
-        hideMessages();
-        const code = (document.getElementById('deviceCodeInput').value || '').trim().toUpperCase();
-
-        if (!code) {
-          showError('Informe o ID do dispositivo.');
-          return;
-        }
-
-        try {
-          setLoading('step1NextBtn', true, 'Verificando...', 'Prosseguir >>>');
-          const result = await validateCode(code);
-
-          if (result.status === 'not_found') {
-            showError('Código inválido ou ainda não registrado pela launcher.');
-            return;
-          }
-
-          if (result.status === 'active') {
-            showError('Dispositivo já registrado.');
-            return;
-          }
-
-          matchedDevice = result.device;
-          setStep(2);
-        } catch (error) {
-          console.error(error);
-          showError(error.message || 'Erro ao verificar o ID do dispositivo.');
-        } finally {
-          setLoading('step1NextBtn', false, 'Verificando...', 'Prosseguir >>>');
-        }
-      });
-
-      document.getElementById('step2NextBtn').addEventListener('click', () => {
-        hideMessages();
-        const clientName = (document.getElementById('clientName').value || '').trim();
-
-        if (!clientName) {
-          showError('Informe o nome do cliente para prosseguir.');
-          return;
-        }
-
-        setStep(3);
-      });
-
-      document.getElementById('step3NextBtn').addEventListener('click', () => {
-        hideMessages();
-        const layoutId = (document.getElementById('deviceLayoutId').value || '').trim();
-
-        if (!layoutId) {
-          showError('Escolha um layout para continuar.');
-          return;
-        }
-
-        buildSummary();
-        setStep(4);
-      });
-
-      document.getElementById('step4BackBtn').addEventListener('click', () => {
-        hideMessages();
-        setStep(3);
-      });
-
-      document.getElementById('step4ConfirmBtn').addEventListener('click', async () => {
-        hideMessages();
-
-        try {
-          setLoading('step4ConfirmBtn', true, 'Ativando...', 'SIM');
-          await activateDevice();
-          showSuccess('Dispositivo ativado com sucesso.');
-
-          setTimeout(() => {
-            window.location.href = 'devices.html?e=1';
-          }, 700);
-        } catch (error) {
-          console.error(error);
-          showError(error.message || 'Erro ao ativar o dispositivo.');
-        } finally {
-          setLoading('step4ConfirmBtn', false, 'Ativando...', 'SIM');
-        }
-      });
-    });
-  </script>
 </body>
 </html>
