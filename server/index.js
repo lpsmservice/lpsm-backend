@@ -46,6 +46,10 @@ function fileUrl(req, filename) {
   return `${req.protocol}://${req.get('host')}/downloads/uploads/${filename}`;
 }
 
+function normalizeCode(code) {
+  return String(code || '').trim().toUpperCase();
+}
+
 function getDevicesSafe() {
   try {
     return db.getDevices();
@@ -62,7 +66,7 @@ function criarFundosPadrao() {
   try {
     const fundos = db.getBackgrounds();
 
-    if (fundos.length > 0) return;
+    if (Array.isArray(fundos) && fundos.length > 0) return;
 
     db.saveBackgrounds([
       {
@@ -149,8 +153,8 @@ app.delete('/apps/:id', (req, res) => {
   try {
     const apps = db.getApps();
     const filtrados = apps.filter(appItem => appItem.id !== req.params.id);
-
     db.saveApps(filtrados);
+
     res.json({ ok: true });
   } catch (e) {
     console.log(e);
@@ -175,7 +179,7 @@ app.post('/upload/apk', upload.single('file'), (req, res) => {
 });
 
 // =====================
-// FUNDOS / BACKGROUNDS
+// FUNDOS
 // =====================
 app.get('/backgrounds', (req, res) => {
   try {
@@ -275,24 +279,46 @@ app.get('/devices', (req, res) => {
 
 app.get('/launcher/device/:code', (req, res) => {
   try {
-    const code = String(req.params.code || '').trim().toUpperCase();
+    const code = normalizeCode(req.params.code);
     const devices = getDevicesSafe();
 
-    let device = devices.find(d => String(d.code || '').toUpperCase() === code);
+    let device = devices.find(d => normalizeCode(d.code) === code);
 
     if (!device) {
       device = {
         id: uid(),
         code,
         active: false,
+        registered: false,
         createdAt: new Date().toISOString()
       };
 
       devices.push(device);
       saveDevicesSafe(devices);
+
+      return res.json({
+        ok: true,
+        registered: false,
+        active: false,
+        activated: false,
+        message: 'Dispositivo não registrado',
+        device
+      });
     }
 
-    res.json({ ok: true, device });
+    const isActive = device.active === true || device.activated === true;
+
+    res.json({
+      ok: true,
+      registered: true,
+      active: isActive,
+      activated: isActive,
+      message: isActive ? 'Dispositivo ativado' : 'Dispositivo aguardando ativação',
+      device,
+      client: device.client || null,
+      layoutId: device.layoutId || '',
+      expiresAt: device.expiresAt || device.client?.expiresAt || null
+    });
   } catch (e) {
     console.log(e);
     res.status(500).json({ ok: false, message: 'Erro ao verificar dispositivo' });
@@ -310,7 +336,9 @@ app.post('/devices/:id/complete-activation', (req, res) => {
 
     devices[index] = {
       ...devices[index],
+      registered: true,
       active: true,
+      activated: true,
       name: req.body.name || devices[index].name || '',
       phone: req.body.phone || '',
       notes: req.body.notes || '',
@@ -332,7 +360,13 @@ app.post('/devices/:id/complete-activation', (req, res) => {
 
     saveDevicesSafe(devices);
 
-    res.json({ ok: true, device: devices[index] });
+    res.json({
+      ok: true,
+      registered: true,
+      active: true,
+      activated: true,
+      device: devices[index]
+    });
   } catch (e) {
     console.log(e);
     res.status(500).json({ ok: false, message: 'Erro ao ativar dispositivo' });
