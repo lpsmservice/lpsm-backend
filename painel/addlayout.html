@@ -1,811 +1,272 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LAUNCHER BOX - Adicionar layout</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-    * { box-sizing: border-box; }
+<meta charset="UTF-8">
+<title>Editar Layout</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(90deg, #02101e 0%, #052444 100%);
-      color: #fff;
-      padding-bottom: 80px;
-    }
+<style>
+body {
+  background: #0b1b2b;
+  color: #fff;
+  font-family: Arial;
+  margin: 0;
+}
 
-    .topbar {
-      height: 58px;
-      background: #2f7cff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      font-size: 18px;
-      font-weight: 700;
-    }
+.topbar {
+  background: #2d7ef7;
+  padding: 15px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+}
 
-    .back-btn {
-      position: absolute;
-      left: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      border: none;
-      background: transparent;
-      color: #fff;
-      font-size: 34px;
-      cursor: pointer;
-      line-height: 1;
-    }
+.container {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
 
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      background: #0d1f3b;
-      padding: 14px 8px 10px;
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
+h2 {
+  margin-top: 0;
+}
 
-    .step {
-      text-align: center;
-      color: #6d7f98;
-      font-size: 12px;
-    }
+.input-group {
+  margin-bottom: 15px;
+}
 
-    .circle {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: #213552;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #ccc;
+}
 
-    .step.active { color: #fff; }
+input, select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  background: #1c2b3c;
+  color: #fff;
+}
 
-    .step.active .circle,
-    .step.done .circle {
-      background: #2f7cff;
-      color: #fff;
-    }
+button {
+  width: 100%;
+  padding: 15px;
+  background: #2d7ef7;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
+  font-size: 16px;
+}
 
-    .page-section { display: none; }
-    .page-section.show { display: block; }
+.steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
 
-    .center-title {
-      text-align: center;
-      margin: 22px 10px;
-      font-size: 17px;
-      font-weight: 700;
-    }
+.step {
+  flex: 1;
+  text-align: center;
+  opacity: 0.4;
+}
 
-    .form-area {
-      padding: 0 18px 20px;
-    }
+.step.active {
+  opacity: 1;
+  font-weight: bold;
+}
 
-    label {
-      display: block;
-      margin: 14px 0 8px;
-      color: #aebed4;
-      font-size: 15px;
-    }
-
-    input, select {
-      width: 100%;
-      height: 50px;
-      border: none;
-      border-radius: 6px;
-      background: #1c2e49;
-      color: #fff;
-      padding: 0 14px;
-      font-size: 16px;
-      outline: none;
-    }
-
-    .help {
-      color: #b7c8de;
-      font-size: 14px;
-      line-height: 1.6;
-      margin: 6px 0 12px;
-    }
-
-    .tip {
-      background: #5f2bd2;
-      color: #fff;
-      margin: 16px 18px;
-      padding: 14px 18px;
-      border-radius: 6px;
-      line-height: 1.7;
-      font-size: 15px;
-    }
-
-    .tip strong {
-      display: block;
-      font-size: 17px;
-      margin-bottom: 4px;
-    }
-
-    .upload-title {
-      padding: 0 18px;
-      color: #9fb1cb;
-      font-size: 15px;
-      margin-top: 26px;
-      margin-bottom: 12px;
-    }
-
-    .upload-box {
-      margin: 0 18px 20px;
-      min-height: 250px;
-      border: 1px solid rgba(255,255,255,.06);
-      border-radius: 6px;
-      background: rgba(13,35,71,.96);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .upload-box img {
-      width: 100%;
-      max-height: 260px;
-      object-fit: contain;
-      display: block;
-    }
-
-    .upload-icon {
-      font-size: 55px;
-      color: #6f88a8;
-      margin-bottom: 8px;
-    }
-
-    .upload-text {
-      color: #8fa5c3;
-      font-size: 16px;
-    }
-
-    .hidden-file { display: none; }
-
-    .background-header {
-      background: rgba(13,35,71,.95);
-      padding: 20px 18px;
-      margin-top: 16px;
-    }
-
-    .background-header h2 {
-      margin: 0 0 8px;
-      font-size: 26px;
-    }
-
-    .background-header p {
-      margin: 0;
-      color: #b7c8de;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-
-    .top-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      padding: 18px;
-      gap: 80px;
-    }
-
-    .mini-btn {
-      justify-self: center;
-      width: 86px;
-      height: 42px;
-      border: none;
-      border-radius: 8px;
-      background: #7f8aa4;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .background-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      padding: 0 18px 20px;
-    }
-
-    .bg-card {
-      background: rgba(13,35,71,.96);
-      border-radius: 8px;
-      overflow: hidden;
-      border: 2px solid transparent;
-    }
-
-    .bg-card.selected {
-      border-color: #39c65a;
-    }
-
-    .bg-card img {
-      width: 100%;
-      height: 145px;
-      object-fit: cover;
-      display: block;
-      background: #10284a;
-    }
-
-    .bg-name {
-      text-align: center;
-      padding: 16px 8px;
-      font-size: 16px;
-    }
-
-    .bg-btn {
-      width: calc(100% - 16px);
-      margin: 0 8px 8px;
-      height: 34px;
-      border: none;
-      border-radius: 5px;
-      background: #2f7cff;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .summary {
-      text-align: center;
-      padding: 20px 18px;
-      line-height: 1.9;
-    }
-
-    .summary img {
-      max-width: 640px;
-      width: 80%;
-      max-height: 360px;
-      object-fit: contain;
-      border-radius: 6px;
-      margin: 12px auto;
-      display: block;
-      background: #0d1f3b;
-    }
-
-    .btn-primary,
-    .btn-success,
-    .btn-danger {
-      width: calc(100% - 36px);
-      margin: 16px 18px 0;
-      height: 52px;
-      border: none;
-      border-radius: 6px;
-      color: #fff;
-      font-size: 19px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .btn-primary { background: #2f7cff; }
-    .btn-success { background: #39c65a; }
-    .btn-danger { background: #f44336; }
-
-    .bottom-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 60px;
-      background: #0a1d39;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      border-top: 1px solid rgba(255,255,255,.08);
-      z-index: 80;
-    }
-
-    .bottom-nav a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 28px;
-    }
-
-    @media (max-width: 900px) {
-      .background-grid { grid-template-columns: repeat(2, 1fr); }
-      .top-actions { gap: 18px; }
-    }
-
-    @media (max-width: 560px) {
-      .background-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+</style>
 </head>
 
 <body>
-  <div class="topbar">
-    <button class="back-btn" onclick="goBack()">‹</button>
-    Adicionar layout
+
+<div class="topbar">Editar layout</div>
+
+<div class="container">
+
+<div class="steps">
+  <div class="step active">1 - Dados</div>
+  <div class="step">2 - Logomarca</div>
+  <div class="step">3 - Plano de fundo</div>
+  <div class="step">✔ Conclusão</div>
+</div>
+
+<!-- STEP 1 -->
+<div id="step1">
+
+  <div class="input-group">
+    <label>Nome do layout</label>
+    <input id="name">
   </div>
 
-  <div class="steps">
-    <div class="step active" id="stepMark1">
-      <div class="circle">1</div>
-      <div>Dados</div>
-    </div>
-    <div class="step" id="stepMark2">
-      <div class="circle">2</div>
-      <div>Logomarca</div>
-    </div>
-    <div class="step" id="stepMark3">
-      <div class="circle">3</div>
-      <div>Plano de fundo</div>
-    </div>
-    <div class="step" id="stepMark4">
-      <div class="circle">✓</div>
-      <div>Conclusão</div>
-    </div>
+  <div class="input-group">
+    <label>Localização do logo</label>
+    <select id="logoPosition">
+      <option>ESQUERDA</option>
+      <option>DIREITA</option>
+      <option>CENTRO</option>
+    </select>
   </div>
 
-  <section id="section1" class="page-section show">
-    <div class="center-title">Configure os dados iniciais do layout.</div>
-
-    <div class="form-area">
-      <label>Nome do layout</label>
-      <input id="layoutName" type="text">
-
-      <label>Localização do logo</label>
-      <select id="logoPosition">
-        <option value="left">ESQUERDA</option>
-        <option value="center">CENTRO</option>
-        <option value="right">DIREITA</option>
-      </select>
-
-      <label>Botões bloqueados</label>
-      <select id="buttonsLocked">
-        <option value="nao">NÃO</option>
-        <option value="sim">SIM</option>
-      </select>
-      <div class="help">
-        Use esta opção apenas se desejar bloquear os botões de acesso a configurações e aplicativos.<br>
-        Esta opção é ideal para quem deseja trabalhar com LOCAÇÃO de aparelhos.
-      </div>
-
-      <label>Senha para desbloquear</label>
-      <input id="unlockPassword" type="text">
-      <div class="help">
-        Mínimo 5 caracteres<br>
-        Só informe uma senha caso deixou configurado os botões bloqueados como SIM.
-      </div>
-
-      <label>Exibir APPS</label>
-      <select id="showAppsButton">
-        <option value="sim">SIM</option>
-        <option value="nao">NÃO</option>
-      </select>
-      <div class="help">
-        Caso NÃO queira exibir o guia APPS, no qual o cliente clica e aparece todos aplicativos instalados.
-      </div>
-
-      <label>Tamanho dos ícones</label>
-      <select id="iconSize">
-        <option value="default">PADRÃO</option>
-        <option value="small">PEQUENO</option>
-        <option value="large">GRANDE</option>
-      </select>
-      <div class="help">Altera o tamanho dos ícones de configurações, wifi, perfil e notificações.</div>
-
-      <label>Tamanho da data e hora</label>
-      <select id="clockSize">
-        <option value="default">PADRÃO</option>
-        <option value="small">PEQUENO</option>
-        <option value="large">GRANDE</option>
-      </select>
-      <div class="help">
-        Altera o tamanho da data e hora. CUIDADO! Tamanhos grandes demais poderão sobrepor os ícones ou logomarca!
-      </div>
-
-      <label>Tamanho data de expiração</label>
-      <select id="expireSize">
-        <option value="default">PADRÃO</option>
-        <option value="small">PEQUENO</option>
-        <option value="large">GRANDE</option>
-      </select>
-      <div class="help">
-        Altera o tamanho do texto exibido para a data de expiração/validade do layout no aparelho.
-      </div>
-
-      <label>Posição dos banners</label>
-      <select id="bannerPosition">
-        <option value="left">ESQUERDA</option>
-        <option value="center">CENTRO</option>
-        <option value="right">DIREITA</option>
-      </select>
-
-      <label>Posição da data e hora</label>
-      <select id="datePosition">
-        <option value="left">ESQUERDA</option>
-        <option value="center">CENTRO</option>
-        <option value="right">DIREITA</option>
-      </select>
-      <div class="help">
-        ATENÇÃO: ao escolher esquerda, sua logomarca automaticamente irá ficar centralizada, mesmo que você tenha definido a posição da logo como esquerda também.
-      </div>
-
-      <label>Tempo de troca dos banners</label>
-      <select id="bannerInterval">
-        <option value="5">5 segundos</option>
-        <option value="10">10 segundos</option>
-        <option value="15">15 segundos</option>
-        <option value="20">20 segundos</option>
-      </select>
-      <div class="help">DICA: o tempo que recomendamos deixar por padrão seria 10 segundos.</div>
-
-      <label>Ativar update automático?</label>
-      <select id="autoUpdate">
-        <option value="nao">NÃO</option>
-        <option value="sim">SIM</option>
-      </select>
-      <div class="help">
-        ATENÇÃO: só ative o update automático da launcher, se durante a instalação da mesma você remover ou desativar todas outras launchers do aparelho!
-      </div>
-    </div>
-
-    <button class="btn-primary" onclick="goStep(2)">Prosseguir &gt;&gt;&gt;</button>
-  </section>
-
-  <section id="section2" class="page-section">
-    <div class="tip">
-      <strong>DICA</strong>
-      Caso queira deixar a launcher sem logomarca, ou não queira trocar a logo atual, basta clicar em prosseguir e não adicionar nenhuma imagem.<br><br>
-      Você poderá editar posteriormente este layout e adicionar e/ou trocar bem como excluir a logomarca quando quiser.
-    </div>
-
-    <div class="upload-title">Escolher e/ou alterar Logomarca</div>
-
-    <label class="upload-box" for="logoFile" id="logoBox">
-      <div>
-        <div class="upload-icon">☁</div>
-        <div class="upload-text">Clique para escolher</div>
-      </div>
-    </label>
-
-    <input id="logoFile" class="hidden-file" type="file" accept="image/*">
-
-    <button class="btn-primary" onclick="goStep(3)">Prosseguir &gt;&gt;&gt;</button>
-  </section>
-
-  <section id="section3" class="page-section">
-    <div class="background-header">
-      <h2>Escolha o plano de fundo que deseja</h2>
-      <p>Você pode escolher um plano de fundo pré configurado, ou algum que você adicionou na opção meus planos de fundo.</p>
-    </div>
-
-    <div class="top-actions">
-      <button class="mini-btn" onclick="showSort()">EXIBIR</button>
-      <button class="mini-btn" onclick="buscarFundo()">BUSCAR</button>
-    </div>
-
-    <div id="backgroundList" class="background-grid"></div>
-
-    <button class="btn-primary" onclick="goStep(4)">Prosseguir &gt;&gt;&gt;</button>
-  </section>
-
-  <section id="section4" class="page-section">
-    <div class="summary">
-      <p><strong>Nome do layout:</strong> <span id="sumName"></span></p>
-      <p id="sumLogoText">SEM logomarca por enquanto</p>
-      <p>Plano de fundo</p>
-      <img id="sumBackground" style="display:none;">
-      <p><strong>Localização da logomarca:</strong> <span id="sumLogoPosition"></span></p>
-      <p><strong>Botões bloqueados:</strong> <span id="sumButtonsLocked"></span></p>
-      <p><strong>Senha:</strong> <span id="sumPassword"></span></p>
-      <p><strong>Exibir APPS:</strong> <span id="sumShowApps"></span></p>
-      <p><strong>Tamanho dos ícones de configurações, wifi etc:</strong> <span id="sumIconSize"></span></p>
-      <p><strong>Tamanho da data e hora:</strong> <span id="sumClockSize"></span></p>
-      <p><strong>Tamanho da data de expiração:</strong> <span id="sumExpireSize"></span></p>
-      <p><strong>Posição dos banners:</strong> <span id="sumBannerPosition"></span></p>
-      <p><strong>Posição da data e hora:</strong> <span id="sumDatePosition"></span></p>
-      <p><strong>Tempo de troca dos banners:</strong> <span id="sumBannerInterval"></span> segundos</p>
-      <p><strong>Update automático da launcher ativado?</strong> <span id="sumAutoUpdate"></span></p>
-
-      <br>
-      <p><strong>ATENÇÃO! Tenha certeza de que estão corretas as informações!</strong></p>
-      <p style="color:#9fb1cb;">Os dados acima estão corretos?</p>
-    </div>
-
-    <button class="btn-success" onclick="saveLayout()">SIM</button>
-    <button class="btn-danger" onclick="goStep(1)">NÃO</button>
-  </section>
-
-  <nav class="bottom-nav">
-    <a href="dashboard.html">⌂</a>
-    <a href="https://wa.me/" target="_blank">◔</a>
-    <a href="devices.html">▭</a>
-    <a href="launcher.html">▦</a>
-    <a href="#top">↑</a>
-  </nav>
-
-  <script>
-    const API = window.location.origin;
-
-    let selectedLogoDataUrl = '';
-    let selectedBackground = null;
-    let backgroundsCache = [];
-    let currentStep = 1;
-
-    function goBack() {
-      if (currentStep === 1) {
-        window.location.href = 'layouts.html';
-      } else {
-        goStep(currentStep - 1);
-      }
-    }
-
-    function boolValue(value) {
-      return value === 'sim';
-    }
-
-    function textYesNo(value) {
-      return value === 'sim' || value === true ? 'SIM' : 'NÃO';
-    }
-
-    function posText(value) {
-      if (value === 'left') return 'À esquerda';
-      if (value === 'center') return 'Centro';
-      if (value === 'right') return 'À direita';
-      return value;
-    }
-
-    function sizeText(value) {
-      if (value === 'default') return 'PADRÃO';
-      if (value === 'small') return 'PEQUENO';
-      if (value === 'large') return 'GRANDE';
-      return value;
-    }
-
-    function getForm() {
-      return {
-        name: document.getElementById('layoutName').value.trim(),
-        logoPosition: document.getElementById('logoPosition').value,
-        buttonsLocked: document.getElementById('buttonsLocked').value,
-        unlockPassword: document.getElementById('unlockPassword').value.trim(),
-        showAppsButton: document.getElementById('showAppsButton').value,
-        iconSize: document.getElementById('iconSize').value,
-        clockSize: document.getElementById('clockSize').value,
-        expireSize: document.getElementById('expireSize').value,
-        bannerPosition: document.getElementById('bannerPosition').value,
-        datePosition: document.getElementById('datePosition').value,
-        bannerInterval: document.getElementById('bannerInterval').value,
-        autoUpdate: document.getElementById('autoUpdate').value
-      };
-    }
-
-    function goStep(step) {
-      const form = getForm();
-
-      if (step > 1) {
-        if (!form.name) {
-          alert('Informe o nome do layout');
-          return;
-        }
-
-        if (form.buttonsLocked === 'sim' && form.unlockPassword.length < 5) {
-          alert('Informe uma senha com mínimo 5 caracteres');
-          return;
-        }
-      }
-
-      if (step === 3) {
-        loadBackgrounds();
-      }
-
-      if (step === 4) {
-        if (!selectedBackground) {
-          alert('Escolha um plano de fundo primeiro');
-          goStep(3);
-          return;
-        }
-        fillSummary();
-      }
-
-      currentStep = step;
-
-      document.querySelectorAll('.page-section').forEach(s => s.classList.remove('show'));
-      document.getElementById('section' + step).classList.add('show');
-
-      for (let i = 1; i <= 4; i++) {
-        const mark = document.getElementById('stepMark' + i);
-        mark.classList.remove('active', 'done');
-
-        if (i < step) mark.classList.add('done');
-        if (i === step) mark.classList.add('active');
-      }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function fillSummary() {
-      const form = getForm();
-
-      document.getElementById('sumName').textContent = form.name;
-      document.getElementById('sumLogoText').textContent = selectedLogoDataUrl ? 'COM logomarca escolhida' : 'SEM logomarca por enquanto';
-
-      const bgImg = document.getElementById('sumBackground');
-      const bgUrl = selectedBackground ? (selectedBackground.imagem || selectedBackground.image || selectedBackground.url || '') : '';
-
-      if (bgUrl) {
-        bgImg.src = bgUrl;
-        bgImg.style.display = 'block';
-      } else {
-        bgImg.style.display = 'none';
-      }
-
-      document.getElementById('sumLogoPosition').textContent = posText(form.logoPosition);
-      document.getElementById('sumButtonsLocked').textContent = textYesNo(form.buttonsLocked);
-      document.getElementById('sumPassword').textContent = form.unlockPassword ? form.unlockPassword : 'SEM senha de desbloqueio';
-      document.getElementById('sumShowApps').textContent = textYesNo(form.showAppsButton);
-      document.getElementById('sumIconSize').textContent = sizeText(form.iconSize);
-      document.getElementById('sumClockSize').textContent = sizeText(form.clockSize);
-      document.getElementById('sumExpireSize').textContent = sizeText(form.expireSize);
-      document.getElementById('sumBannerPosition').textContent = posText(form.bannerPosition);
-      document.getElementById('sumDatePosition').textContent = posText(form.datePosition);
-      document.getElementById('sumBannerInterval').textContent = form.bannerInterval;
-      document.getElementById('sumAutoUpdate').textContent = textYesNo(form.autoUpdate);
-    }
-
-    async function loadBackgrounds() {
-      const el = document.getElementById('backgroundList');
-      el.innerHTML = '<div style="padding:18px;">Carregando planos de fundo...</div>';
-
-      try {
-        const res = await fetch(API + '/backgrounds');
-        const data = await res.json();
-
-        backgroundsCache = Array.isArray(data) ? data : [];
-
-        if (!backgroundsCache.length) {
-          el.innerHTML = '<div style="padding:18px;">Nenhum plano de fundo cadastrado.</div>';
-          return;
-        }
-
-        renderBackgrounds(backgroundsCache);
-      } catch (err) {
-        console.error(err);
-        el.innerHTML = '<div style="padding:18px;">Erro ao carregar planos de fundo.</div>';
-      }
-    }
-
-    function renderBackgrounds(list) {
-      const el = document.getElementById('backgroundList');
-
-      el.innerHTML = list.map((item, index) => {
-        const img = item.imagem || item.image || item.url || '';
-        const name = item.nome || item.name || 'Plano de fundo';
-
-        return `
-          <div class="bg-card" id="bgCard${index}">
-            <img src="${img}" alt="${name}">
-            <div class="bg-name">${name}</div>
-            <button class="bg-btn" onclick="selectBackground(${index})">Escolher</button>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function selectBackground(index) {
-      selectedBackground = backgroundsCache[index];
-
-      document.querySelectorAll('.bg-card').forEach(card => {
-        card.classList.remove('selected');
-      });
-
-      const card = document.getElementById('bgCard' + index);
-      if (card) card.classList.add('selected');
-    }
-
-    function buscarFundo() {
-      const termo = prompt('Digite o nome do plano de fundo:');
-
-      if (!termo) {
-        renderBackgrounds(backgroundsCache);
-        return;
-      }
-
-      const search = termo.toLowerCase();
-
-      const filtered = backgroundsCache.filter(item => {
-        const name = String(item.nome || item.name || '').toLowerCase();
-        return name.includes(search);
-      });
-
-      renderBackgrounds(filtered);
-    }
-
-    function showSort() {
-      const escolha = prompt('Modo de exibição:\\n1 - Mais novos\\n2 - Mais antigos\\n3 - Ordem Alfabética');
-
-      let list = [...backgroundsCache];
-
-      if (escolha === '1') {
-        list.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-      } else if (escolha === '2') {
-        list.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
-      } else if (escolha === '3') {
-        list.sort((a, b) => String(a.nome || a.name || '').localeCompare(String(b.nome || b.name || '')));
-      }
-
-      renderBackgrounds(list);
-    }
-
-    document.getElementById('logoFile').addEventListener('change', function () {
-      const file = this.files[0];
-      if (!file) return;
-
-      if (!file.type.startsWith('image/')) {
-        alert('Escolha uma imagem válida');
-        this.value = '';
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        selectedLogoDataUrl = e.target.result;
-
-        document.getElementById('logoBox').innerHTML = `
-          <img src="${selectedLogoDataUrl}" alt="Logomarca">
-        `;
-      };
-
-      reader.readAsDataURL(file);
-    });
-
-    async function saveLayout() {
-      const form = getForm();
-
-      const bgUrl = selectedBackground ? (selectedBackground.imagem || selectedBackground.image || selectedBackground.url || '') : '';
-
-      const payload = {
-        name: form.name,
-        background: bgUrl,
-        backgroundId: selectedBackground ? (selectedBackground.id || '') : '',
-        logo: selectedLogoDataUrl || '',
-        logoPosition: form.logoPosition,
-        buttonsLocked: boolValue(form.buttonsLocked),
-        unlockPassword: form.unlockPassword,
-        showAppsButton: boolValue(form.showAppsButton),
-        iconSize: form.iconSize,
-        clockSize: form.clockSize,
-        expireSize: form.expireSize,
-        bannerPosition: form.bannerPosition,
-        datePosition: form.datePosition,
-        bannerInterval: Number(form.bannerInterval || 5),
-        autoUpdate: boolValue(form.autoUpdate),
-        banners: [],
-        apps: [],
-        links: []
-      };
-
-      try {
-        const res = await fetch(API + '/layouts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        const data = await res.json().catch(() => ({}));
-
-        if (!res.ok || data.ok === false) {
-          alert(data.message || 'Erro ao salvar layout');
-          return;
-        }
-
-        window.location.href = 'layouts.html?e=2';
-      } catch (err) {
-        console.error(err);
-        alert('Erro ao salvar layout');
-      }
-    }
-  </script>
+  <div class="input-group">
+    <label>Botões bloqueados</label>
+    <select id="blocked">
+      <option>NÃO</option>
+      <option>SIM</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label>Senha para desbloquear</label>
+    <input id="password">
+  </div>
+
+  <div class="input-group">
+    <label>Exibir apps</label>
+    <select id="showApps">
+      <option>SIM</option>
+      <option>NÃO</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label>Tamanho dos ícones</label>
+    <select id="iconSize">
+      <option>PADRÃO</option>
+      <option>PEQUENO</option>
+      <option>GRANDE</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label>Tamanho da data e hora</label>
+    <select id="clockSize">
+      <option>PADRÃO</option>
+      <option>PEQUENO</option>
+      <option>GRANDE</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label>Tamanho da data de expiração</label>
+    <select id="expireSize">
+      <option>PADRÃO</option>
+      <option>PEQUENO</option>
+      <option>GRANDE</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label>Posição dos banners</label>
+    <select id="bannerPosition">
+      <option>ESQUERDA</option>
+      <option>DIREITA</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label>Posição da data e hora</label>
+    <select id="clockPosition">
+      <option>ESQUERDA</option>
+      <option>DIREITA</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label>Tempo de troca dos banners</label>
+    <input id="bannerTime" value="5">
+  </div>
+
+  <div class="input-group">
+    <label>Ativar update automático?</label>
+    <select id="autoUpdate">
+      <option>NÃO</option>
+      <option>SIM</option>
+    </select>
+  </div>
+
+  <button onclick="nextStep()">Prosseguir >>></button>
+
+</div>
+
+<!-- STEP 2 -->
+<div id="step2" style="display:none;">
+  <h2>Logomarca</h2>
+
+  <div class="input-group">
+    <label>URL da logo</label>
+    <input id="logoUrl">
+  </div>
+
+  <button onclick="nextStep()">Prosseguir >>></button>
+</div>
+
+<!-- STEP 3 -->
+<div id="step3" style="display:none;">
+  <h2>Plano de fundo</h2>
+
+  <div class="input-group">
+    <label>URL do fundo</label>
+    <input id="background">
+  </div>
+
+  <button onclick="nextStep()">Prosseguir >>></button>
+</div>
+
+<!-- STEP 4 -->
+<div id="step4" style="display:none;">
+  <h2>Conclusão</h2>
+
+  <button onclick="salvar()">SALVAR LAYOUT</button>
+</div>
+
+</div>
+
+<script>
+
+const API = window.location.origin;
+let step = 1;
+
+function nextStep() {
+  document.getElementById('step' + step).style.display = 'none';
+  step++;
+  document.getElementById('step' + step).style.display = 'block';
+}
+
+async function salvar() {
+
+  const body = {
+    name: document.getElementById('name').value,
+    logoPosition: document.getElementById('logoPosition').value,
+    blocked: document.getElementById('blocked').value,
+    password: document.getElementById('password').value,
+    showApps: document.getElementById('showApps').value,
+    iconSize: document.getElementById('iconSize').value,
+    clockSize: document.getElementById('clockSize').value,
+    expireSize: document.getElementById('expireSize').value,
+    bannerPosition: document.getElementById('bannerPosition').value,
+    clockPosition: document.getElementById('clockPosition').value,
+    bannerTime: document.getElementById('bannerTime').value,
+    autoUpdate: document.getElementById('autoUpdate').value,
+    logoUrl: document.getElementById('logoUrl').value,
+    background: document.getElementById('background').value
+  };
+
+  await fetch(API + '/layouts', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(body)
+  });
+
+  alert('Layout salvo!');
+  window.location.href = 'layouts.html';
+}
+
+</script>
+
 </body>
 </html>
