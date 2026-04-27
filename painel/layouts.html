@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LAUNCHER BOX - Meus Layouts</title>
-  <link rel="stylesheet" href="css/style.css" />
+
   <style>
     * { box-sizing: border-box; }
 
@@ -32,6 +32,7 @@
       font-size: 19px;
       font-weight: 800;
       letter-spacing: .5px;
+      border-bottom: 1px solid rgba(255,255,255,.05);
     }
 
     .menu-btn,
@@ -54,7 +55,7 @@
     .bell-btn {
       right: 16px;
       font-size: 28px;
-      color: #f4c54f;
+      color: #fff;
     }
 
     .hero {
@@ -140,13 +141,8 @@
       gap: 12px;
     }
 
-    .action-wrap {
-      margin: 0 0 18px;
-      padding: 0 0;
-    }
-
-    .action-inner {
-      margin: 0 0;
+    .buttons-area {
+      margin: 0 18px;
     }
 
     .big-btn {
@@ -160,10 +156,6 @@
       font-weight: 700;
       cursor: pointer;
       margin-bottom: 14px;
-    }
-
-    .buttons-area {
-      margin: 0 18px;
     }
 
     .search-row {
@@ -211,14 +203,10 @@
       align-items: center;
       gap: 12px;
       padding: 16px 18px;
-      text-decoration: none;
       color: #fff;
       background: rgba(13,35,71,0.95);
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .layout-row:last-child {
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      cursor: pointer;
     }
 
     .layout-row:hover {
@@ -226,22 +214,105 @@
     }
 
     .layout-thumb {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       object-fit: cover;
-      border-radius: 4px;
+      border-radius: 5px;
       flex-shrink: 0;
       background: #223857;
     }
 
     .layout-name {
       flex: 1;
-      font-size: 15px;
+      font-size: 16px;
     }
 
     .layout-arrow {
-      font-size: 26px;
+      font-size: 25px;
       color: #6f83a1;
+    }
+
+    .layout-row.open .layout-arrow {
+      transform: rotate(180deg);
+    }
+
+    .layout-menu {
+      display: none;
+      background: rgba(13,35,71,0.95);
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding: 14px 0 20px;
+    }
+
+    .layout-menu.show {
+      display: block;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      min-height: 58px;
+      padding: 0 18px 0 74px;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .menu-item:hover {
+      background: rgba(18,42,78,0.98);
+    }
+
+    .menu-icon {
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .icon-gray { background: #7f8aa4; }
+    .icon-blue { background: #2f7cff; }
+    .icon-green { background: #35c85a; }
+    .icon-black { background: #000; }
+    .icon-purple { background: #6737d8; }
+    .icon-red { background: #f44336; }
+
+    .menu-text {
+      flex: 1;
+      font-size: 16px;
+    }
+
+    .menu-right {
+      color: #6f83a1;
+      font-size: 22px;
+    }
+
+    .layout-data-title {
+      padding: 18px;
+      color: #9fb1cb;
+      font-size: 15px;
+    }
+
+    .layout-data {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin: 0 18px;
+    }
+
+    .data-card {
+      min-height: 90px;
+      border: 1px solid rgba(255,255,255,.05);
+      background: rgba(13,35,71,0.75);
+      border-radius: 4px;
+      padding: 14px;
+      color: #dbe6f6;
+      font-size: 14px;
+      line-height: 1.6;
     }
 
     .empty-box {
@@ -332,18 +403,28 @@
       .credits-grid {
         grid-template-columns: 1fr;
       }
+
       .search-row {
         gap: 18px;
+      }
+
+      .layout-data {
+        grid-template-columns: 1fr;
+      }
+
+      .menu-item {
+        padding-left: 72px;
       }
     }
   </style>
 </head>
+
 <body>
   <div class="page">
     <div class="topbar">
       <button class="menu-btn">☰</button>
       LAUNCHER BOX
-      <button class="bell-btn">🔔</button>
+      <button class="bell-btn">♧</button>
     </div>
 
     <div class="hero">
@@ -353,6 +434,7 @@
 
     <div class="credits-card">
       <div class="credits-title">SEUS CRÉDITOS</div>
+
       <div class="credits-grid">
         <div class="pill">
           <div class="left-blue">›</div>
@@ -416,6 +498,7 @@
           visualizar seus layouts.
         </div>
       </div>
+
       <div class="modal-actions">
         <button onclick="ordenarLayouts('novos')">Mais novos</button>
         <button onclick="ordenarLayouts('antigos')">Mais antigos</button>
@@ -433,10 +516,10 @@
     <a href="#top">↑</a>
   </nav>
 
-  <script src="js/app.js"></script>
   <script>
     let allLayouts = [];
     let currentOrder = 'novos';
+    let openedLayoutId = null;
 
     function showStatus(message, type = 'error') {
       const box = document.getElementById('statusBox');
@@ -465,6 +548,7 @@
     function buscarLayout() {
       const termo = prompt('Digite o nome do layout para buscar:');
       if (termo === null) return;
+
       const search = termo.trim().toLowerCase();
       const filtrados = allLayouts.filter(item => String(item.name || '').toLowerCase().includes(search));
       renderLayoutsList(filtrados);
@@ -480,7 +564,7 @@
       fecharModalExibir();
     }
 
-    function renderLayouts() {
+    function getOrderedLayouts() {
       let arr = [...allLayouts];
 
       if (currentOrder === 'az') {
@@ -491,7 +575,20 @@
         arr.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
       }
 
-      renderLayoutsList(arr);
+      return arr;
+    }
+
+    function renderLayouts() {
+      renderLayoutsList(getOrderedLayouts());
+    }
+
+    function toggleLayout(id) {
+      openedLayoutId = openedLayoutId === id ? null : id;
+      renderLayouts();
+    }
+
+    function getLayoutThumb(layout) {
+      return layout.icon || layout.logo || layout.background || fallbackThumb();
     }
 
     function renderLayoutsList(layouts) {
@@ -505,33 +602,119 @@
       container.innerHTML = '';
 
       layouts.forEach(layout => {
-        const row = document.createElement('a');
-        row.className = 'layout-row';
-        row.href = `layout-editor.html?id=${encodeURIComponent(layout.id)}`;
+        const isOpen = String(openedLayoutId) === String(layout.id);
+        const wrapper = document.createElement('div');
 
-        const thumb = layout.background || layout.logo || fallbackThumb();
+        const thumb = getLayoutThumb(layout);
 
-        row.innerHTML = `
-          <img class="layout-thumb" src="${thumb}" alt="layout" onerror="this.src='${fallbackThumb()}'">
-          <div class="layout-name">${layout.name || 'Layout sem nome'}</div>
-          <div class="layout-arrow">›</div>
+        wrapper.innerHTML = `
+          <div class="layout-row ${isOpen ? 'open' : ''}" onclick="toggleLayout('${layout.id}')">
+            <img class="layout-thumb" src="${thumb}" alt="layout" onerror="this.src='${fallbackThumb()}'">
+            <div class="layout-name">${layout.name || 'Layout sem nome'}</div>
+            <div class="layout-arrow">${isOpen ? '⌃' : '⌄'}</div>
+          </div>
+
+          <div class="layout-menu ${isOpen ? 'show' : ''}">
+            <div class="menu-item" onclick="window.location.href='layout-editor.html?id=${encodeURIComponent(layout.id)}'">
+              <div class="menu-icon icon-gray">◎</div>
+              <div class="menu-text">Editar Layout</div>
+              <div class="menu-right">›</div>
+            </div>
+
+            <div class="menu-item" onclick="window.location.href='addtheme.html?id=${encodeURIComponent(layout.id)}'">
+              <div class="menu-icon icon-blue">🎨</div>
+              <div class="menu-text">Escolher Tema</div>
+              <div class="menu-right">›</div>
+            </div>
+
+            <div class="menu-item" onclick="window.location.href='addapps.html?id=${encodeURIComponent(layout.id)}'">
+              <div class="menu-icon icon-green">☁</div>
+              <div class="menu-text">Escolher aplicativos/links/gavetas</div>
+              <div class="menu-right">›</div>
+            </div>
+
+            <div class="menu-item" onclick="window.location.href='addbanners.html?id=${encodeURIComponent(layout.id)}'">
+              <div class="menu-icon icon-black">▭</div>
+              <div class="menu-text">Escolher banners</div>
+              <div class="menu-right">›</div>
+            </div>
+
+            <div class="menu-item" onclick="alterarNomeLayout('${layout.id}')">
+              <div class="menu-icon icon-purple">✎</div>
+              <div class="menu-text">Alterar nome do layout</div>
+              <div class="menu-right">›</div>
+            </div>
+
+            <div class="menu-item" onclick="window.location.href='fundos.html?id=${encodeURIComponent(layout.id)}'">
+              <div class="menu-icon icon-black">▧</div>
+              <div class="menu-text">Pack de planos de fundo</div>
+              <div class="menu-right">Atual: Desativado ›</div>
+            </div>
+
+            <div class="menu-item" onclick="window.location.href='layout-icon.html?id=${encodeURIComponent(layout.id)}'">
+              <div class="menu-icon icon-gray">⚙</div>
+              <div class="menu-text">Alterar ícone do layout</div>
+              <div class="menu-right">›</div>
+            </div>
+
+            <div class="menu-item" onclick="window.location.href='layout-icons.html?id=${encodeURIComponent(layout.id)}'">
+              <div class="menu-icon icon-blue">◉</div>
+              <div class="menu-text">Editar ícones exibidos</div>
+              <div class="menu-right">›</div>
+            </div>
+
+            <div class="menu-item" onclick="excluirLayout('${layout.id}')">
+              <div class="menu-icon icon-red">🗑</div>
+              <div class="menu-text">Excluir</div>
+              <div class="menu-right">›</div>
+            </div>
+
+            <div class="layout-data-title">DADOS DO LAYOUT:</div>
+
+            <div class="layout-data">
+              <div class="data-card">
+                <strong>Aplicativos principais:</strong> ${Array.isArray(layout.mainApps) ? layout.mainApps.length : 0}<br>
+                <strong>Aplicativos secundários:</strong> ${Array.isArray(layout.secondaryApps) ? layout.secondaryApps.length : 0}<br>
+                <strong>Banners:</strong> ${Array.isArray(layout.banners) ? layout.banners.length : 0}
+              </div>
+
+              <div class="data-card">
+                <strong>Fundo:</strong> ${layout.background ? 'Configurado' : 'Não configurado'}<br>
+                <strong>Logo:</strong> ${layout.logo ? 'Configurada' : 'Sem logomarca'}<br>
+                <strong>Criado em:</strong> ${layout.createdAt || '-'}
+              </div>
+            </div>
+          </div>
         `;
-        container.appendChild(row);
+
+        container.appendChild(wrapper);
       });
+    }
+
+    async function alterarNomeLayout(id) {
+      const layout = allLayouts.find(item => String(item.id) === String(id));
+      const atual = layout ? layout.name : '';
+
+      const novoNome = prompt('Novo nome do layout:', atual || '');
+
+      if (!novoNome || !novoNome.trim()) return;
+
+      showStatus('Ainda vamos ligar a rota de alterar nome na próxima etapa.', 'success');
+    }
+
+    async function excluirLayout(id) {
+      if (!confirm('Deseja excluir este layout?')) return;
+
+      showStatus('Ainda vamos ligar a rota de excluir layout na próxima etapa.', 'success');
     }
 
     async function loadCredits() {
       try {
-        const res = await fetch(`${window.location.origin}/dashboard`);
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok || !data) return;
-
         document.getElementById('annualCreditsValue').textContent = '1000';
-        document.getElementById('twoYearsCreditsValue').textContent = data.twoYearsCreditsInUse || '0';
+        document.getElementById('twoYearsCreditsValue').textContent = '0';
         document.getElementById('layoutLimitValue').textContent = '20';
         document.getElementById('appsLimitValue').textContent = '1000';
-        document.getElementById('creditsExpiryValue').textContent =
-          (data.settings && data.settings.creditsExpireAt) ? data.settings.creditsExpireAt : '15/11/2026 - 19:50';
+        document.getElementById('creditsExpiryValue').textContent = '15/11/2026 - 19:50';
       } catch (e) {
         console.error(e);
       }
@@ -539,7 +722,8 @@
 
     async function loadLayouts() {
       hideStatus();
-      const res = await fetch(`${window.location.origin}/layouts`);
+
+      const res = await fetch(`${window.location.origin}/layouts`, { cache: 'no-store' });
       const data = await res.json().catch(() => []);
 
       if (!res.ok || !Array.isArray(data)) {
@@ -551,8 +735,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-      if (typeof authGuard === 'function') authGuard();
-
       try {
         await loadCredits();
         await loadLayouts();
