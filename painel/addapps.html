@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escolher apps do layout</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #081727;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  padding-bottom: 80px;
+}
+
+.topbar {
+  height: 70px;
+  background: #287df3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.back {
+  position: absolute;
+  left: 22px;
+  font-size: 42px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.steps {
+  height: 75px;
+  background: #0d2347;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  text-align: center;
+}
+
+.step {
+  color: #6f8199;
+  font-size: 13px;
+}
+
+.step .circle {
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 6px;
+  border-radius: 50%;
+  background: #233852;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.step.active {
+  color: #fff;
+}
+
+.step.active .circle {
+  background: #287df3;
+}
+
+.info-step {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.info-step img {
+  max-width: 430px;
+  width: 90%;
+  opacity: .75;
+  margin-bottom: 30px;
+}
+
+.info-step h1 {
+  font-size: 30px;
+  margin: 10px 0;
+}
+
+.info-step p {
+  color: #aebbd0;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.blue-banner {
+  background: #287df3;
+  text-align: center;
+  padding: 18px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.warning {
+  margin: 22px 18px;
+  padding: 18px;
+  border-radius: 7px;
+  line-height: 1.7;
+}
+
+.warning.red {
+  background: #f44336;
+}
+
+.warning.purple {
+  background: #5b2bd6;
+}
+
+.warning.gray {
+  background: #708197;
+}
+
+.layout-title {
+  text-align: center;
+  padding: 25px 10px 10px;
+}
+
+.layout-title h1 {
+  margin: 0 0 12px;
+}
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  padding: 28px 18px;
+}
+
+.card {
+  background: #0d2347;
+  border-radius: 8px;
+  padding: 10px;
+  min-height: 580px;
+  display: flex;
+  flex-direction: column;
+}
+
+.icon-area {
+  background: #07101d;
+  border-radius: 6px;
+  height: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.icon-area img {
+  max-width: 86px;
+  max-height: 86px;
+  object-fit: contain;
+}
+
+.app-name {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  min-height: 40px;
+}
+
+.app-type {
+  color: #1988ff;
+  text-align: center;
+  margin: 18px 0 28px;
+}
+
+.app-package {
+  text-align: center;
+  color: #fff;
+  margin-bottom: auto;
+  word-break: break-word;
+}
+
+.btn {
+  width: 100%;
+  height: 42px;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  background: #35c85a;
+}
+
+.btn.remove {
+  background: #f44336;
+}
+
+.bottom-actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0d2347;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  padding: 12px 18px;
+}
+
+.bottom-actions button {
+  height: 54px;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-back {
+  background: #708197;
+}
+
+.btn-save {
+  background: #287df3;
+}
+
+.empty {
+  margin: 30px 18px;
+  padding: 18px;
+  background: #0d2347;
+  border-radius: 8px;
+  color: #dce7fb;
+}
+
+@media (max-width: 1200px) {
+  .apps-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .apps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card {
+    min-height: 470px;
+  }
+}
+
+@media (max-width: 520px) {
+  .apps-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a class="back" href="layouts.html">‹</a>
+  Escolher apps do layout
+</header>
+
+<div class="steps">
+  <div class="step active" id="stepLabel1">
+    <div class="circle">1</div>
+    Informação
+  </div>
+
+  <div class="step" id="stepLabel2">
+    <div class="circle">2</div>
+    Aplicativos
+  </div>
+</div>
+
+<section id="step1">
+  <div class="blue-banner">&lt;&lt;&lt; Deslize para o lado em cima da imagem</div>
+
+  <div class="info-step">
+    <img src="https://via.placeholder.com/500x200/777777/ffffff?text=3+apps+principais" alt="Apps principais">
+
+    <h1>Aplicativos principais</h1>
+
+    <p>
+      São os aplicativos que serão exibidos ao lado do banner.
+      Eles possuem um destaque maior, por isso são chamados de principais.
+      Você poderá definir entre nenhum ou até 3 aplicativos para serem os principais.
+    </p>
+  </div>
+
+  <div class="bottom-actions">
+    <button class="btn-back" onclick="window.location.href='layouts.html'">Voltar</button>
+    <button class="btn-save" onclick="goStep2()">Prosseguir</button>
+  </div>
+</section>
+
+<section id="step2" style="display:none;">
+  <div class="layout-title">
+    <h1 id="layoutName">Layout</h1>
+    <div>Aplicativos principais: <span id="mainCount">0</span></div>
+    <div>Aplicativos secundários: <span id="secondaryCount">0</span></div>
+  </div>
+
+  <div class="warning red">
+    <strong>ATENÇÃO</strong><br>
+    Por padrão, caso você tenha habilitado para seu cliente a opção de bloquear apps após vencer,
+    a launcher irá bloquear TODOS aplicativos após vencer o plano do cliente.
+    Caso queira deixar algum aplicativo aberto, depois ajustamos a opção LIBERAR APÓS VENCER.
+  </div>
+
+  <div class="warning purple">
+    <strong>DICA</strong><br>
+    O sistema irá exibir abaixo uma lista com todos aplicativos cadastrados.
+    Você pode escolher até 3 aplicativos principais e vários aplicativos secundários.
+  </div>
+
+  <div class="warning gray">
+    <strong>Sobre os apps</strong><br>
+    Selecione os aplicativos que deseja mostrar neste layout.
+    Os principais ficam na parte de cima da launcher e os secundários ficam embaixo.
+  </div>
+
+  <div id="appsArea">
+    <div class="empty">Carregando aplicativos...</div>
+  </div>
+
+  <div class="bottom-actions">
+    <button class="btn-back" onclick="goStep1()">Voltar</button>
+    <button class="btn-save" onclick="salvarAppsLayout()">Salvar</button>
+  </div>
+</section>
+
+<script>
+const API = window.location.origin;
+
+const params = new URLSearchParams(window.location.search);
+const layoutId = params.get('id');
+
+let apps = [];
+let layoutAtual = null;
+let mainApps = [];
+let secondaryApps = [];
+
+function fallbackIcon(name) {
+  const n = String(name || '').toLowerCase();
+
+  if (n.includes('youtube')) {
+    return 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png';
+  }
+
+  return 'https://cdn-icons-png.flaticon.com/512/565/565547.png';
+}
+
+function normalizeUrl(url) {
+  if (!url) return '';
+  return String(url).replace('http://localhost:3000', window.location.origin);
+}
+
+function goStep1() {
+  document.getElementById('step1').style.display = 'block';
+  document.getElementById('step2').style.display = 'none';
+  document.getElementById('stepLabel1').classList.add('active');
+  document.getElementById('stepLabel2').classList.remove('active');
+}
+
+function goStep2() {
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step2').style.display = 'block';
+  document.getElementById('stepLabel1').classList.remove('active');
+  document.getElementById('stepLabel2').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateCounts() {
+  document.getElementById('mainCount').textContent = mainApps.length;
+  document.getElementById('secondaryCount').textContent = secondaryApps.length;
+}
+
+function isMain(id) {
+  return mainApps.includes(id);
+}
+
+function isSecondary(id) {
+  return secondaryApps.includes(id);
+}
+
+function addMain(id) {
+  if (isMain(id)) {
+    mainApps = mainApps.filter(x => x !== id);
+    renderApps();
+    return;
+  }
+
+  if (mainApps.length >= 3) {
+    alert('Você pode escolher no máximo 3 aplicativos principais.');
+    return;
+  }
+
+  secondaryApps = secondaryApps.filter(x => x !== id);
+  mainApps.push(id);
+  renderApps();
+}
+
+function addSecondary(id) {
+  if (isSecondary(id)) {
+    secondaryApps = secondaryApps.filter(x => x !== id);
+    renderApps();
+    return;
+  }
+
+  mainApps = mainApps.filter(x => x !== id);
+  secondaryApps.push(id);
+  renderApps();
+}
+
+function renderApps() {
+  updateCounts();
+
+  const area = document.getElementById('appsArea');
+
+  if (!apps.length) {
+    area.innerHTML = '<div class="empty">Nenhum aplicativo cadastrado.</div>';
+    return;
+  }
+
+  area.innerHTML = `
+    <div class="apps-grid">
+      ${apps.map(app => {
+        const icon = normalizeUrl(app.icon) || fallbackIcon(app.name);
+        const appId = app.id;
+
+        const mainSelected = isMain(appId);
+        const secondarySelected = isSecondary(appId);
+
+        return `
+          <div class="card">
+            <div class="icon-area">
+              <img src="${icon}" onerror="this.src='${fallbackIcon(app.name)}'">
+            </div>
+
+            <div class="app-name">${app.name || 'APP SEM NOME'}</div>
+            <div class="app-type">Aplicativo</div>
+            <div class="app-package">${app.package || '-'}</div>
+
+            <button
+              class="btn ${mainSelected ? 'remove' : ''}"
+              onclick="addMain('${appId}')"
+            >
+              ${mainSelected ? 'Remover app principal' : 'ADD app principal'}
+            </button>
+
+            <button
+              class="btn ${secondarySelected ? 'remove' : ''}"
+              onclick="addSecondary('${appId}')"
+            >
+              ${secondarySelected ? 'Remover app secundário' : 'ADD app secundário'}
+            </button>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+async function carregarDados() {
+  if (!layoutId) {
+    document.getElementById('appsArea').innerHTML =
+      '<div class="empty">Erro: layout não informado na URL.</div>';
+    return;
+  }
+
+  try {
+    const [layoutsRes, appsRes] = await Promise.all([
+      fetch(API + '/layouts', { cache: 'no-store' }),
+      fetch(API + '/apps', { cache: 'no-store' })
+    ]);
+
+    const layouts = await layoutsRes.json();
+    const appsData = await appsRes.json();
+
+    layoutAtual = Array.isArray(layouts)
+      ? layouts.find(l => String(l.id) === String(layoutId))
+      : null;
+
+    if (!layoutAtual) {
+      document.getElementById('appsArea').innerHTML =
+        '<div class="empty">Layout não encontrado.</div>';
+      return;
+    }
+
+    document.getElementById('layoutName').textContent = layoutAtual.name || 'Layout';
+
+    apps = Array.isArray(appsData) ? appsData : [];
+
+    mainApps = Array.isArray(layoutAtual.mainApps)
+      ? layoutAtual.mainApps
+      : [];
+
+    secondaryApps = Array.isArray(layoutAtual.secondaryApps)
+      ? layoutAtual.secondaryApps
+      : Array.isArray(layoutAtual.apps)
+        ? layoutAtual.apps
+        : [];
+
+    renderApps();
+
+  } catch (e) {
+    console.error(e);
+    document.getElementById('appsArea').innerHTML =
+      '<div class="empty">Erro ao carregar aplicativos.</div>';
+  }
+}
+
+async function salvarAppsLayout() {
+  if (!layoutId) {
+    alert('Layout não informado.');
+    return;
+  }
+
+  const body = {
+    mainApps,
+    secondaryApps,
+    apps: [...new Set([...mainApps, ...secondaryApps])]
+  };
+
+  try {
+    const res = await fetch(API + '/layouts/' + layoutId + '/apps', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.ok) {
+      alert(data.message || 'Erro ao salvar apps no layout.');
+      return;
+    }
+
+    alert('Aplicativos salvos no layout!');
+    window.location.href = 'layouts.html';
+
+  } catch (e) {
+    console.error(e);
+    alert('Erro ao salvar apps no layout.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', carregarDados);
+</script>
+
+</body>
+</html>
