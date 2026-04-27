@@ -6,79 +6,100 @@
 
 <style>
 body {
-  background: #0b1b2b;
-  color: #fff;
-  font-family: Arial;
-  margin: 0;
+  margin:0;
+  font-family:Arial;
+  background: linear-gradient(90deg,#02101e,#052444);
+  color:#fff;
 }
 
-.topbar {
-  background: #2d7ef7;
-  padding: 15px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 18px;
+/* TOPO */
+.topbar{
+  background:#2f7cff;
+  padding:16px;
+  text-align:center;
+  font-weight:bold;
+  font-size:18px;
+  position:sticky;
+  top:0;
 }
 
-.container {
-  padding: 20px;
-  max-width: 900px;
-  margin: auto;
+/* PASSOS */
+.steps{
+  display:flex;
+  justify-content:space-around;
+  background:#0d1f3b;
+  padding:12px 0;
 }
 
-h2 {
-  margin-top: 0;
+.step{
+  text-align:center;
+  color:#6d7f98;
 }
 
-.input-group {
-  margin-bottom: 15px;
+.step.active{
+  color:#fff;
 }
 
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #ccc;
+.circle{
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  background:#213552;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:auto;
+  margin-bottom:5px;
 }
 
-input, select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 6px;
-  border: none;
-  background: #1c2b3c;
-  color: #fff;
+.step.active .circle{
+  background:#2f7cff;
 }
 
-button {
-  width: 100%;
-  padding: 15px;
-  background: #2d7ef7;
-  border: none;
-  color: #fff;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 15px;
-  font-size: 16px;
+/* CONTEUDO */
+.container{
+  padding:20px;
+  max-width:900px;
+  margin:auto;
 }
 
-.steps {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+label{
+  display:block;
+  margin-top:15px;
+  margin-bottom:5px;
+  color:#aebed4;
 }
 
-.step {
-  flex: 1;
-  text-align: center;
-  opacity: 0.4;
+input,select{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:6px;
+  background:#1c2e49;
+  color:#fff;
 }
 
-.step.active {
-  opacity: 1;
-  font-weight: bold;
+.info{
+  font-size:13px;
+  color:#9fb1cb;
+  margin-top:5px;
+  line-height:1.4;
 }
 
+button{
+  width:100%;
+  margin-top:20px;
+  padding:14px;
+  border:none;
+  border-radius:6px;
+  background:#2f7cff;
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.section{display:none;}
+.section.active{display:block;}
 </style>
 </head>
 
@@ -86,142 +107,111 @@ button {
 
 <div class="topbar">Editar layout</div>
 
-<div class="container">
-
 <div class="steps">
-  <div class="step active">1 - Dados</div>
-  <div class="step">2 - Logomarca</div>
-  <div class="step">3 - Plano de fundo</div>
-  <div class="step">✔ Conclusão</div>
+  <div class="step active"><div class="circle">1</div>Dados</div>
+  <div class="step"><div class="circle">2</div>Logomarca</div>
+  <div class="step"><div class="circle">3</div>Plano</div>
+  <div class="step"><div class="circle">✔</div>Final</div>
 </div>
 
+<div class="container">
+
 <!-- STEP 1 -->
-<div id="step1">
+<div id="s1" class="section active">
 
-  <div class="input-group">
-    <label>Nome do layout</label>
-    <input id="name">
-  </div>
+<label>Nome do layout</label>
+<input id="name">
 
-  <div class="input-group">
-    <label>Localização do logo</label>
-    <select id="logoPosition">
-      <option>ESQUERDA</option>
-      <option>DIREITA</option>
-      <option>CENTRO</option>
-    </select>
-  </div>
+<label>Localização do logo</label>
+<select id="logoPosition">
+<option>ESQUERDA</option>
+<option>CENTRO</option>
+<option>DIREITA</option>
+</select>
 
-  <div class="input-group">
-    <label>Botões bloqueados</label>
-    <select id="blocked">
-      <option>NÃO</option>
-      <option>SIM</option>
-    </select>
-  </div>
+<label>Botões bloqueados</label>
+<select id="blocked">
+<option>NÃO</option>
+<option>SIM</option>
+</select>
+<div class="info">
+Ideal para locação de aparelhos.
+</div>
 
-  <div class="input-group">
-    <label>Senha para desbloquear</label>
-    <input id="password">
-  </div>
+<label>Senha para desbloquear</label>
+<input id="password">
+<div class="info">
+Mínimo 5 caracteres.
+</div>
 
-  <div class="input-group">
-    <label>Exibir apps</label>
-    <select id="showApps">
-      <option>SIM</option>
-      <option>NÃO</option>
-    </select>
-  </div>
+<label>Exibir APPS</label>
+<select id="showApps">
+<option>SIM</option>
+<option>NÃO</option>
+</select>
 
-  <div class="input-group">
-    <label>Tamanho dos ícones</label>
-    <select id="iconSize">
-      <option>PADRÃO</option>
-      <option>PEQUENO</option>
-      <option>GRANDE</option>
-    </select>
-  </div>
+<label>Tamanho dos ícones</label>
+<select id="iconSize">
+<option>PADRÃO</option>
+<option>PEQUENO</option>
+<option>GRANDE</option>
+</select>
 
-  <div class="input-group">
-    <label>Tamanho da data e hora</label>
-    <select id="clockSize">
-      <option>PADRÃO</option>
-      <option>PEQUENO</option>
-      <option>GRANDE</option>
-    </select>
-  </div>
+<label>Tamanho da data e hora</label>
+<select id="clockSize">
+<option>PADRÃO</option>
+<option>PEQUENO</option>
+<option>GRANDE</option>
+</select>
 
-  <div class="input-group">
-    <label>Tamanho da data de expiração</label>
-    <select id="expireSize">
-      <option>PADRÃO</option>
-      <option>PEQUENO</option>
-      <option>GRANDE</option>
-    </select>
-  </div>
+<label>Tamanho da data expiração</label>
+<select id="expireSize">
+<option>PADRÃO</option>
+<option>PEQUENO</option>
+<option>GRANDE</option>
+</select>
 
-  <div class="input-group">
-    <label>Posição dos banners</label>
-    <select id="bannerPosition">
-      <option>ESQUERDA</option>
-      <option>DIREITA</option>
-    </select>
-  </div>
+<label>Posição dos banners</label>
+<select id="bannerPosition">
+<option>ESQUERDA</option>
+<option>DIREITA</option>
+</select>
 
-  <div class="input-group">
-    <label>Posição da data e hora</label>
-    <select id="clockPosition">
-      <option>ESQUERDA</option>
-      <option>DIREITA</option>
-    </select>
-  </div>
+<label>Posição da data e hora</label>
+<select id="clockPosition">
+<option>ESQUERDA</option>
+<option>DIREITA</option>
+</select>
 
-  <div class="input-group">
-    <label>Tempo de troca dos banners</label>
-    <input id="bannerTime" value="5">
-  </div>
+<label>Tempo troca banners</label>
+<input id="bannerTime" value="5">
 
-  <div class="input-group">
-    <label>Ativar update automático?</label>
-    <select id="autoUpdate">
-      <option>NÃO</option>
-      <option>SIM</option>
-    </select>
-  </div>
+<label>Update automático</label>
+<select id="autoUpdate">
+<option>NÃO</option>
+<option>SIM</option>
+</select>
 
-  <button onclick="nextStep()">Prosseguir >>></button>
-
+<button onclick="next()">Prosseguir >>></button>
 </div>
 
 <!-- STEP 2 -->
-<div id="step2" style="display:none;">
-  <h2>Logomarca</h2>
-
-  <div class="input-group">
-    <label>URL da logo</label>
-    <input id="logoUrl">
-  </div>
-
-  <button onclick="nextStep()">Prosseguir >>></button>
+<div id="s2" class="section">
+<label>URL da logo</label>
+<input id="logoUrl">
+<button onclick="next()">Prosseguir >>></button>
 </div>
 
 <!-- STEP 3 -->
-<div id="step3" style="display:none;">
-  <h2>Plano de fundo</h2>
-
-  <div class="input-group">
-    <label>URL do fundo</label>
-    <input id="background">
-  </div>
-
-  <button onclick="nextStep()">Prosseguir >>></button>
+<div id="s3" class="section">
+<label>URL do fundo</label>
+<input id="background">
+<button onclick="next()">Prosseguir >>></button>
 </div>
 
 <!-- STEP 4 -->
-<div id="step4" style="display:none;">
-  <h2>Conclusão</h2>
-
-  <button onclick="salvar()">SALVAR LAYOUT</button>
+<div id="s4" class="section">
+<button onclick="salvar()">SALVAR LAYOUT</button>
 </div>
 
 </div>
@@ -229,41 +219,41 @@ button {
 <script>
 
 const API = window.location.origin;
-let step = 1;
+let step=1;
 
-function nextStep() {
-  document.getElementById('step' + step).style.display = 'none';
+function next(){
+  document.getElementById('s'+step).classList.remove('active');
   step++;
-  document.getElementById('step' + step).style.display = 'block';
+  document.getElementById('s'+step).classList.add('active');
 }
 
-async function salvar() {
+async function salvar(){
 
-  const body = {
-    name: document.getElementById('name').value,
-    logoPosition: document.getElementById('logoPosition').value,
-    blocked: document.getElementById('blocked').value,
-    password: document.getElementById('password').value,
-    showApps: document.getElementById('showApps').value,
-    iconSize: document.getElementById('iconSize').value,
-    clockSize: document.getElementById('clockSize').value,
-    expireSize: document.getElementById('expireSize').value,
-    bannerPosition: document.getElementById('bannerPosition').value,
-    clockPosition: document.getElementById('clockPosition').value,
-    bannerTime: document.getElementById('bannerTime').value,
-    autoUpdate: document.getElementById('autoUpdate').value,
-    logoUrl: document.getElementById('logoUrl').value,
-    background: document.getElementById('background').value
+  const body={
+    name:name.value,
+    logoPosition:logoPosition.value,
+    buttonsLocked:blocked.value==="SIM",
+    unlockPassword:password.value,
+    showAppsButton:showApps.value==="SIM",
+    iconSize:iconSize.value,
+    clockSize:clockSize.value,
+    expireSize:expireSize.value,
+    bannerPosition:bannerPosition.value,
+    datePosition:clockPosition.value,
+    bannerInterval:Number(bannerTime.value),
+    autoUpdate:autoUpdate.value==="SIM",
+    logo:logoUrl.value,
+    background:background.value
   };
 
-  await fetch(API + '/layouts', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(body)
+  await fetch(API+'/layouts',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)
   });
 
   alert('Layout salvo!');
-  window.location.href = 'layouts.html';
+  location.href='layouts.html';
 }
 
 </script>
