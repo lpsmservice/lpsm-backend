@@ -6,486 +6,227 @@
 <title>Editar layout</title>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#071727;color:#fff;font-family:Arial,Helvetica,sans-serif;padding-bottom:70px}
-.topbar{height:64px;background:#287df3;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;position:sticky;top:0;z-index:20}
-.back{position:absolute;left:22px;font-size:42px;color:#fff;text-decoration:none}
-.steps{height:62px;background:#0d1f35;display:grid;grid-template-columns:repeat(4,1fr);align-items:center;text-align:center}
-.step{color:#667991;font-size:12px}
-.step .num{width:26px;height:26px;border-radius:50%;background:#20344e;margin:0 auto 4px;display:flex;align-items:center;justify-content:center}
-.step.active{color:#fff}
-.step.active .num{background:#287df3}
-.page{display:none}
-.page.active{display:block}
-.title{text-align:center;font-weight:700;padding:24px 10px 12px}
-.form{padding:0 18px 20px}
-label{display:block;color:#a7b7cd;margin-top:18px;margin-bottom:7px;font-size:16px}
-input,select{width:100%;height:47px;border:0;border-radius:6px;outline:none;background:#1c2e49;color:#fff;padding:0 18px;font-size:17px}
-.help{color:#aebcd0;font-size:15px;line-height:1.5;margin-top:6px}
-.btn{width:calc(100% - 36px);height:54px;margin:26px 18px;border:0;border-radius:6px;background:#287df3;color:#fff;font-size:21px;cursor:pointer}
-.tip{background:#5b2bd6;margin:18px;padding:16px 20px;border-radius:6px;line-height:1.6}
-.upload-title{padding:18px;color:#a7b7cd}
-.upload-box{margin:0 18px 24px;height:240px;border:1px solid rgba(255,255,255,.08);background:#0d1f35;border-radius:6px;display:flex;align-items:center;justify-content:center;text-align:center;color:#7890ad;cursor:pointer;overflow:hidden}
-.upload-box img{max-width:100%;max-height:100%;object-fit:contain}
-.hidden{display:none}
+body{
+  margin:0;
+  font-family:Arial;
+  background:#071727;
+  color:#fff;
+}
 
-.bg-head{background:#0d1f35;margin:18px;padding:22px 18px;border-radius:6px}
-.bg-head h2{margin:0 0 8px;font-size:28px}
-.bg-head p{margin:0;color:#aebcd0}
-.current-label{color:#9fb1cb;margin:20px 0 8px}
-.current-preview{width:100%;height:330px;background:#000;background-size:cover;background-position:center;border-radius:4px}
-.obs{color:#aebcd0;margin:14px 0}
-.bg-actions{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:16px}
-.small-btn{width:90px;height:42px;justify-self:center;background:#7a879d;color:#fff;border:0;border-radius:7px;font-weight:700;cursor:pointer}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:0 18px 20px}
-.card{background:#10243d;border-radius:8px;padding:8px;border:2px solid transparent}
-.card.selected{border-color:#36c95d}
-.card img{width:100%;height:145px;object-fit:cover;border-radius:6px}
-.card p{text-align:center;font-size:17px}
-.card button{width:100%;height:36px;border:0;border-radius:5px;background:#287df3;color:#fff;cursor:pointer}
-.summary{text-align:center;padding:18px;line-height:1.8}
-.summary img{max-width:680px;width:80%;max-height:360px;object-fit:contain}
-.yes{background:#35c85a}
-.no{background:#f02b1d}
-.bottom{position:fixed;left:0;right:0;bottom:0;height:62px;background:#0d1f35;display:flex;align-items:center;justify-content:space-around;z-index:30}
-.bottom a{color:#fff;text-decoration:none;font-size:30px}
+.topbar{
+  background:#287df3;
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:20px;
+  position:sticky;
+  top:0;
+}
 
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:99;align-items:center;justify-content:center}
-.modal.show{display:flex}
-.modal-card{width:320px;background:#10243d;border-radius:16px;overflow:hidden;text-align:center}
-.modal-card h3{margin:26px 18px 12px}
-.modal-card p{color:#aebcd0;margin:0 24px 24px;line-height:1.5}
-.modal-card button{width:100%;height:54px;border:0;border-top:1px solid rgba(255,255,255,.08);background:transparent;color:#287df3;font-size:16px;cursor:pointer}
-.modal-card input{width:86%;margin:10px auto 24px;border-bottom:1px solid rgba(255,255,255,.1);background:transparent;border-radius:0}
+.container{
+  padding:20px;
+}
 
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.card{
+  background:#0d1f35;
+  padding:20px;
+  border-radius:8px;
+  margin-bottom:20px;
+}
+
+.upload{
+  border:1px dashed #3a4c66;
+  height:200px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  border-radius:8px;
+}
+
+button{
+  width:100%;
+  height:50px;
+  background:#287df3;
+  border:none;
+  color:#fff;
+  font-size:18px;
+  border-radius:6px;
+  margin-top:20px;
+  cursor:pointer;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+}
+
+.bg-card{
+  background:#10243d;
+  border-radius:8px;
+  padding:10px;
+  text-align:center;
+}
+
+.bg-card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+.small-btn{
+  width:100px;
+  height:40px;
+  background:#6b7b91;
+  border-radius:6px;
+  border:none;
+  color:#fff;
+  cursor:pointer;
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,0.7);
+  justify-content:center;
+  align-items:center;
+}
+
+.modal-box{
+  background:#10243d;
+  padding:20px;
+  border-radius:10px;
+  width:300px;
+  text-align:center;
+}
 </style>
 </head>
 
 <body>
 
-<div class="topbar">
-  <a class="back" href="layouts.html">‹</a>
-  <span id="topTitle">Editar layout</span>
+<div class="topbar">Editar layout</div>
+
+<div class="container">
+
+<!-- PARTE 1 -->
+<div class="card">
+  <h3>Dados</h3>
+
+  <input id="nome" placeholder="Nome do layout" style="width:100%;height:45px;margin-top:10px">
+
+  <select id="logoPos" style="width:100%;height:45px;margin-top:10px">
+    <option value="left">ESQUERDA</option>
+    <option value="center">CENTRO</option>
+    <option value="right">DIREITA</option>
+  </select>
+
+  <select id="bloqueio" style="width:100%;height:45px;margin-top:10px">
+    <option value="nao">NÃO</option>
+    <option value="sim">SIM</option>
+  </select>
+
+  <input id="senha" placeholder="Senha" style="width:100%;height:45px;margin-top:10px">
+
+  <select id="apps" style="width:100%;height:45px;margin-top:10px">
+    <option value="sim">SIM</option>
+    <option value="nao">NÃO</option>
+  </select>
+
+  <button onclick="ir2()">Prosseguir</button>
 </div>
 
-<div class="steps">
-  <div class="step active" id="st1"><div class="num">1</div>Dados</div>
-  <div class="step" id="st2"><div class="num">2</div>Logomarca</div>
-  <div class="step" id="st3"><div class="num">3</div>Plano de fundo</div>
-  <div class="step" id="st4"><div class="num">✓</div>Conclusão</div>
-</div>
+<!-- PARTE 2 -->
+<div class="card" id="step2" style="display:none">
+  <h3>Logomarca</h3>
 
-<section class="page active" id="page1">
-  <div class="title">Configure os dados iniciais do layout.</div>
-
-  <div class="form">
-    <label>Nome do layout</label>
-    <input id="name">
-
-    <label>Localização do logo</label>
-    <select id="logoPosition">
-      <option value="left">ESQUERDA</option>
-      <option value="center">CENTRO</option>
-      <option value="right">DIREITA</option>
-    </select>
-
-    <label>Botões bloqueados</label>
-    <select id="buttonsLocked">
-      <option value="nao">NÃO</option>
-      <option value="sim">SIM</option>
-    </select>
-    <div class="help">Use esta opção apenas se desejar bloquear os botões de acesso a configurações e aplicativos.<br>Esta opção é ideal para quem deseja trabalhar com LOCAÇÃO de aparelhos.</div>
-
-    <label>Senha para desbloquear</label>
-    <input id="unlockPassword">
-    <div class="help">Mínimo 5 caracteres<br>Só informe uma senha caso deixou configurado os botões bloqueados como SIM.</div>
-
-    <label>Exibir APPS</label>
-    <select id="showAppsButton">
-      <option value="sim">SIM</option>
-      <option value="nao">NÃO</option>
-    </select>
-    <div class="help">Caso NÃO queira exibir o guia APPS, no qual o cliente clica e aparece todos aplicativos instalados.</div>
-
-    <label>Tamanho dos ícones</label>
-    <select id="iconSize">
-      <option value="default">PADRÃO</option>
-      <option value="small">PEQUENO</option>
-      <option value="large">GRANDE</option>
-    </select>
-    <div class="help">Altera o tamanho dos ícones de configurações, wifi, perfil e notificações.</div>
-
-    <label>Tamanho da data e hora</label>
-    <select id="clockSize">
-      <option value="default">PADRÃO</option>
-      <option value="small">PEQUENO</option>
-      <option value="large">GRANDE</option>
-    </select>
-    <div class="help">Altera o tamanho da data e hora. CUIDADO! Tamanhos grandes demais poderão sobrepor os ícones ou logomarca!</div>
-
-    <label>Tamanho data de expiração</label>
-    <select id="expireSize">
-      <option value="default">PADRÃO</option>
-      <option value="small">PEQUENO</option>
-      <option value="large">GRANDE</option>
-    </select>
-    <div class="help">Altera o tamanho do texto exibido para a data de expiração/validade do layout no aparelho.</div>
-
-    <label>Posição dos banners</label>
-    <select id="bannerPosition">
-      <option value="left">ESQUERDA</option>
-      <option value="center">CENTRO</option>
-      <option value="right">DIREITA</option>
-    </select>
-
-    <label>Posição da data e hora</label>
-    <select id="datePosition">
-      <option value="left">ESQUERDA</option>
-      <option value="center">CENTRO</option>
-      <option value="right">DIREITA</option>
-    </select>
-    <div class="help">ATENÇÃO: ao escolher esquerda, sua logomarca automaticamente irá ficar centralizada, mesmo que você tenha definido a posição da logo como esquerda também.</div>
-
-    <label>Tempo de troca dos banners</label>
-    <select id="bannerInterval">
-      <option value="5">5 segundos</option>
-      <option value="10">10 segundos</option>
-      <option value="15">15 segundos</option>
-      <option value="20">20 segundos</option>
-    </select>
-    <div class="help">DICA: o tempo que recomendamos deixar por padrão seria 10 segundos.</div>
-
-    <label>Ativar update automático?</label>
-    <select id="autoUpdate">
-      <option value="nao">NÃO</option>
-      <option value="sim">SIM</option>
-    </select>
-    <div class="help">ATENÇÃO: só ative o update automático da launcher, se durante a instalação da mesma você remover ou desativar todas outras launchers do aparelho!</div>
-  </div>
-
-  <button class="btn" onclick="nextStep()">Prosseguir &gt;&gt;&gt;</button>
-</section>
-
-<section class="page" id="page2">
-  <div class="tip">
-    <strong>DICA</strong><br>
-    Caso queira deixar a launcher sem logomarca, ou não queira trocar a logo atual, basta clicar em prosseguir e não adicionar nenhuma imagem.<br>
-    Você poderá editar posteriormente este layout e adicionar e/ou trocar bem como excluir a logomarca quando quiser.
-  </div>
-
-  <div class="upload-title">Escolher e/ou alterar logomarca</div>
-
-  <label class="upload-box" for="logoFile" id="logoBox">
-    <div>
-      <div style="font-size:50px;">☁</div>
-      <div>Clique para escolher</div>
-    </div>
+  <label class="upload" for="logoFile" id="logoBox">
+    Clique para escolher
   </label>
 
-  <input class="hidden" type="file" id="logoFile" accept="image/*">
+  <input type="file" id="logoFile" style="display:none">
 
-  <button class="btn" onclick="nextStep()">Prosseguir &gt;&gt;&gt;</button>
-</section>
+  <button onclick="ir3()">Prosseguir</button>
+</div>
 
-<section class="page" id="page3">
-  <div class="bg-head">
-    <h2>Escolha o plano de fundo que deseja</h2>
-    <p>Você pode escolher um plano de fundo pré configurado, ou algum que você adicionou na opção meus planos de fundo.</p>
+<!-- PARTE 3 -->
+<div class="card" id="step3" style="display:none">
+  <h3>Plano de fundo</h3>
+
+  <button onclick="ir4()">Prosseguir</button>
+
+  <div style="display:flex;justify-content:space-around;margin:20px 0;">
+    <button class="small-btn" onclick="abrirExibir()">EXIBIR</button>
+    <button class="small-btn" onclick="abrirBuscar()">BUSCAR</button>
   </div>
 
-  <div class="current-label">Seu plano de fundo atual</div>
-  <div id="currentPreview" class="current-preview"></div>
+  <div id="fundos" class="grid"></div>
+</div>
 
-  <div class="obs">OBS: Caso não queira alterar o plano de fundo basta clicar em prosseguir!</div>
+<!-- PARTE 4 -->
+<div class="card" id="step4" style="display:none">
+  <h3>Finalizar</h3>
+  <button onclick="salvar()">SALVAR</button>
+</div>
 
-  <button class="btn" onclick="nextStep()">Prosseguir &gt;&gt;&gt;</button>
+</div>
 
-  <div class="help" style="padding:0 18px;">Caso queira trocar o plano de fundo escolha uma das opções abaixo.</div>
-
-  <div class="bg-actions">
-    <button class="small-btn" onclick="openExibir()">EXIBIR</button>
-    <button class="small-btn" onclick="openBuscar()">BUSCAR</button>
-  </div>
-
-  <div id="backgroundGrid" class="grid"></div>
-</section>
-
-<section class="page" id="page4">
-  <div class="summary" id="summary"></div>
-  <button class="btn yes" onclick="salvar()">SIM</button>
-  <button class="btn no" onclick="goStep(1)">NÃO</button>
-</section>
-
+<!-- MODAL EXIBIR -->
 <div id="modalExibir" class="modal">
-  <div class="modal-card">
+  <div class="modal-box">
     <h3>Modo de exibição</h3>
-    <p>Escolha abaixo como deseja visualizar os planos de fundo.</p>
-    <button onclick="sortFundos('new')">Mais novos</button>
-    <button onclick="sortFundos('old')">Mais antigos</button>
-    <button onclick="sortFundos('az')">Ordem Alfabética</button>
-    <button onclick="closeModals()">FECHAR</button>
+    <button onclick="fechar()">FECHAR</button>
   </div>
 </div>
 
+<!-- MODAL BUSCAR -->
 <div id="modalBuscar" class="modal">
-  <div class="modal-card">
-    <h3>Busque pelo nome do plano de fundo</h3>
-    <input id="buscarInput" placeholder="Plano de fundo">
-    <button onclick="closeModals()">FECHAR</button>
-    <button onclick="buscarFundo()">BUSCAR</button>
+  <div class="modal-box">
+    <h3>Buscar fundo</h3>
+    <input placeholder="Nome" style="width:100%;height:40px;margin:10px 0">
+    <button onclick="fechar()">FECHAR</button>
   </div>
 </div>
-
-<nav class="bottom">
-  <a href="dashboard.html">⌂</a>
-  <a href="https://wa.me/" target="_blank">◔</a>
-  <a href="devices.html">▭</a>
-  <a href="launcher.html">▦</a>
-  <a href="#">↑</a>
-</nav>
 
 <script>
-const API = window.location.origin;
-const params = new URLSearchParams(location.search);
-const editId = params.get('id');
-
-let step = 1;
-let currentLayout = null;
-let backgrounds = [];
-let selectedBackground = null;
-let logo = '';
-
-function textBool(v){ return v === true || v === 'sim' || v === 'SIM'; }
-function yesNo(v){ return textBool(v) ? 'SIM' : 'NÃO'; }
-function posText(v){ if(v==='left')return'À esquerda'; if(v==='center')return'Centro'; if(v==='right')return'À direita'; return v||'À esquerda'; }
-function sizeText(v){ if(v==='default')return'PADRÃO'; if(v==='small')return'PEQUENO'; if(v==='large')return'GRANDE'; return v||'PADRÃO'; }
-
-function goStep(n){
-  document.getElementById('page'+step).classList.remove('active');
-  step = n;
-  document.getElementById('page'+step).classList.add('active');
-
-  for(let i=1;i<=4;i++){
-    document.getElementById('st'+i).classList.toggle('active', i === step);
-  }
-
-  window.scrollTo({top:0,behavior:'smooth'});
+function ir2(){
+  document.querySelector('.card').style.display='none'
+  document.getElementById('step2').style.display='block'
 }
 
-function nextStep(){
-  if(step === 1){
-    if(!name.value.trim()){ alert('Informe o nome do layout'); return; }
-    if(buttonsLocked.value === 'sim' && unlockPassword.value.trim().length < 5){
-      alert('Senha precisa ter mínimo 5 caracteres');
-      return;
-    }
-  }
-
-  if(step === 2) carregarFundos();
-
-  if(step === 3){
-    montarResumo();
-  }
-
-  if(step < 4) goStep(step + 1);
+function ir3(){
+  document.getElementById('step2').style.display='none'
+  document.getElementById('step3').style.display='block'
 }
 
-function preencher(layout){
-  currentLayout = layout;
-  name.value = layout.name || '';
-  logoPosition.value = layout.logoPosition || 'left';
-  buttonsLocked.value = layout.buttonsLocked ? 'sim' : 'nao';
-  unlockPassword.value = layout.unlockPassword || '';
-  showAppsButton.value = layout.showAppsButton === false ? 'nao' : 'sim';
-  iconSize.value = layout.iconSize || 'default';
-  clockSize.value = layout.clockSize || 'default';
-  expireSize.value = layout.expireSize || 'default';
-  bannerPosition.value = layout.bannerPosition || 'left';
-  datePosition.value = layout.datePosition || 'left';
-  bannerInterval.value = String(layout.bannerInterval || 5);
-  autoUpdate.value = layout.autoUpdate ? 'sim' : 'nao';
-  logo = layout.logo || '';
-
-  if(logo) logoBox.innerHTML = `<img src="${logo}">`;
-
-  if(layout.background){
-    selectedBackground = { id:layout.backgroundId || '', nome:'Plano atual', imagem:layout.background };
-    currentPreview.style.backgroundImage = `url("${layout.background}")`;
-  }
+function ir4(){
+  document.getElementById('step3').style.display='none'
+  document.getElementById('step4').style.display='block'
 }
 
-async function carregarLayout(){
-  if(!editId){ topTitle.textContent = 'Adicionar layout'; return; }
-
-  try{
-    const res = await fetch(API + '/layouts', {cache:'no-store'});
-    const layouts = await res.json();
-    const layout = Array.isArray(layouts) ? layouts.find(l => String(l.id) === String(editId)) : null;
-    if(layout) preencher(layout);
-  }catch(e){ console.error(e); }
+function abrirExibir(){
+  document.getElementById('modalExibir').style.display='flex'
 }
 
-async function carregarFundos(){
-  backgroundGrid.innerHTML = '<div style="padding:18px;">Carregando...</div>';
-
-  try{
-    const res = await fetch(API + '/backgrounds', {cache:'no-store'});
-    backgrounds = await res.json();
-    renderBackgrounds(backgrounds);
-  }catch(e){
-    backgroundGrid.innerHTML = '<div style="padding:18px;">Erro ao carregar fundos.</div>';
-  }
+function abrirBuscar(){
+  document.getElementById('modalBuscar').style.display='flex'
 }
 
-function renderBackgrounds(list){
-  if(!Array.isArray(list) || !list.length){
-    backgroundGrid.innerHTML = '<div style="padding:18px;">Nenhum fundo encontrado.</div>';
-    return;
-  }
-
-  backgroundGrid.innerHTML = list.map((bg,i)=>{
-    const img = bg.imagem || bg.image || bg.url || '';
-    const nome = bg.nome || bg.name || 'Plano de fundo';
-    const selected = selectedBackground && selectedBackground.imagem === img;
-
-    return `
-      <div class="card ${selected ? 'selected' : ''}">
-        <img src="${img}">
-        <p>${nome}</p>
-        <button onclick="selectBg(${i})">Escolher</button>
-      </div>
-    `;
-  }).join('');
+function fechar(){
+  document.getElementById('modalExibir').style.display='none'
+  document.getElementById('modalBuscar').style.display='none'
 }
 
-function selectBg(i){
-  selectedBackground = backgrounds[i];
-  const img = selectedBackground.imagem || selectedBackground.image || selectedBackground.url || '';
-  currentPreview.style.backgroundImage = `url("${img}")`;
-  renderBackgrounds(backgrounds);
+function salvar(){
+  alert("Layout salvo")
 }
-
-function openExibir(){ modalExibir.classList.add('show'); }
-function openBuscar(){ modalBuscar.classList.add('show'); }
-function closeModals(){
-  modalExibir.classList.remove('show');
-  modalBuscar.classList.remove('show');
-}
-
-function sortFundos(type){
-  let lista = [...backgrounds];
-
-  if(type === 'new') lista.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
-  if(type === 'old') lista.sort((a,b)=>new Date(a.createdAt||0)-new Date(b.createdAt||0));
-  if(type === 'az') lista.sort((a,b)=>String(a.nome||a.name||'').localeCompare(String(b.nome||b.name||'')));
-
-  renderBackgrounds(lista);
-  closeModals();
-}
-
-function buscarFundo(){
-  const termo = buscarInput.value.trim().toLowerCase();
-  if(!termo){
-    renderBackgrounds(backgrounds);
-    closeModals();
-    return;
-  }
-
-  const filtrados = backgrounds.filter(bg => String(bg.nome || bg.name || '').toLowerCase().includes(termo));
-  renderBackgrounds(filtrados);
-  closeModals();
-}
-
-logoFile.addEventListener('change',function(){
-  const file = this.files[0];
-  if(!file) return;
-
-  const reader = new FileReader();
-  reader.onload = e => {
-    logo = e.target.result;
-    logoBox.innerHTML = `<img src="${logo}">`;
-  };
-  reader.readAsDataURL(file);
-});
-
-function montarResumo(){
-  const bg = selectedBackground ? (selectedBackground.imagem || selectedBackground.image || selectedBackground.url || '') : '';
-
-  summary.innerHTML = `
-    <p><strong>Nome do layout:</strong> ${name.value}</p>
-    <p>${logo ? 'COM logomarca escolhida' : 'SEM logomarca por enquanto'}</p>
-    <p>Plano de fundo</p>
-    ${bg ? `<img src="${bg}">` : ''}
-    <p><strong>Localização da logomarca:</strong> ${posText(logoPosition.value)}</p>
-    <p><strong>Botões bloqueados:</strong> ${yesNo(buttonsLocked.value)}</p>
-    <p><strong>Senha:</strong> ${unlockPassword.value || 'SEM senha de desbloqueio'}</p>
-    <p><strong>Exibir APPS:</strong> ${yesNo(showAppsButton.value)}</p>
-    <p><strong>Tamanho dos ícones:</strong> ${sizeText(iconSize.value)}</p>
-    <p><strong>Tamanho da data e hora:</strong> ${sizeText(clockSize.value)}</p>
-    <p><strong>Tamanho da data de expiração:</strong> ${sizeText(expireSize.value)}</p>
-    <p><strong>Posição dos banners:</strong> ${posText(bannerPosition.value)}</p>
-    <p><strong>Posição da data e hora:</strong> ${posText(datePosition.value)}</p>
-    <p><strong>Tempo de troca dos banners:</strong> ${bannerInterval.value} segundos</p>
-    <p><strong>Update automático da launcher ativado?</strong> ${yesNo(autoUpdate.value)}</p>
-    <br>
-    <strong>ATENÇÃO! Tenha certeza de que estão corretas as informações!</strong>
-    <p style="color:#aebcd0;">Os dados acima estão corretos?</p>
-  `;
-}
-
-async function salvar(){
-  const bg = selectedBackground ? (selectedBackground.imagem || selectedBackground.image || selectedBackground.url || '') : '';
-
-  const body = {
-    name:name.value.trim(),
-    logo,
-    background:bg,
-    backgroundId:selectedBackground ? selectedBackground.id || '' : '',
-    logoPosition:logoPosition.value,
-    buttonsLocked:buttonsLocked.value === 'sim',
-    unlockPassword:unlockPassword.value,
-    showAppsButton:showAppsButton.value === 'sim',
-    iconSize:iconSize.value,
-    clockSize:clockSize.value,
-    expireSize:expireSize.value,
-    bannerPosition:bannerPosition.value,
-    datePosition:datePosition.value,
-    bannerInterval:Number(bannerInterval.value || 5),
-    autoUpdate:autoUpdate.value === 'sim',
-    apps:currentLayout?.apps || [],
-    mainApps:currentLayout?.mainApps || [],
-    secondaryApps:currentLayout?.secondaryApps || [],
-    banners:currentLayout?.banners || [],
-    links:currentLayout?.links || []
-  };
-
-  let url = API + '/layouts';
-  let method = 'POST';
-
-  if(editId){
-    url = API + '/layouts/' + encodeURIComponent(editId);
-    method = 'PUT';
-  }
-
-  try{
-    const res = await fetch(url,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    const data = await res.json().catch(()=>({}));
-
-    if(!res.ok || data.ok === false){
-      alert(data.message || 'Erro ao salvar layout');
-      return;
-    }
-
-    alert('Layout salvo!');
-    location.href = 'layouts.html';
-  }catch(e){
-    alert('Erro ao salvar layout');
-  }
-}
-
-document.addEventListener('DOMContentLoaded', carregarLayout);
 </script>
 
 </body>
