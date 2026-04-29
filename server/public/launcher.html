@@ -6,114 +6,335 @@
 <title>Launcher</title>
 
 <style>
+*{box-sizing:border-box}
+
 body{
   margin:0;
-  font-family:Arial;
-  background:#000;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#e8e3e3;
   color:#fff;
+  overflow:hidden;
 }
 
-#bg{
+.bg{
   position:fixed;
-  width:100%;
-  height:100%;
-  object-fit:cover;
+  inset:0;
+  background:#e8e3e3;
+  background-size:cover;
+  background-position:center;
+  z-index:-2;
+}
+
+.bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.08);
   z-index:-1;
 }
 
 .top{
+  height:140px;
   display:flex;
+  align-items:flex-start;
   justify-content:space-between;
-  padding:15px;
+  padding:35px 60px 0;
 }
 
-.apps{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:20px;
-  padding:20px;
+.logo{
+  max-width:260px;
+  max-height:80px;
 }
 
-.app{
+.logo img{
+  max-width:100%;
+  max-height:80px;
+  object-fit:contain;
+}
+
+.icons{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  color:#252139;
+  font-size:44px;
+}
+
+.clock{
+  position:absolute;
+  top:8px;
+  left:10px;
+  font-size:22px;
+  color:#fff;
+  background:rgba(0,0,0,.35);
+  padding:3px 10px;
+  border-radius:4px;
+}
+
+.content{
+  width:calc(100% - 90px);
+  height:calc(100vh - 185px);
+  margin:0 auto;
+  background:#525d66;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:40px;
+}
+
+.message{
+  font-size:31px;
+  font-weight:700;
+  text-align:center;
+  line-height:1.35;
+}
+
+.message.left{
+  text-align:left;
+  align-self:flex-start;
+  font-weight:400;
+}
+
+.main-apps{
+  display:flex;
+  gap:18px;
+  align-items:center;
+  margin-bottom:28px;
+}
+
+.main-app{
+  width:130px;
+  height:150px;
+  background:rgba(0,0,0,.24);
+  border-radius:8px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:10px;
+}
+
+.main-app img{
+  width:76px;
+  height:76px;
+  object-fit:contain;
+  border-radius:12px;
+}
+
+.main-app span{
+  margin-top:12px;
+  font-size:16px;
   text-align:center;
 }
 
+.secondary-apps{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:18px;
+  width:100%;
+}
+
+.app{
+  height:115px;
+  background:rgba(0,0,0,.22);
+  border-radius:8px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:8px;
+}
+
 .app img{
-  width:60px;
-  height:60px;
+  width:58px;
+  height:58px;
+  object-fit:contain;
+  border-radius:10px;
+}
+
+.app span{
+  margin-top:8px;
+  font-size:14px;
+  text-align:center;
 }
 
 .bottom{
+  height:38px;
+  background:#141414;
   position:fixed;
   bottom:0;
-  width:100%;
-  background:#111;
+  left:0;
+  right:0;
   display:flex;
   justify-content:space-around;
-  padding:10px;
+  align-items:center;
+  font-size:18px;
+}
+
+.loading{
+  font-size:28px;
+  text-align:center;
+  opacity:.9;
+}
+
+@media(max-width:900px){
+  .top{padding:30px 38px 0}
+  .icons{font-size:36px}
+  .content{width:calc(100% - 50px)}
+  .secondary-apps{grid-template-columns:repeat(4,1fr)}
 }
 </style>
 </head>
 
 <body>
 
-<img id="bg">
+<div id="bg" class="bg"></div>
 
-<div class="top">
-  <div id="logo"></div>
-  <div id="hora"></div>
-</div>
+<div id="clock" class="clock"></div>
 
-<div id="apps" class="apps"></div>
+<header class="top">
+  <div id="logo" class="logo"></div>
 
-<div class="bottom">
-  <div>🏠</div>
-  <div>📦</div>
-  <div>⬆️</div>
-</div>
+  <div class="icons">
+    <span>⚙</span>
+    <span>📶</span>
+    <span>🎧</span>
+  </div>
+</header>
+
+<main id="content" class="content">
+  <div class="loading">Carregando launcher...</div>
+</main>
+
+<nav class="bottom">
+  <span>🏠</span>
+  <span>📦</span>
+  <span>⬆️</span>
+</nav>
 
 <script>
 const API = window.location.origin;
 
-// ⚠️ depois vamos automatizar isso
-const DEVICE_CODE = "TESTE123";
+const params = new URLSearchParams(window.location.search);
+const DEVICE_CODE = (params.get('code') || params.get('codigo') || '').trim();
 
-async function carregar(){
-  try{
-    const res = await fetch(API + "/launcher/device/" + DEVICE_CODE);
-    const data = await res.json();
-
-    if(data.layout && data.layout.background){
-      document.getElementById("bg").src = data.layout.background;
-    }
-
-    if(data.layout && data.layout.logo){
-      document.getElementById("logo").innerHTML =
-        `<img src="${data.layout.logo}" height="40">`;
-    }
-
-    const container = document.getElementById("apps");
-    container.innerHTML = "";
-
-    (data.apps || []).forEach(app=>{
-      const div = document.createElement("div");
-      div.className = "app";
-      div.innerHTML = `
-        <img src="${app.icon}">
-        <div>${app.name}</div>
-      `;
-      container.appendChild(div);
-    });
-
-  }catch(e){
-    console.log(e);
-  }
+function setClock(){
+  const d = new Date();
+  document.getElementById('clock').innerText = d.toLocaleTimeString('pt-BR', {
+    hour:'2-digit',
+    minute:'2-digit',
+    second:'2-digit'
+  });
 }
 
-setInterval(()=>{
-  document.getElementById("hora").innerText =
-    new Date().toLocaleTimeString();
-},1000);
+setClock();
+setInterval(setClock, 1000);
+
+function appIcon(app){
+  if(app.icon) return app.icon;
+
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+      <rect width="80" height="80" rx="16" fill="#287df3"/>
+      <text x="40" y="48" text-anchor="middle" font-size="30" fill="white" font-family="Arial">APP</text>
+    </svg>
+  `);
+}
+
+function showMessage(text, left=false){
+  document.getElementById('content').innerHTML = `
+    <div class="message ${left ? 'left' : ''}">
+      ${text}
+    </div>
+  `;
+}
+
+function renderApps(mainApps, secondaryApps){
+  const content = document.getElementById('content');
+
+  const mainHtml = mainApps.map(app => `
+    <div class="main-app" onclick="openApp('${app.apk || ''}')">
+      <img src="${appIcon(app)}">
+      <span>${app.name || 'Aplicativo'}</span>
+    </div>
+  `).join('');
+
+  const secondaryHtml = secondaryApps.map(app => `
+    <div class="app" onclick="openApp('${app.apk || ''}')">
+      <img src="${appIcon(app)}">
+      <span>${app.name || 'Aplicativo'}</span>
+    </div>
+  `).join('');
+
+  content.innerHTML = `
+    <div class="main-apps">${mainHtml}</div>
+    <div class="secondary-apps">${secondaryHtml}</div>
+  `;
+}
+
+function openApp(url){
+  if(!url) return;
+  window.location.href = url;
+}
+
+async function carregar(){
+  if(!DEVICE_CODE){
+    showMessage('Código do dispositivo não informado.<br>Abra com:<br>?code=SEU_CODIGO');
+    return;
+  }
+
+  try{
+    const res = await fetch(API + '/launcher/device/' + encodeURIComponent(DEVICE_CODE), {
+      cache:'no-store'
+    });
+
+    const data = await res.json();
+
+    if(!data.ok){
+      showMessage('Erro ao carregar dispositivo.');
+      return;
+    }
+
+    if(!data.active && !data.activated){
+      showMessage(`
+        Olá boa tarde<br>
+        Seu dispositivo ainda não foi ativado.<br>
+        Por favor acesse o painel e faça a ativação.<br>
+        Código do dispositivo: ${DEVICE_CODE}<br>
+        ATENÇÃO antes de ativar, recomendamos que libere um teste e<br>
+        veja se tudo irá funcionar corretamente!
+      `, true);
+      return;
+    }
+
+    if(!data.layout){
+      showMessage('Dispositivo ativado, mas nenhum layout foi vinculado.');
+      return;
+    }
+
+    if(data.layout.background){
+      document.getElementById('bg').style.backgroundImage = `url("${data.layout.background}")`;
+    }
+
+    if(data.layout.logo){
+      document.getElementById('logo').innerHTML = `<img src="${data.layout.logo}">`;
+    }
+
+    const mainApps = Array.isArray(data.mainApps) ? data.mainApps.slice(0,3) : [];
+    const secondaryApps = Array.isArray(data.secondaryApps) ? data.secondaryApps : [];
+
+    if(!mainApps.length && !secondaryApps.length){
+      showMessage('Layout carregado, mas nenhum aplicativo foi escolhido.');
+      return;
+    }
+
+    renderApps(mainApps, secondaryApps);
+
+  }catch(e){
+    console.error(e);
+    showMessage('Erro de conexão com o servidor.');
+  }
+}
 
 carregar();
 </script>
