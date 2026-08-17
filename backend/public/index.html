@@ -1,0 +1,1305 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LPSM Control</title>
+  <link rel="stylesheet" href="/styles.css?v=20260814-presence-1">
+
+  <style>
+    .appearance-help {
+      margin: 0 0 14px;
+      color: #9ca8b8;
+      line-height: 1.5;
+    }
+
+    .appearance-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .appearance-preview-card {
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      background: rgba(7,13,24,.90);
+    }
+
+    .appearance-preview-card h3 {
+      margin: 0;
+      padding: 12px 14px 8px;
+      font-size: 14px;
+    }
+
+    .appearance-preview-box {
+      position: relative;
+      min-height: 180px;
+      background:
+        radial-gradient(circle at top left, rgba(114,86,168,.35), transparent 46%),
+        #08111e;
+      overflow: hidden;
+    }
+
+    .appearance-preview-box.banner {
+      aspect-ratio: 16 / 5;
+      min-height: 120px;
+    }
+
+    .appearance-preview-box.wallpaper {
+      aspect-ratio: 16 / 9;
+    }
+
+    .appearance-preview-box img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .appearance-preview-empty {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      text-align: center;
+      color: #8f9bad;
+      font-size: 13px;
+    }
+
+    .appearance-message-preview {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      background: rgba(7,13,24,.90);
+    }
+
+    .appearance-message-preview strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    #supportPreview {
+      color: #b9c2ce;
+      word-break: break-word;
+    }
+
+    .appearance-tip {
+      display: block;
+      margin-top: 5px;
+      color: #7f8a99;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+
+    .appearance-editor {
+      display: block;
+    }
+
+    .appearance-section-title {
+      margin: 0 0 4px;
+    }
+
+    .home-style-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .home-style-card {
+      position: relative;
+      display: block;
+      padding: 10px;
+      border: 2px solid rgba(255,255,255,.09);
+      border-radius: 14px;
+      background: rgba(8,17,30,.75);
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .home-style-card:has(input:checked) {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 2px rgba(139,92,246,.18);
+    }
+
+    .home-style-card input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .home-style-card strong,
+    .home-style-card small {
+      display: block;
+      text-align: center;
+    }
+
+    .home-style-card small {
+      margin-top: 3px;
+      color: #8f9bad;
+    }
+
+    .home-style-mini {
+      height: 90px;
+      margin-bottom: 8px;
+      padding: 8px;
+      border-radius: 10px;
+      background: #07101d;
+      overflow: hidden;
+    }
+
+    .mini-banner {
+      display: block;
+      height: 38px;
+      border-radius: 6px;
+      background: linear-gradient(135deg,#28114f,#7042c1,#151d3b);
+    }
+
+    .mini-buttons {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 5px;
+      margin-top: 7px;
+    }
+
+    .mini-buttons i {
+      display: block;
+      height: 26px;
+      border-radius: 5px;
+      background: #6843a7;
+    }
+
+    .home-style-mini.compact .mini-banner { height: 28px; }
+    .home-style-mini.compact .mini-buttons i { height: 19px; }
+    .home-style-mini.classic .mini-buttons i {
+      background: transparent;
+      border: 1px solid #7448b5;
+    }
+
+    .appearance-fields {
+      display: grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 14px;
+    }
+
+    .appearance-fields .wide {
+      grid-column: 1 / -1;
+    }
+
+    .accent-row {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #accentColorInput {
+      width: 58px;
+      height: 42px;
+      padding: 2px;
+      cursor: pointer;
+    }
+
+    .appearance-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 760px) {
+      .appearance-preview-grid,
+      .home-style-grid,
+      .appearance-fields {
+        grid-template-columns: 1fr;
+      }
+
+      .appearance-fields .wide {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<main>
+  <header>
+    <div>
+      <span class="brand">LPSM</span>
+      <small>CONTROL</small>
+    </div>
+    <button id="logout" class="ghost hidden">Sair</button>
+  </header>
+
+  <section id="login" class="card login">
+    <h1>Painel de controle</h1>
+    <p>Gerencie clientes, dispositivos e a fonte de conteúdo de cada cliente.</p>
+
+    <form id="loginForm">
+      <label>
+        Usuário
+        <input name="user" autocomplete="username" required value="admin">
+      </label>
+
+      <label>
+        Senha
+        <input name="password" type="password" autocomplete="current-password" required>
+      </label>
+
+      <button>Entrar</button>
+      <output></output>
+    </form>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">VISÃO GERAL</p>
+        <h1>Operação LPSM</h1>
+        <p id="summary"></p>
+      </div>
+      <button id="refresh" class="ghost">Atualizar</button>
+    </div>
+
+    <nav>
+      <button data-tab="clients" class="active">Clientes</button>
+      <button data-tab="playlists">Fontes</button>
+      <button data-tab="appearance">Aparência</button>
+      <button data-tab="audit">Logs</button>
+    </nav>
+
+    <div id="clients" class="tab">
+      <div class="section-title">
+        <div>
+          <h2>Clientes e dispositivos</h2>
+          <p class="meta">
+            O MAC aparece automaticamente quando o APK é aberto.
+            Cadastre o cliente e escolha M3U URL ou Xtream Codes.
+          </p>
+        </div>
+        <button data-open="clientDialog">Novo cliente</button>
+      </div>
+
+      <div id="clientList" class="grid"></div>
+    </div>
+
+    <div id="playlists" class="tab hidden">
+      <div class="section-title">
+        <div>
+          <h2>Fontes dos clientes</h2>
+          <p class="meta">
+            O nome da fonte é automático.
+            Aqui você altera somente a conexão, status ou vencimento.
+          </p>
+        </div>
+      </div>
+
+      <div id="playlistList" class="grid"></div>
+    </div>
+
+    <div id="appearance" class="tab hidden">
+      <div class="section-title">
+        <div>
+          <h2>Aparência da tela inicial</h2>
+          <p class="meta">
+            Você pode salvar somente o banner. Papel de parede, mensagem e cor são opcionais.
+            O modelo escolhido também será aplicado quando o aplicativo carregar a configuração novamente.
+          </p>
+        </div>
+      </div>
+
+      <form id="appearanceForm" class="card appearance-editor">
+
+        <!-- O backend atual já salva supportMessage.
+             Este campo fica escondido e guarda também as preferências da HOME. -->
+        <input id="supportMessageStorage" name="supportMessage" type="hidden">
+
+        <h3 class="appearance-section-title">Modelo da aparência</h3>
+        <p class="appearance-help">Escolha como os três botões da tela inicial serão mostrados.</p>
+
+        <div class="home-style-grid">
+          <label class="home-style-card" data-style-card="standard">
+            <input type="radio" name="homeStyleUi" value="standard" checked>
+            <div class="home-style-mini standard">
+              <span class="mini-banner"></span>
+              <span class="mini-buttons"><i></i><i></i><i></i></span>
+            </div>
+            <strong>Modelo Padrão</strong>
+            <small>Banner maior e cartões com ícone</small>
+          </label>
+
+          <label class="home-style-card" data-style-card="compact">
+            <input type="radio" name="homeStyleUi" value="compact">
+            <div class="home-style-mini compact">
+              <span class="mini-banner"></span>
+              <span class="mini-buttons"><i></i><i></i><i></i></span>
+            </div>
+            <strong>Modelo Compacto</strong>
+            <small>Mais espaço e botões menores</small>
+          </label>
+
+          <label class="home-style-card" data-style-card="classic">
+            <input type="radio" name="homeStyleUi" value="classic">
+            <div class="home-style-mini classic">
+              <span class="mini-banner"></span>
+              <span class="mini-buttons"><i></i><i></i><i></i></span>
+            </div>
+            <strong>Modelo Clássico</strong>
+            <small>Visual mais discreto e equilibrado</small>
+          </label>
+        </div>
+
+        <div class="appearance-fields">
+          <label>
+            Banner no topo
+            <input
+              id="bannerUrlInput"
+              name="bannerUrl"
+              type="url"
+              placeholder="https://site.com/banner.jpg"
+            >
+            <span class="appearance-tip">Recomendado: 1920 × 600 ou proporção horizontal semelhante.</span>
+          </label>
+
+          <label>
+            Mostrar banner
+            <select id="showBannerInput">
+              <option value="1">Sim</option>
+              <option value="0">Não</option>
+            </select>
+          </label>
+
+          <label>
+            Papel de parede
+            <input
+              id="wallpaperUrlInput"
+              name="wallpaperUrl"
+              type="url"
+              placeholder="https://site.com/fundo.jpg"
+            >
+            <span class="appearance-tip">Recomendado: 1920 × 1080.</span>
+          </label>
+
+          <label>
+            Cor principal
+            <div class="accent-row">
+              <input id="accentColorInput" type="color" value="#7C4DFF">
+              <input id="accentColorText" type="text" value="#7C4DFF" maxlength="7">
+            </div>
+          </label>
+
+          <label class="wide">
+            Mensagem abaixo do título
+            <input
+              id="supportMessageInput"
+              type="text"
+              maxlength="120"
+              placeholder="Escolha o que deseja assistir"
+            >
+          </label>
+        </div>
+
+        <div class="appearance-actions">
+          <button id="restoreAppearanceDefault" type="button" class="ghost">Restaurar padrão</button>
+          <button type="submit">Salvar aparência</button>
+        </div>
+      </form>
+
+      <div class="appearance-preview-grid">
+        <article class="appearance-preview-card">
+          <h3>Prévia do banner</h3>
+          <div class="appearance-preview-box banner">
+            <img id="bannerPreview" alt="Prévia do banner" hidden>
+            <div id="bannerEmpty" class="appearance-preview-empty">Cole uma URL para visualizar o banner.</div>
+          </div>
+        </article>
+
+        <article class="appearance-preview-card">
+          <h3>Prévia do papel de parede</h3>
+          <div class="appearance-preview-box wallpaper">
+            <img id="wallpaperPreview" alt="Prévia do papel de parede" hidden>
+            <div id="wallpaperEmpty" class="appearance-preview-empty">Cole uma URL para visualizar o fundo.</div>
+          </div>
+        </article>
+      </div>
+
+      <div class="appearance-message-preview">
+        <strong>Prévia da mensagem</strong>
+        <div id="supportPreview">Escolha o que deseja assistir</div>
+      </div>
+    </div>
+
+    <div id="audit" class="tab hidden">
+      <div class="section-title">
+        <h2>Atividade recente</h2>
+      </div>
+      <div id="auditList" class="card"></div>
+    </div>
+  </section>
+</main>
+
+<dialog id="clientDialog">
+  <form id="clientForm" method="dialog">
+    <h2>Novo cliente</h2>
+
+    <p class="meta">
+      Ao editar, os dados atuais continuam valendo até você clicar em Salvar alterações.
+    </p>
+
+    <label>
+      Nome do cliente
+      <input name="name" required>
+    </label>
+
+    <label id="pendingMacLabel">
+      Aparelho aguardando ativação
+      <select name="pendingMac"></select>
+    </label>
+
+    <label id="fixedMacLabel" class="hidden">
+      MAC do aparelho
+      <input name="macAddress" readonly>
+    </label>
+
+    <label>
+      Status
+      <select name="enabled">
+        <option value="true">Ativo</option>
+        <option value="false">Inativo</option>
+      </select>
+    </label>
+
+    <label>
+      Data de expiração
+      <input name="expiresAt" type="date">
+    </label>
+
+    <fieldset>
+      <legend>Fonte de conteúdo</legend>
+
+      <label>
+        Tipo de conexão
+        <select name="sourceType" id="clientSourceType">
+          <option value="M3U">M3U por URL</option>
+          <option value="XTREAM">Xtream Codes</option>
+        </select>
+      </label>
+
+      <div id="clientM3uFields">
+        <label>
+          URL da lista M3U / M3U8
+          <input
+            name="m3uUrl"
+            type="url"
+            placeholder="https://servidor/lista.m3u"
+          >
+        </label>
+
+        <label>
+          URL XMLTV (opcional)
+          <input
+            name="xmltvUrl"
+            type="url"
+            placeholder="https://servidor/epg.xml"
+          >
+        </label>
+      </div>
+
+      <div id="clientXtreamFields" class="hidden">
+        <label>
+          URL do servidor
+          <input
+            name="xtreamServer"
+            type="url"
+            placeholder="http://servidor:porta"
+          >
+        </label>
+
+        <label>
+          Usuário
+          <input
+            name="xtreamUsername"
+            autocomplete="off"
+          >
+        </label>
+
+        <label>
+          Senha
+          <input
+            name="xtreamPassword"
+            type="password"
+            autocomplete="off"
+          >
+        </label>
+
+        <p class="meta">
+          O LPSM cria automaticamente a URL M3U Plus usada pelo aplicativo.
+        </p>
+      </div>
+    </fieldset>
+
+    <input type="hidden" name="sourceId">
+
+    <div class="actions">
+      <button type="button" class="ghost close">Cancelar</button>
+      <button value="default">Criar cliente</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="sourceDialog">
+  <form id="sourceForm" method="dialog">
+    <h2>Editar fonte</h2>
+
+    <p class="meta">
+      A conexão antiga continua funcionando até você clicar em Salvar alterações.
+    </p>
+
+    <label>
+      Tipo de conexão
+      <select name="sourceType" id="sourceType">
+        <option value="M3U">M3U por URL</option>
+        <option value="XTREAM">Xtream Codes</option>
+      </select>
+    </label>
+
+    <div id="sourceM3uFields">
+      <label>
+        URL da lista M3U / M3U8
+        <input name="m3uUrl" type="url">
+      </label>
+
+      <label>
+        URL XMLTV (opcional)
+        <input name="xmltvUrl" type="url">
+      </label>
+    </div>
+
+    <div id="sourceXtreamFields" class="hidden">
+      <label>
+        URL do servidor
+        <input name="xtreamServer" type="url">
+      </label>
+
+      <label>
+        Usuário
+        <input name="xtreamUsername" autocomplete="off">
+      </label>
+
+      <label>
+        Senha
+        <input name="xtreamPassword" type="password" autocomplete="off">
+      </label>
+    </div>
+
+    <label>
+      Status da fonte
+      <select name="enabled">
+        <option value="true">Ativa</option>
+        <option value="false">Inativa</option>
+      </select>
+    </label>
+
+    <label>
+      Data de expiração
+      <input name="expiresAt" type="date">
+    </label>
+
+    <input type="hidden" name="sourceId">
+
+    <div class="actions">
+      <button type="button" class="ghost close">Cancelar</button>
+      <button value="default">Salvar alterações</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="/app.js?v=20260814-presence-1" type="module"></script>
+
+<script>
+(function () {
+
+  const get =
+    id => document.getElementById(id);
+
+  const markerRegex =
+    /\[\[LPSM_HOME\|([^\]]+)\]\]/i;
+
+  function parseStoredAppearance() {
+
+    const storage =
+      get('supportMessageStorage');
+
+    if (!storage) {
+      return;
+    }
+
+    const raw =
+      String(storage.value || '').trim();
+
+    const match =
+      raw.match(markerRegex);
+
+    const cleanMessage =
+      raw
+        .replace(markerRegex, '')
+        .trim();
+
+    let style =
+      'standard';
+
+    let banner =
+      '1';
+
+    let accent =
+      '7C4DFF';
+
+    if (match) {
+
+      const parts =
+        String(match[1] || '')
+          .split('|');
+
+      for (const part of parts) {
+
+        const pos =
+          part.indexOf('=');
+
+        if (pos <= 0) {
+          continue;
+        }
+
+        const key =
+          part
+            .slice(0, pos)
+            .trim()
+            .toLowerCase();
+
+        const value =
+          part
+            .slice(pos + 1)
+            .trim();
+
+        if (key === 'style') {
+          style =
+            value.toLowerCase();
+        }
+
+        if (key === 'banner') {
+          banner =
+            value;
+        }
+
+        if (key === 'accent') {
+          accent =
+            value
+              .replace('#', '')
+              .toUpperCase();
+        }
+      }
+    }
+
+    if (
+      ![
+        'standard',
+        'compact',
+        'classic'
+      ].includes(style)
+    ) {
+      style =
+        'standard';
+    }
+
+    document
+      .querySelectorAll(
+        'input[name="homeStyleUi"]'
+      )
+      .forEach(
+        input => {
+
+          input.checked =
+            input.value === style;
+        }
+      );
+
+    const showBanner =
+      get('showBannerInput');
+
+    if (showBanner) {
+
+      showBanner.value =
+        (
+          banner === '0' ||
+          banner === 'false'
+        )
+          ? '0'
+          : '1';
+    }
+
+    if (
+      !/^[0-9A-F]{6}$/.test(
+        accent
+      )
+    ) {
+      accent =
+        '7C4DFF';
+    }
+
+    const accentColor =
+      get('accentColorInput');
+
+    const accentText =
+      get('accentColorText');
+
+    if (accentColor) {
+      accentColor.value =
+        '#' + accent;
+    }
+
+    if (accentText) {
+      accentText.value =
+        '#' + accent;
+    }
+
+    const message =
+      get('supportMessageInput');
+
+    if (message) {
+      message.value =
+        cleanMessage;
+    }
+
+    updateAllPreviews();
+  }
+
+
+  function buildStoredAppearance() {
+
+    const storage =
+      get('supportMessageStorage');
+
+    if (!storage) {
+      return '';
+    }
+
+    const style =
+      document.querySelector(
+        'input[name="homeStyleUi"]:checked'
+      )?.value ||
+      'standard';
+
+    const banner =
+      get('showBannerInput')
+        ?.value === '0'
+        ? '0'
+        : '1';
+
+    let accent =
+      String(
+        get('accentColorText')
+          ?.value ||
+        '#7C4DFF'
+      )
+        .replace('#', '')
+        .trim()
+        .toUpperCase();
+
+    if (
+      !/^[0-9A-F]{6}$/.test(
+        accent
+      )
+    ) {
+      accent =
+        '7C4DFF';
+    }
+
+    const message =
+      String(
+        get('supportMessageInput')
+          ?.value ||
+        ''
+      )
+        .replace(markerRegex, '')
+        .trim();
+
+    /*
+     * Mesmo sem mensagem, o marcador continua sendo salvo.
+     * É ele que faz Padrão / Compacto / Clássico funcionar.
+     */
+    const marker =
+      `[[LPSM_HOME|style=${style}|banner=${banner}|accent=${accent}]]`;
+
+    storage.value =
+      message
+        ? `${message}
+${marker}`
+        : marker;
+
+    return storage.value;
+  }
+
+
+  function updateImagePreview(
+    inputId,
+    imageId,
+    emptyId
+  ) {
+
+    const input =
+      get(inputId);
+
+    const image =
+      get(imageId);
+
+    const empty =
+      get(emptyId);
+
+    if (
+      !input ||
+      !image ||
+      !empty
+    ) {
+      return;
+    }
+
+    const url =
+      String(
+        input.value ||
+        ''
+      ).trim();
+
+    if (!url) {
+
+      image.hidden =
+        true;
+
+      image.removeAttribute(
+        'src'
+      );
+
+      empty.hidden =
+        false;
+
+      empty.textContent =
+        'Nenhuma imagem configurada.';
+
+      return;
+    }
+
+    image.onload =
+      () => {
+
+        image.hidden =
+          false;
+
+        empty.hidden =
+          true;
+      };
+
+    image.onerror =
+      () => {
+
+        image.hidden =
+          true;
+
+        empty.hidden =
+          false;
+
+        empty.textContent =
+          'Não foi possível carregar esta imagem. Verifique a URL.';
+      };
+
+    empty.textContent =
+      'Carregando imagem...';
+
+    empty.hidden =
+      false;
+
+    image.src =
+      url;
+  }
+
+
+  function updateMessagePreview() {
+
+    const preview =
+      get('supportPreview');
+
+    if (!preview) {
+      return;
+    }
+
+    preview.textContent =
+      String(
+        get('supportMessageInput')
+          ?.value ||
+        ''
+      ).trim() ||
+      'Sem mensagem extra.';
+  }
+
+
+  function updateAllPreviews() {
+
+    updateImagePreview(
+      'bannerUrlInput',
+      'bannerPreview',
+      'bannerEmpty'
+    );
+
+    updateImagePreview(
+      'wallpaperUrlInput',
+      'wallpaperPreview',
+      'wallpaperEmpty'
+    );
+
+    updateMessagePreview();
+  }
+
+
+  function syncAccentFromColor() {
+
+    const value =
+      String(
+        get('accentColorInput')
+          ?.value ||
+        '#7C4DFF'
+      ).toUpperCase();
+
+    const text =
+      get('accentColorText');
+
+    if (text) {
+      text.value =
+        value;
+    }
+  }
+
+
+  function syncAccentFromText() {
+
+    let value =
+      String(
+        get('accentColorText')
+          ?.value ||
+        ''
+      )
+        .trim()
+        .toUpperCase();
+
+    if (
+      !value.startsWith('#')
+    ) {
+      value =
+        '#' + value;
+    }
+
+    if (
+      /^#[0-9A-F]{6}$/.test(
+        value
+      )
+    ) {
+
+      const color =
+        get('accentColorInput');
+
+      if (color) {
+        color.value =
+          value;
+      }
+    }
+  }
+
+
+  function restoreDefault() {
+
+    const standard =
+      document.querySelector(
+        'input[name="homeStyleUi"][value="standard"]'
+      );
+
+    if (standard) {
+      standard.checked =
+        true;
+    }
+
+    const banner =
+      get('showBannerInput');
+
+    if (banner) {
+      banner.value =
+        '1';
+    }
+
+    const accentColor =
+      get('accentColorInput');
+
+    const accentText =
+      get('accentColorText');
+
+    if (accentColor) {
+      accentColor.value =
+        '#7C4DFF';
+    }
+
+    if (accentText) {
+      accentText.value =
+        '#7C4DFF';
+    }
+
+    const message =
+      get('supportMessageInput');
+
+    if (message) {
+      message.value =
+        '';
+    }
+
+    updateAllPreviews();
+  }
+
+
+  async function saveAppearance(
+    event
+  ) {
+
+    event.preventDefault();
+
+    const form =
+      event.currentTarget;
+
+    const submit =
+      event.submitter ||
+      form.querySelector(
+        'button[type="submit"]'
+      );
+
+    if (submit) {
+      submit.disabled =
+        true;
+
+      submit.textContent =
+        'Salvando...';
+    }
+
+    try {
+
+      const storedMessage =
+        buildStoredAppearance();
+
+      /*
+       * Nenhum destes campos é obrigatório.
+       *
+       * Pode salvar:
+       * - somente banner
+       * - somente modelo
+       * - banner + modelo
+       * - wallpaper
+       * - mensagem
+       * - qualquer combinação
+       */
+      const payload = {
+
+        bannerUrl:
+          String(
+            get('bannerUrlInput')
+              ?.value ||
+            ''
+          ).trim(),
+
+        wallpaperUrl:
+          String(
+            get('wallpaperUrlInput')
+              ?.value ||
+            ''
+          ).trim(),
+
+        supportMessage:
+          storedMessage
+      };
+
+      const response =
+        await fetch(
+          '/api/admin/appearance',
+          {
+            method: 'PUT',
+
+            headers: {
+              'content-type':
+                'application/json',
+
+              authorization:
+                `Bearer ${sessionStorage.lpsmToken || ''}`
+            },
+
+            body:
+              JSON.stringify(
+                payload
+              )
+          }
+        );
+
+      const text =
+        await response.text();
+
+      let data =
+        {};
+
+      try {
+        data =
+          text
+            ? JSON.parse(text)
+            : {};
+      } catch {
+        data =
+          {};
+      }
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          `Erro ${response.status}`
+        );
+      }
+
+      /*
+       * Atualiza o campo escondido com exatamente
+       * o que voltou do servidor.
+       */
+      if (
+        data.supportMessage !==
+        undefined
+      ) {
+
+        get('supportMessageStorage').value =
+          data.supportMessage ||
+          '';
+      }
+
+      alert(
+        'Aparência salva com sucesso. Feche e abra o LPSM para aplicar.'
+      );
+
+      parseStoredAppearance();
+
+    } catch (error) {
+
+      alert(
+        `Não foi possível salvar a aparência: ${error.message}`
+      );
+
+    } finally {
+
+      if (submit) {
+        submit.disabled =
+          false;
+
+        submit.textContent =
+          'Salvar aparência';
+      }
+    }
+  }
+
+
+  document.addEventListener(
+    'DOMContentLoaded',
+    () => {
+
+      /*
+       * O app.js antigo também cria um onsubmit.
+       * Aqui substituímos por este salvamento,
+       * que já entende os modelos da nova HOME.
+       */
+      setTimeout(
+        () => {
+
+          const form =
+            get('appearanceForm');
+
+          if (form) {
+            form.onsubmit =
+              saveAppearance;
+          }
+        },
+        300
+      );
+
+      get('bannerUrlInput')
+        ?.addEventListener(
+          'input',
+          updateAllPreviews
+        );
+
+      get('wallpaperUrlInput')
+        ?.addEventListener(
+          'input',
+          updateAllPreviews
+        );
+
+      get('supportMessageInput')
+        ?.addEventListener(
+          'input',
+          updateMessagePreview
+        );
+
+      get('accentColorInput')
+        ?.addEventListener(
+          'input',
+          syncAccentFromColor
+        );
+
+      get('accentColorText')
+        ?.addEventListener(
+          'input',
+          syncAccentFromText
+        );
+
+      get('restoreAppearanceDefault')
+        ?.addEventListener(
+          'click',
+          restoreDefault
+        );
+
+      document
+        .querySelector(
+          '[data-tab="appearance"]'
+        )
+        ?.addEventListener(
+          'click',
+          () => {
+
+            setTimeout(
+              parseStoredAppearance,
+              180
+            );
+          }
+        );
+
+      /*
+       * O app.js carrega o estado de forma assíncrona.
+       * Estes disparos pegam o valor salvo assim que
+       * ele chegar ao formulário.
+       */
+      setTimeout(
+        parseStoredAppearance,
+        900
+      );
+
+      setTimeout(
+        parseStoredAppearance,
+        1900
+      );
+    }
+  );
+
+})();
+</script>
+
+</body>
+</html>

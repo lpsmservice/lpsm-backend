@@ -1,0 +1,840 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/activation_background">
+
+
+    <!-- FUNDO -->
+    <ImageView
+        android:id="@+id/wallpaper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.58"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop" />
+
+
+    <!-- ===================================================== -->
+    <!-- CONTAINER PRINCIPAL                                  -->
+    <!-- ===================================================== -->
+
+    <LinearLayout
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="6dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="6dp"
+        android:paddingBottom="4dp">
+
+
+        <!--
+            Mantemos logo/status porque o Kotlin usa os IDs.
+
+            Na navegação eles ficam extremamente pequenos
+            para não tomar espaço.
+        -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/logo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:letterSpacing="0.05"
+                android:maxLines="1"
+                android:text="LPSM PLAYER"
+                android:textColor="@color/accent"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/muted"
+                android:textSize="8sp" />
+
+        </LinearLayout>
+
+
+
+        <!-- ================================================= -->
+        <!-- ATIVAÇÃO COMPLETA                                -->
+        <!-- ================================================= -->
+
+        <LinearLayout
+            android:id="@+id/activation"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Seu dispositivo ainda não está ativado"
+                    android:textColor="@color/text"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="Cadastre o endereço abaixo no painel de controle"
+                    android:textColor="@color/text"
+                    android:textSize="13sp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:background="@drawable/mac_panel"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ENDEREÇO MAC"
+                        android:textColor="@color/text"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/deviceId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:textColor="#FFE500"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <!-- IDs usados pelo Kotlin -->
+                <EditText
+                    android:id="@+id/server"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:alpha="0"
+                    android:inputType="textUri" />
+
+                <EditText
+                    android:id="@+id/code"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:alpha="0" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/activateButton"
+                        android:layout_width="0dp"
+                        android:layout_height="46dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="#7656A8"
+                        android:text="ATUALIZAR"
+                        android:textColor="@color/text"
+                        android:textSize="13sp" />
+
+                    <Space
+                        android:layout_width="7dp"
+                        android:layout_height="1dp" />
+
+                    <Button
+                        android:id="@+id/cancelButton"
+                        android:layout_width="0dp"
+                        android:layout_height="46dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="#7656A8"
+                        android:text="CANCELAR"
+                        android:textColor="@color/text"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.40"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <TextView
+                    android:layout_width="105dp"
+                    android:layout_height="105dp"
+                    android:background="@drawable/panel_badge"
+                    android:gravity="center"
+                    android:text="LPSM\nCONTROL"
+                    android:textColor="#08111E"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:text="PAINEL DE ATIVAÇÃO"
+                    android:textColor="#FFE500"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <!-- ================================================= -->
+        <!-- HOME                                             -->
+        <!-- ================================================= -->
+
+        <LinearLayout
+            android:id="@+id/homePanel"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/homeWelcome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="BEM-VINDO AO LPSM"
+                android:textColor="@color/text"
+                android:textSize="23sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="Escolha o que deseja assistir"
+                android:textColor="@color/muted"
+                android:textSize="13sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp">
+
+                <Button
+                    android:id="@+id/homeLive"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:maxHeight="105dp"
+                    android:minHeight="65dp"
+                    android:text="TV AO VIVO"
+                    android:textColor="@color/text"
+                    android:textSize="17sp" />
+
+                <Button
+                    android:id="@+id/homeVod"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:maxHeight="105dp"
+                    android:minHeight="65dp"
+                    android:text="FILMES"
+                    android:textColor="@color/text"
+                    android:textSize="17sp" />
+
+                <Button
+                    android:id="@+id/homeSeries"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:maxHeight="105dp"
+                    android:minHeight="65dp"
+                    android:text="SÉRIES"
+                    android:textColor="@color/text"
+                    android:textSize="17sp" />
+
+                <Button
+                    android:id="@+id/homeRadio"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:maxHeight="105dp"
+                    android:minHeight="65dp"
+                    android:text="RÁDIOS"
+                    android:textColor="@color/text"
+                    android:textSize="17sp" />
+
+                <Button
+                    android:id="@+id/homeAccount"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:maxHeight="105dp"
+                    android:minHeight="65dp"
+                    android:text="CONTA"
+                    android:textColor="@color/text"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <!-- ================================================= -->
+        <!-- NAVEGAÇÃO DE CONTEÚDO                            -->
+        <!-- ================================================= -->
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+
+            <!--
+                ID mantido para o Kotlin.
+                Quase invisível para liberar tela.
+            -->
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/muted"
+                android:textSize="1sp" />
+
+
+            <!-- ================================================= -->
+            <!-- PESQUISA NO ALTO                                 -->
+            <!-- ================================================= -->
+
+            <LinearLayout
+                android:id="@+id/topMediaRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <LinearLayout
+                    android:id="@+id/searchAndFilters"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+
+                    <!-- PESQUISA -->
+                    <EditText
+                        android:id="@+id/search"
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:background="@drawable/tv_search_background"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:hint="Buscar canais, filmes, séries e rádios"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:singleLine="true"
+                        android:textColor="@color/text"
+                        android:textColorHint="@color/muted"
+                        android:textSize="12sp" />
+
+
+                    <!--
+                        BOTÕES DE SEÇÃO.
+
+                        Continuam presentes porque são importantes
+                        para controle remoto, mas ficam bem baixos.
+                    -->
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="2dp"
+                        android:fillViewport="false"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/filters"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="start|center_vertical"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/all"
+                                android:layout_width="68dp"
+                                android:layout_height="30dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                android:focusable="true"
+                                android:focusableInTouchMode="false"
+                                android:padding="0dp"
+                                android:text="TUDO"
+                                android:textColor="@color/text"
+                                android:textSize="9sp" />
+
+                            <Button
+                                android:id="@+id/live"
+                                android:layout_width="74dp"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="2dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                android:focusable="true"
+                                android:focusableInTouchMode="false"
+                                android:padding="0dp"
+                                android:text="AO VIVO"
+                                android:textColor="@color/text"
+                                android:textSize="9sp" />
+
+                            <Button
+                                android:id="@+id/vod"
+                                android:layout_width="72dp"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="2dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                android:focusable="true"
+                                android:focusableInTouchMode="false"
+                                android:padding="0dp"
+                                android:text="FILMES"
+                                android:textColor="@color/text"
+                                android:textSize="9sp" />
+
+                            <Button
+                                android:id="@+id/series"
+                                android:layout_width="72dp"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="2dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                android:focusable="true"
+                                android:focusableInTouchMode="false"
+                                android:padding="0dp"
+                                android:text="SÉRIES"
+                                android:textColor="@color/text"
+                                android:textSize="9sp" />
+
+                            <Button
+                                android:id="@+id/radio"
+                                android:layout_width="72dp"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="2dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                android:focusable="true"
+                                android:focusableInTouchMode="false"
+                                android:padding="0dp"
+                                android:text="RÁDIOS"
+                                android:textColor="@color/text"
+                                android:textSize="9sp" />
+
+                            <Button
+                                android:id="@+id/favorites"
+                                android:layout_width="88dp"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="2dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                android:focusable="true"
+                                android:focusableInTouchMode="false"
+                                android:padding="0dp"
+                                android:text="FAVORITOS"
+                                android:textColor="@color/text"
+                                android:textSize="9sp" />
+
+                        </LinearLayout>
+
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+
+
+                <!--
+                    Filmes e séries NÃO reservam espaço aqui.
+
+                    O ID continua existindo para o Kotlin.
+                -->
+                <FrameLayout
+                    android:id="@+id/previewTopHost"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+
+
+            <!-- ================================================= -->
+            <!-- ÁREA PRINCIPAL                                    -->
+            <!-- ================================================= -->
+
+            <LinearLayout
+                android:id="@+id/browserArea"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+
+                <!-- ============================================= -->
+                <!-- CATEGORIAS MAIS LARGAS                        -->
+                <!-- ============================================= -->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/categoryList"
+                    android:layout_width="220dp"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:focusable="true"
+                    android:paddingEnd="5dp" />
+
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#668AA0B8" />
+
+
+                <!-- ============================================= -->
+                <!-- FILMES / SÉRIES / CANAIS / EPISÓDIOS         -->
+                <!-- ============================================= -->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:focusable="true"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="4dp" />
+
+
+
+                <!-- ============================================= -->
+                <!-- PRÉVIA LATERAL                                -->
+                <!-- ============================================= -->
+                <!--
+                    Em TV AO VIVO ela continua útil.
+
+                    Para Filmes/Séries o MainActivity
+                    pode ocultá-la.
+                -->
+
+                <FrameLayout
+                    android:id="@+id/previewSideHost"
+                    android:layout_width="205dp"
+                    android:layout_height="match_parent">
+
+
+                    <LinearLayout
+                        android:id="@+id/previewPanel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingStart="5dp">
+
+
+                        <!-- PRIMEIRO FILHO = PLAYER -->
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="118dp"
+                            android:background="#E8000000">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="LPSM"
+                                android:textColor="#556A8098"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </FrameLayout>
+
+
+                        <TextView
+                            android:id="@+id/previewTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:text="Selecione um conteúdo"
+                            android:textColor="@color/text"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/previewGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:textColor="@color/muted"
+                            android:textSize="10sp" />
+
+
+                        <Space
+                            android:layout_width="1dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+
+                        <Button
+                            android:id="@+id/previewWatch"
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:layout_marginBottom="2dp"
+                            android:minHeight="0dp"
+                            android:focusable="true"
+                            android:focusableInTouchMode="false"
+                            android:text="ASSISTIR"
+                            android:textColor="@color/text"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <!-- ===================================================== -->
+    <!-- ATIVAÇÃO SIMPLES                                     -->
+    <!-- ===================================================== -->
+
+    <LinearLayout
+        android:id="@+id/activationSimple"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F2070C14"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/simpleLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.18"
+            android:text="LPSM"
+            android:textColor="@color/accent"
+            android:textSize="31sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:text="MAC PARA ATIVAÇÃO"
+            android:textColor="@color/text"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/simpleDeviceId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="#FFE500"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+
+    <!-- ===================================================== -->
+    <!-- ERRO                                                 -->
+    <!-- ===================================================== -->
+
+    <LinearLayout
+        android:id="@+id/failureState"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="14dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/failureBanner"
+            android:layout_width="160dp"
+            android:layout_height="115dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:scaleType="centerInside" />
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/failureClient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/text"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/failurePlaylist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#FFE500"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/failureMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:maxLines="3"
+                android:text="A lista está temporariamente indisponível."
+                android:textColor="@color/text"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/failureMac"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="#FFE500"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/failureSupport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:drawableStart="@drawable/ic_support_robot"
+                android:drawablePadding="8dp"
+                android:text="SUPORTE: (54) 99714-6384"
+                android:textColor="@color/text"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/retryButton"
+                android:layout_width="185dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#7656A8"
+                android:text="TENTAR NOVAMENTE"
+                android:textColor="@color/text"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <!-- ===================================================== -->
+    <!-- CARREGANDO                                           -->
+    <!-- ===================================================== -->
+
+    <LinearLayout
+        android:id="@+id/loadingState"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+        <TextView
+            android:id="@+id/loadingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Carregando sua lista..."
+            android:textColor="@color/text"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+</FrameLayout>

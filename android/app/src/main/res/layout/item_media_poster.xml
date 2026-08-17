@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/tv_item_background"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="false"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+    <!--
+        CAPA DO FILME / SÉRIE
+
+        A altura é ajustada pelo MainActivity
+        conforme celular, tablet ou TV.
+    -->
+    <FrameLayout
+        android:id="@+id/posterContainer"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="#101722">
+
+        <ImageView
+            android:id="@+id/poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="Capa do conteúdo"
+            android:scaleType="centerCrop" />
+
+        <!-- FAVORITO -->
+        <TextView
+            android:id="@+id/posterStar"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="top|end"
+            android:layout_margin="5dp"
+            android:background="#B0000000"
+            android:gravity="center"
+            android:text="☆"
+            android:textColor="@android:color/white"
+            android:textSize="22sp" />
+
+    </FrameLayout>
+
+    <!-- NOME -->
+    <TextView
+        android:id="@+id/posterTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:minLines="2"
+        android:paddingStart="3dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="3dp"
+        android:paddingBottom="4dp"
+        android:text="Nome do conteúdo"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
